@@ -7,6 +7,7 @@
     <title>Expotest </title>
 </head>
 <body ng-controller="AppCtrl">
+    <div ng-include="'app/header.tpl.html'"></div>
     <div ui-view class="container-fluid"></div>
     <script src="vendor/angular-full/angular.min.js"></script>
     <script src="vendor/angular-full/angular-resource.min.js"></script>
@@ -14,9 +15,10 @@
     <script src="vendor/angular-moment/angular-moment.js"></script>
     <script src="vendor/ngstorage/ngStorage.min.js"></script>
     <script src="vendor/angular-ui-router/angular-ui-router.min.js"></script>
+    <script src="vendor/angular-http-auth/http-auth-interceptor.js"></script>
 
     <script src="app/app.js"></script>
-    <script src="app/expositions/ExpositionServices.js"></script>
     <script src="app/expositions/expositions.js"></script>
+    <script src="app/expositions/ExpositionServices.js"></script>
 
 </body>
