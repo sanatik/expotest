@@ -4,9 +4,19 @@
 angular.module('app', [
     'ngResource',
     'ngCookies',
-    'expositions'
+    'expositions',
+    'ui.router'
 ]);
+angular.module('app').config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise("/");
+    $stateProvider
+        .state('index', {
+            url: "/",
+            templateUrl: "app/index.tpl.html",
+            controller: 'AppCtrl'
+        });
 
+}]);
 angular.module('app').controller('AppCtrl', ['$scope','$location', function($scope,$location) {
 
 }]);

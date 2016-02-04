@@ -1,21 +1,21 @@
 /**
  * Created by bosone on 2/3/16.
  */
-var module = angular.module('exposition.services',['ngResource']);
+var module = angular.module('exposition.services', ['ngResource']);
 
-module.factory('ExpositionUpdateService',function($resource){
+module.factory('ExpositionUpdateService', function ($resource) {
     return $resource('exposition/:id',
         {
             id: '@id'
         },
         {
-            'update': { method:'PUT' }
+            'update': {method: 'PUT'}
         },
         {
-            'get': { method: 'GET', isArray: false }
+            'get': {method: 'GET', isArray: false}
         },
         {
-            'delete': { method: 'DELETE'}
+            'delete': {method: 'DELETE'}
         }
     );
 });
