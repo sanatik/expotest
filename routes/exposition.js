@@ -10,5 +10,4 @@ router.get('/',expositionController.getAll);
 router.get('/:id',expositionController.get);
 router.put('/:id',expositionController.update);
 router.delete('/:id',expositionController.delete);
-
 module.exports = router;

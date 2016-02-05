@@ -9,7 +9,6 @@ var ExpositionSchema = mongoose.Schema({
         type: Date,
         default: Date.now()
     },
-    version: Number,
     displayName: String,
     creator: Number,
     price: Number,
@@ -23,9 +22,23 @@ var ExpositionSchema = mongoose.Schema({
         data: String
     },
     offers: [{
-        date: Date,
-        offer: Object,
-        linkedBy: Number,
+        id: mongoose.Schema.ObjectId,
+        added: {
+            type: Date,
+            default: Date.now()
+        },
+        name: String,
+        creator: Number,
+        //creator: {
+        //    type: mongoose.Schema.Types.ObjectId,
+        //    ref: 'User'
+        //},
+        photo: String,
+        description: String,
+        additional: {
+            name: String,
+            data: String
+        }
     }],
     audience: [{
         firstName: String,
@@ -36,7 +49,10 @@ var ExpositionSchema = mongoose.Schema({
         city: String,
         email: String,
         feedback: [{
-            offerId: Number,
+            offerId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Offer'
+            },
             key: String,
             answer: Boolean
         }]

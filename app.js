@@ -24,6 +24,7 @@ app.use('/vendor',express.static(path.join(__dirname, 'client/vendor')));
 app.use('/app',express.static(path.join(__dirname, 'client/src/app')));
 app.use('/common',express.static(path.join(__dirname, 'client/src/common')));
 app.use('/assets',express.static(path.join(__dirname, 'client/src/assets')));
+app.use('/img',express.static(path.join(__dirname, 'client/img')));
 
 var connect = function(){
     var options = {

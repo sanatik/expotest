@@ -3,7 +3,7 @@
  */
 var index = require('../routes/index');
 var expositions = require('../routes/exposition');
-module.exports = function (app){
+module.exports = function (app) {
     app.use('/', index);
-    app.use('/exposition',expositions);
+    app.use('/exposition', expositions);
 }

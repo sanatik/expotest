@@ -5,7 +5,8 @@ angular.module('app', [
     'ngResource',
     'ngCookies',
     'expositions',
-    'ui.router'
+    'ui.router',
+    'ngFileUpload'
 ]);
 angular.module('app').config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/");

@@ -4,11 +4,16 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="vendor/jquery-ui/themes/smoothness/jquery-ui.min.css">
     <title>Expotest </title>
 </head>
 <body ng-controller="AppCtrl">
     <div ng-include="'app/header.tpl.html'"></div>
     <div ui-view class="container-fluid"></div>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/jquery-ui/ui/minified/jquery.ui.core.min.js"></script>
+    <script src="vendor/jquery-ui/ui/minified/jquery.ui.datepicker.min.js"></script>
+    <script src="vendor/angular-full/angular.min.js"></script>
     <script src="vendor/angular-full/angular.min.js"></script>
     <script src="vendor/angular-full/angular-resource.min.js"></script>
     <script src="vendor/angular-full/angular-cookies.min.js"></script>
@@ -16,11 +21,14 @@
     <script src="vendor/ngstorage/ngStorage.min.js"></script>
     <script src="vendor/angular-ui-router/angular-ui-router.min.js"></script>
     <script src="vendor/angular-http-auth/http-auth-interceptor.js"></script>
+    <script src="vendor/ng-file-upload.min.js"></script>
+    <script src="vendor/ng-file-upload-shim.min.js"></script>
     <script src="common/socketservice.js"></script>
     <script src="/socket.io/socket.io.js"> </script>
 
     <script src="app/app.js"></script>
-    <script src="app/expositions/expositions.js"></script>
-    <script src="app/expositions/ExpositionServices.js"></script>
+    <script src="app/exposition/exposition.js"></script>
+    <script src="app/exposition/ExpositionServices.js"></script>
+    <script src="app/exposition/OfferServices.js"></script>
 
 </body>

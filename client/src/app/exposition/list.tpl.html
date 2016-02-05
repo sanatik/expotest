@@ -1,0 +1,29 @@
+<a href="/#/exposition/create/">Create New Exposition</a>
+<h1>
+    There are {{expositions.length}} expositions.
+</h1>
+<table class="table table-striped" ng-show="expositions.length">
+    <tr>
+        <td>Название выставки</td>
+        <td>Изменить</td>
+        <td>Удалить</td>
+    </tr>
+    <tr ng-repeat="exposition in expositions">
+        <td>
+            <a href="/#/exposition/{{exposition._id}}/" ng-click="findExposition(exposition._id)">
+                {{exposition.displayName}} </a>
+        </td>
+        <td>
+            <a class="btn btn-inverse" href="/#/exposition/{{exposition._id}}/edit/"
+               ng-click="findExposition(exposition._id)">
+                Обновить
+            </a>
+
+        </td>
+        <td>
+            <button class="btn btn-danger" ng-click="deleteExposition(exposition._id)">
+                Удалить
+            </button>
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,56 @@
+<h4>Create New Exposition</h4>
+<form name="expositionCreateForm" class="expositionCreateForm">
+    <table>
+        <tr>
+            <td>Название выставки</td>
+            <td><input type="text" name="expositionName" ng-model="expositionName" id="expositionName"/></td>
+        </tr>
+        <tr>
+            <td>Цена</td>
+            <td><input type="text" name="expositionPrice" ng-model="expositionPrice" id="expositionPrice"/></td>
+        </tr>
+        <tr>
+            <td>Фотография</td>
+            <td>
+                <button ngf-select="upload($file)">Выбрать</button>
+                <span id="photoSpan"></span>
+                <input type="text" ng-model="uploadPhoto">
+            </td>
+        </tr>
+        <tr>
+            <td>Дата начала</td>
+            <td><input type="text" class="date" ng-model="startDate"></td>
+        </tr>
+        <tr>
+            <td>Дата окончания</td>
+            <td><input type="text" class="date" ng-model="endDate"></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                Описание<br/>
+                <textarea name="expositionDescription" ng-model="expositionDescription" id="expositionDesc" style="width: 100%; height: 50px;"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>Ожидаемая аудитория</td>
+            <td><input type="text" ng-model="expectedAudience"></td>
+        </tr>
+        <tr>
+            <td>Минмальный отклик</td>
+            <td><input type="text" ng-model="minFeedBack"></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: right;">
+                <button type="submit" ng-click="createExposition()">Добавить</button>
+                <a href="/#/exposition/create/" ng-click="reset()">Отменить</a>
+            </td>
+        </tr>
+    </table>
+</form>
+<script>
+    $(function () {
+        $(".date").each(function(){
+            $(this).datepicker({minDate: "0d"});
+        });
+    });
+</script>
