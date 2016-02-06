@@ -35,6 +35,7 @@ var connect = function(){
         }
     };
     mongoose.connect(config.db,options);
+    console.log('connected');
 };
 connect();
 mongoose.connection.on('error',console.log);
