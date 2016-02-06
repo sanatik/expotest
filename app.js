@@ -34,7 +34,7 @@ var connect = function(){
             }
         }
     };
-    mongoose.connect(config.db,options);
+    mongoose.connect('mongodb://expotest:expotest@ds059155.mongolab.com:59155/expotest',options);
     console.log('connected');
 };
 connect();
