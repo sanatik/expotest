@@ -26,6 +26,16 @@ app.use('/common',express.static(path.join(__dirname, 'client/src/common')));
 app.use('/assets',express.static(path.join(__dirname, 'client/src/assets')));
 app.use('/img',express.static(path.join(__dirname, 'client/img')));
 
+var passport = require('passport');
+var expressSession = require('express-session');
+
+var initPassport = require('./config/passport/init');
+initPassport(passport);
+
+app.use(expressSession({secret: 'mySecretKey', resave: true, saveUninitialized: true}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 var connect = function(){
     var options = {
         server: {
@@ -40,41 +50,7 @@ connect();
 mongoose.connection.on('error',console.log);
 mongoose.connection.on('disconnected',connect);
 require('./config/routes')(app);
+require('./routes/auth')(passport);
 require('./config/express')(app);
-//
-//app.use('/', routes);
-//app.use('/users', users);
-//
-//// catch 404 and forward to error handler
-//app.use(function(req, res, next) {
-//  var err = new Error('Not Found');
-//  err.status = 404;
-//  next(err);
-//});
-//
-//// error handlers
-//
-//// development error handler
-//// will print stacktrace
-//if (app.get('env') === 'development') {
-//  app.use(function(err, req, res, next) {
-//    res.status(err.status || 500);
-//    res.render('error', {
-//      message: err.message,
-//      error: err
-//    });
-//  });
-//}
-//
-//// production error handler
-//// no stacktraces leaked to user
-//app.use(function(err, req, res, next) {
-//  res.status(err.status || 500);
-//  res.render('error', {
-//    message: err.message,
-//    error: {}
-//  });
-//});
-
 
 module.exports = app;

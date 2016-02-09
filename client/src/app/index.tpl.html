@@ -1,2 +1,19 @@
-<h3>Hello world</h3>
+<h3>Login form</h3>
+<form name="loginForm" ng-submit="login()">
+    <table>
+        <tr>
+            <td>Логин</td>
+            <td><input type="text" ng-model="loginFormData.username"></td>
+        </tr>
+        <tr>
+            <td>Пароль</td>
+            <td><input type="text" ng-model="loginFormData.password"></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: center;">
+                <button type="submit">Войти</button>
+            </td>
+        </tr>
+    </table>
+</form>
 
