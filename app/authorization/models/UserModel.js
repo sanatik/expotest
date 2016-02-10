@@ -18,12 +18,12 @@ var UserSchema = new mongoose.Schema({
     salt: String,
     role: Number,
     hasPremium: Boolean,
-    avatar: String,
+    avatar: Buffer,
     description: String,
-    additional: {
+    additional: [{
         name: String,
         data: String
-    },
+    }],
     cart: [{
         exposition: Object,
         offer: Object,

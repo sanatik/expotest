@@ -21,6 +21,7 @@ exports.create = function (req, res) {
 };
 
 exports.getAll = function (req, res) {
+    console.log(req.user);
     Exposition.find({}, function (err, results) {
         if (err) {
             res.send(err);

@@ -3,7 +3,8 @@
  */
 var login = require('../passport/login');
 var signup = require('../passport/signup');
-var User = require('../../app/authorization/models/UserModel');
+var mongoose = require('mongoose');
+var User = mongoose.model('User');
 
 module.exports = function(passport){
 

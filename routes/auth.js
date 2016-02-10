@@ -18,31 +18,36 @@ module.exports = function (passport) {
 
     /* GET login page. */
     router.get('/', function (req, res) {
-        console.log(1);
-        res.json({message: '123'});
+        res.json({message: req.flash('message')});
     });
 
     /* Handle Login POST */
-    router.post('/login',
-        passport.authenticate('login', {
-            successRedirect: '/home',
-            failureRedirect: '/',
-            failureFlash: true
-        }));
+    router.post('/login', function (req, res, next) {
+        passport.authenticate('login', function(err, user, info){
+            if(user){
+                res.user = user;
+                res.json({message: "OK"});
+            }else{
+                res.json({message: req.flash('message')});
+            }
+        })(req, res, next);
+    });
 
     /* GET Registration Page */
     router.get('/signup', function (req, res) {
-        res.render('register', {message: req.flash('message')});
+        res.json({message: req.flash('message')});
     });
 
     /* Handle Registration POST */
-    router.post('/signup', function (req, res) {
+    router.post('/signup', function (req, res, next) {
+        passport.authenticate('signup', function (err, user, info) {
+            if (user) {
+                res.json({message: "OK"});
+            }else{
+                res.json({message: req.flash('message')});
+            }
 
-        passport.authenticate('signup', {
-            successRedirect: '/home',
-            failureRedirect: '/signup',
-            failureFlash: true
-        })
+        })(req, res, next);
     });
 
     /* Handle Logout */

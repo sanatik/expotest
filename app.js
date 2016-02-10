@@ -29,6 +29,9 @@ app.use('/img',express.static(path.join(__dirname, 'client/img')));
 var passport = require('passport');
 var expressSession = require('express-session');
 
+var flash = require('connect-flash');
+app.use(flash());
+
 var initPassport = require('./config/passport/init');
 initPassport(passport);
 

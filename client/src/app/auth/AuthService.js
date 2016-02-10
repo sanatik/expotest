@@ -7,6 +7,9 @@ authServices.factory('AuthServices', ['$http', function ($http) {
     return {
         login: function (data, success, error) {
             $http.post('/auth/login', data).success(success).error(error);
+        },
+        signup: function (data, success, error) {
+            $http.post('/auth/signup', data).success(success).error(error);
         }
     }
 }]);
