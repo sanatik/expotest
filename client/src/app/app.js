@@ -6,7 +6,8 @@ angular.module('app', [
     'ngCookies',
     'expositions',
     'ui.router',
-    'ngFileUpload'
+    'ngFileUpload',
+    'auth'
 ]);
 angular.module('app').config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/");
@@ -18,10 +19,10 @@ angular.module('app').config(['$stateProvider', '$urlRouterProvider', function (
         });
 
 }]);
-angular.module('app').controller('AppCtrl', ['$scope','$location', function($scope,$location) {
+angular.module('app').controller('AppCtrl', ['$scope', '$location', function ($scope, $location) {
 
 }]);
 
-angular.module('app').controller('HeaderCtrl', ['$scope','$location', function($scope,$location) {
+angular.module('app').controller('HeaderCtrl', ['$scope', '$location', function ($scope, $location) {
 
 }]);
