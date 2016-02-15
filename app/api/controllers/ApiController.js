@@ -52,3 +52,17 @@ exports.createOrUpdate = function (req, res) {
         }
     }
 };
+
+exports.getExpositions = function (req, res) {
+    mongoose.model("Exposition").find({}, function (err, results) {
+        if (err) {
+            res.send(err);
+        }
+        var ret = [];
+        for(var i=0; i<results.length; i++){
+            var ex = results[i];
+            ret.push({id: ex._id});
+        }
+        res.json(ret);
+    });
+}
