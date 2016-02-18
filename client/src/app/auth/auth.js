@@ -24,17 +24,14 @@ authApp.controller('AuthController', ['$scope', '$resource', '$state', '$locatio
         $scope.user = {};
         $scope.user.additional = [];
         $scope.login = function () {
-            AuthServices.login(this.loginFormData,
-                function (data) {
+            AuthServices.login(this.loginFormData)
+                .success(function (data) {
                     if (data.message === 'OK') {
-                        $rootScope.currentUser = 'CurrentUser';
+
                         $location.path('/exposition/');
                     } else {
                         alert(data.message);
                     }
-                },
-                function (data) {
-                    alert(data.message);
                 });
         };
         $scope.signup = function () {
@@ -97,4 +94,5 @@ authApp.controller('AuthController', ['$scope', '$resource', '$state', '$locatio
             var dataurl = canvas.toDataURL("image/png");
             return dataurl;
         }
-    }]);
+    }])
+;

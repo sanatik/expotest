@@ -3,6 +3,9 @@
  */
 var express = require('express');
 var router = express.Router();
+var jwt = require('jsonwebtoken');
+
+var superSecret = "SECRET";
 
 var isAuthenticated = function (req, res, next) {
     // if user is authenticated in the session, call the next() to call the next request handler
@@ -23,11 +26,17 @@ module.exports = function (passport) {
 
     /* Handle Login POST */
     router.post('/login', function (req, res, next) {
-        passport.authenticate('login', function(err, user, info){
-            if(user){
+        passport.authenticate('login', function (err, user, info) {
+            if (user) {
                 res.user = user;
-                res.json({message: "OK"});
-            }else{
+                var token = jwt.sign({
+                    name: user.displayName,
+                    username: user.login
+                }, superSecret, {
+                    expiresIn: 1440 * 60 // expires in 24 hours
+                });
+                res.json({message: "OK", token: token});
+            } else {
                 res.json({message: req.flash('message')});
             }
         })(req, res, next);
@@ -43,7 +52,7 @@ module.exports = function (passport) {
         passport.authenticate('signup', function (err, user, info) {
             if (user) {
                 res.json({message: "OK"});
-            }else{
+            } else {
                 res.json({message: req.flash('message')});
             }
 

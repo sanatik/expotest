@@ -13,7 +13,7 @@ module.exports = function (passport) {
         },
         function (req, username, password, done) {
             // check in mongo if a user with username exists or not
-            mongoose.model('User').findOne({login: username},
+            mongoose.model('User').findOne({$or: [{login: username}, {email: username}, {phone: username}]},
                 function (err, user) {
                     // In case of any error, return using the done method
                     if (err)
