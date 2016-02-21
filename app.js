@@ -71,10 +71,15 @@ app.use(function (req, res, next) {
     } else {
         var hasAccess = false;
         var roles = config.roles;
-        for (url in roles.anonymous) {
-            console.log(roles.anonymous[url] + ' ' + req.url);
-            if (roles.anonymous[url] === req.url) {
-                hasAccess = true;
+        for (var roleNum in roles) {
+            var role = roles[roleNum];
+            if (role.id === -1) {
+                for (var url in role.permissions) {
+                    var perm = role.permissions[url];
+                    if (perm === req.url) {
+                        hasAccess = true;
+                    }
+                }
             }
         }
         if (!hasAccess) {
