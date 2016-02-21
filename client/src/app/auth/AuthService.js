@@ -27,11 +27,10 @@ authServices.factory('AuthServices', ['$http', 'AuthToken', function ($http, Aut
             AuthToken.setToken();
         },
         getUser: function () {
-            if (AuthToken.getToken()) {
-                return $http.get('/api/me', {cache: true});
-            } else {
-                return $q.reject({message: 'User has no token.'});
-            }
+            return $http.get('/auth/me', {cache: true});
+        },
+        hasAccess: function(url){
+            return $http.get('/auth/hasAccess', {accessUrl: url});
         }
     }
 }]).factory('AuthToken', ['$window', function ($window) {

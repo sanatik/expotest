@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="/#/">Expotest</a>
-            <br /> <span>{{currentUser}}</span>
+            <br /> <span ng-show="currentUser">Привет, {{currentUser.name}}</span>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -10,7 +10,7 @@
                 <li><a href="/#/exposition/">Expositions</a></li>
                 <li ng-hide="currentUser"><a href="/#/auth/">Login</a></li>
                 <li ng-hide="currentUser"><a href="/#/auth/signup/">Signup</a></li>
-                <li ng-show="currentUser"><a ng-click="logout()">Logout</a></li>
+                <li ng-show="currentUser"><a ng-click="logout()" href="">Logout</a></li>
             </ul>
         </div>
     </div>

@@ -4,18 +4,7 @@
 var express = require('express');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
-
-var superSecret = "SECRET";
-
-var isAuthenticated = function (req, res, next) {
-    // if user is authenticated in the session, call the next() to call the next request handler
-    // Passport adds this method to request object. A middleware is allowed to add properties to
-    // request and response objects
-    if (req.isAuthenticated())
-        return next();
-    // if the user is not authenticated then redirect him to the login page
-    res.redirect('/');
-}
+var config = require('../config/config');
 
 module.exports = function (passport) {
 
@@ -31,8 +20,9 @@ module.exports = function (passport) {
                 res.user = user;
                 var token = jwt.sign({
                     name: user.displayName,
-                    username: user.login
-                }, superSecret, {
+                    username: user.login,
+                    role: user.role
+                }, config.privateKey, {
                     expiresIn: 1440 * 60 // expires in 24 hours
                 });
                 res.json({message: "OK", token: token});
@@ -63,6 +53,26 @@ module.exports = function (passport) {
     router.get('/signout', function (req, res) {
         req.logout();
         res.redirect('/');
+    });
+
+    router.get('/hasAccess', function (req, res) {
+        var user = req.decoded;
+        var accessUrl = req.param('accessUrl');
+        var roles = config.roles;
+        for(role in roles){
+            if(role.id === user.role){
+                for(url in role.permissions){
+                    if(url === accessUrl){
+                        res.json({access: true});
+                    }
+                }
+            }
+        }
+        res.json({access: false});
+    });
+
+    router.get('/me', function(req, res){
+        res.json(req.decoded);
     });
 
     return router;

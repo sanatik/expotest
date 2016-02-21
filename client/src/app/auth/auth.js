@@ -27,7 +27,11 @@ authApp.controller('AuthController', ['$scope', '$resource', '$state', '$locatio
             AuthServices.login(this.loginFormData)
                 .success(function (data) {
                     if (data.message === 'OK') {
-
+                        AuthServices.getUser().success(function(data){
+                            $rootScope.currentUser = data;
+                        }).error(function(){
+                            $rootScope.currentUser = false;
+                        });
                         $location.path('/exposition/');
                     } else {
                         alert(data.message);
