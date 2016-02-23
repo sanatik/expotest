@@ -29,8 +29,17 @@ authServices.factory('AuthServices', ['$http', 'AuthToken', function ($http, Aut
         getUser: function () {
             return $http.get('/auth/me', {cache: true});
         },
-        hasAccess: function(url){
-            return $http.get('/auth/hasAccess', {accessUrl: url});
+        hasRole: function(name){
+            return $http.get('/auth/hasRole', {params: {roleName: name}});
+        },
+        isOwner: function(id){
+            var owner = false;
+            this.getUser().then(function(data){
+                if(data.name === id){
+                    owner = true;
+                }
+            });
+            return owner;
         }
     }
 }]).factory('AuthToken', ['$window', function ($window) {

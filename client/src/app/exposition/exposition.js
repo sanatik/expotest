@@ -1,7 +1,20 @@
 /**
  * Created by bosone on 2/3/16.
  */
-var expositionApp = angular.module('expositions', ['ngResource', 'ui.router', 'exposition.services', 'angularMoment', 'offer.services']);
+var expositionApp = angular.module('expositions', ['ngResource', 'permission', 'ui.router', 'exposition.services', 'angularMoment', 'offer.services', 'auth.services'])
+    .run(function (RoleStore, AuthServices, $q) {
+        RoleStore.defineRole('organizer', [], function (stateParams) {
+            var deferred = $q.defer();
+            AuthServices.hasRole('organizer').success(function(data){
+                if(data.hasRole === true){
+                    deferred.resolve();
+                }else{
+                    deferred.reject();
+                }
+            });
+            return deferred.promise;
+        });
+    });
 
 expositionApp.config(['$stateProvider', '$urlRouterProvider',
 
@@ -16,7 +29,15 @@ expositionApp.config(['$stateProvider', '$urlRouterProvider',
             .state('expositioncreate', {
                 url: "/exposition/create/",
                 templateUrl: 'app/exposition/create.tpl.html',
-                controller: 'ExpositionsController'
+                controller: 'ExpositionsController',
+                data: {
+                    permissions: {
+                        only: ['organizer'],
+                        redirectTo: function(){
+                            return 'exposition';
+                        }
+                    }
+                }
             })
             .state('expositionview', {
                 url: "/exposition/:id/",
@@ -103,9 +124,9 @@ expositionApp.controller('ExpositionsController', ['$scope', '$resource', '$stat
 
         $scope.updateExposition = function (_id) {
             $scope.expositionUpdateService = new ExpositionUpdateService();
-            if($scope.exposition.offer){
+            if ($scope.exposition.offer) {
                 $scope.expositionUpdateService.offer = $scope.exposition.offer;
-            }else{
+            } else {
                 $scope.expositionUpdateService.displayName = $scope.displayName;
             }
             $scope.expositionUpdateService.$update({id: _id}, function (result) {

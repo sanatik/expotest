@@ -7,22 +7,22 @@ module.exports = {
     roles: [
         {
             name: 'anonymous',
-            id: -1,
+            id: 0,
             permissions: ['/auth/login', '/auth/signup', '/api/createOrUpdate', '/api/expositions', '/exposition']
         },
         {
             name: 'visitor',
-            id: -1,
+            id: 3,
             permissions: ['/auth/login', '/auth/signup', '/api/createOrUpdate', '/api/expositions', '/exposition']
         },
         {
             name: 'exponent',
-            id: -1,
+            id: 2,
             permissions: ['/auth/login', '/auth/signup', '/api/createOrUpdate', '/api/expositions', '/exposition']
         },
         {
             name: 'organizer',
-            id: -1,
+            id: 1,
             permissions: ['/auth/login', '/auth/signup', '/api/createOrUpdate', '/api/expositions', '/exposition']
         }
     ]

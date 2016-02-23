@@ -19,6 +19,7 @@ module.exports = function (passport) {
             if (user) {
                 res.user = user;
                 var token = jwt.sign({
+                    id: user.id,
                     name: user.displayName,
                     username: user.login,
                     role: user.role
@@ -55,20 +56,21 @@ module.exports = function (passport) {
         res.redirect('/');
     });
 
-    router.get('/hasAccess', function (req, res) {
+    router.get('/hasRole', function (req, res) {
         var user = req.decoded;
-        var accessUrl = req.param('accessUrl');
+        var roleName = req.param('roleName');
         var roles = config.roles;
-        for(role in roles){
+        var hasRole = false;
+        for(var i in roles){
+            var role = roles[i];
             if(role.id === user.role){
-                for(url in role.permissions){
-                    if(url === accessUrl){
-                        res.json({access: true});
-                    }
+                if(role.name === roleName){
+                    hasRole = true;
+                    break;
                 }
             }
         }
-        res.json({access: false});
+        res.json({hasRole: hasRole});
     });
 
     router.get('/me', function(req, res){

@@ -6,6 +6,8 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "angular-permission": "^2.0.1",
+    "angular-ui-router": "^0.2.18",
     "base64-url": "^1.2.1",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.13.2",

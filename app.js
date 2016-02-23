@@ -73,7 +73,7 @@ app.use(function (req, res, next) {
         var roles = config.roles;
         for (var roleNum in roles) {
             var role = roles[roleNum];
-            if (role.id === -1) {
+            if (role.id === 0) {
                 for (var url in role.permissions) {
                     var perm = role.permissions[url];
                     if (perm === req.url) {

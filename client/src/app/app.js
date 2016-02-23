@@ -5,6 +5,7 @@ angular.module('app', [
     'ngResource',
     'ngCookies',
     'expositions',
+    'permission',
     'ui.router',
     'ngFileUpload',
     'auth',
@@ -21,12 +22,8 @@ angular.module('app').config(['$stateProvider', '$urlRouterProvider', '$httpProv
     $httpProvider.interceptors.push('AuthInterceptor');
 }]);
 angular.module('app').controller('AppCtrl', ['$scope', '$location', '$rootScope', 'AuthServices', function ($scope, $location, $rootScope, AuthServices) {
-    $rootScope.hasAccess = function (url) {
-        var access = false;
-        AuthServices.hasAccess(url).success(function(data){
-            access = data.access;
-        });
-        return access;
+    $rootScope.isOwner = function (id) {
+        return $rootScope.currentUser.name === id;
     }
 }]);
 
