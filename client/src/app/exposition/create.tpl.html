@@ -3,41 +3,59 @@
     <table>
         <tr>
             <td>Название выставки</td>
-            <td><input type="text" name="expositionName" ng-model="expositionName" id="expositionName"/></td>
+            <td><input type="text" name="expositionName" ng-model="exposition.displayName" id="expositionName"/></td>
+        </tr>
+        <tr>
+            <td>Город</td>
+            <td><input type="text" name="expositionLocation" ng-model="exposition.location" id="expositionLocation"/></td>
+        </tr>
+        <tr>
+            <td>Веб-сайт</td>
+            <td><input type="text" name="expositionWebsite" ng-model="exposition.website" id="expositionWebsite"/></td>
         </tr>
         <tr>
             <td>Цена</td>
-            <td><input type="text" name="expositionPrice" ng-model="expositionPrice" id="expositionPrice"/></td>
+            <td><input type="text" name="expositionPrice" ng-model="exposition.price" id="expositionPrice"/></td>
         </tr>
         <tr>
             <td>Фотография</td>
             <td>
-                <button ngf-select="upload($file)">Выбрать</button>
-                <span id="photoSpan"></span>
-                <input type="text" ng-model="uploadPhoto">
+                <button ngf-select="uploadPhoto($file)">Выбрать</button>
+                <input type="text" ng-model="exposition.photo.content" ng-show="false">
+                <input type="text" ng-model="exposition.photo.type" ng-show="false">
+                <img id="photo-preview"/>
             </td>
         </tr>
         <tr>
             <td>Дата начала</td>
-            <td><input type="text" class="date" ng-model="startDate"></td>
+            <td><input type="text" class="date" ng-model="exposition.startDate"></td>
         </tr>
         <tr>
             <td>Дата окончания</td>
-            <td><input type="text" class="date" ng-model="endDate"></td>
+            <td><input type="text" class="date" ng-model="exposition.endDate"></td>
+        </tr>
+        <tr>
+            <td>Презентация</td>
+            <td>
+                <button ngf-select="uploadPresentation($file)">Выбрать</button>
+                <input type="text" ng-model="exposition.presentation.content" ng-show="false">
+                <input type="text" ng-model="exposition.presentation.type" ng-show="false">
+                <span id="presentation-name"></span>
+            </td>
         </tr>
         <tr>
             <td colspan="2">
                 Описание<br/>
-                <textarea name="expositionDescription" ng-model="expositionDescription" id="expositionDesc" style="width: 100%; height: 50px;"></textarea>
+                <textarea name="expositionDescription" ng-model="exposition.description" id="expositionDesc" style="width: 100%; height: 50px;"></textarea>
             </td>
         </tr>
         <tr>
             <td>Ожидаемая аудитория</td>
-            <td><input type="text" ng-model="expectedAudience"></td>
+            <td><input type="text" ng-model="exposition.expectedAudience"></td>
         </tr>
         <tr>
             <td>Минмальный отклик</td>
-            <td><input type="text" ng-model="minFeedBack"></td>
+            <td><input type="text" ng-model="exposition.minFeedBack"></td>
         </tr>
         <tr>
             <td colspan="2" style="text-align: right;">

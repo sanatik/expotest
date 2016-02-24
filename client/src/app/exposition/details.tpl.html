@@ -1,4 +1,4 @@
-<h3>  Описание выставки </h3>
+<h3> Описание выставки </h3>
 <!--<h3>app name is {{appname}}</h3>-->
 <h4> {{exposition.displayName}}</h4>
 <div>
@@ -10,12 +10,20 @@
         <td>{{exposition.displayName}}</td>
     </tr>
     <tr>
+        <td>Город</td>
+        <td>{{exposition.location}}</td>
+    </tr>
+    <tr>
+        <td>Вебсайт</td>
+        <td>{{exposition.website}}</td>
+    </tr>
+    <tr>
         <td>Цена</td>
         <td>{{exposition.price}}</td>
     </tr>
     <tr>
         <td>Фото</td>
-        <td><img src="/img/{{exposition.photo}}" width="100"></td>
+        <td><img data-ng-src="data:{{exposition.photo.ext}};base64,{{exposition.photo.contentString}}"></td>
     </tr>
     <tr>
         <td>Дата начала</td>
@@ -26,12 +34,21 @@
         <td>{{exposition.endDate}}</td>
     </tr>
     <tr>
+        <td>Презентация</td>
+        <td><a ng-show="exposition.presentation.contentString" ng-href="data:{{exposition.presentation.ext}};base64,{{exposition.presentation.contentString}}" target="_blank" download >Презентация</a> </td>
+    </tr>
+    <tr>
         <td>Описание</td>
         <td>{{exposition.description}}</td>
     </tr>
 </table>
 <div>
-    <a href="/#/exposition/{{exposition._id}}/offer/create/">Создать предложение [Для экпонента]</a>
-    <a href="/#/exposition/{{exposition._id}}/offer/">Список предложений [Для посетителя]</a>
+    <a permission only="'exponent'" href="/#/exposition/{{exposition._id}}/offer/create/">Создать предложение</a>
+    <a href="/#/exposition/{{exposition._id}}/offer/">Список предложений</a>
+    <a ng-show="isOwner(exposition.creator)" class="btn btn-inverse" href="/#/exposition/{{exposition._id}}/edit/"
+       ng-click="findExposition(exposition._id)">
+        Изменить
+    </a>
+    <a ng-show="isOwner(exposition.creator)" ng-click="deleteExposition(exposition._id)" href="">Удалить</a>
     <!--<button ng-click="getCreateOffer('{{exposition._id}}')">Создать предложение</button>-->
 </div>

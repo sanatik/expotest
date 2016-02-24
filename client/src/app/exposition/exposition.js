@@ -5,10 +5,10 @@ var expositionApp = angular.module('expositions', ['ngResource', 'permission', '
     .run(function (RoleStore, AuthServices, $q) {
         RoleStore.defineRole('organizer', [], function (stateParams) {
             var deferred = $q.defer();
-            AuthServices.hasRole('organizer').success(function(data){
-                if(data.hasRole === true){
+            AuthServices.hasRole('organizer').success(function (data) {
+                if (data.hasRole === true) {
                     deferred.resolve();
-                }else{
+                } else {
                     deferred.reject();
                 }
             });
@@ -33,7 +33,7 @@ expositionApp.config(['$stateProvider', '$urlRouterProvider',
                 data: {
                     permissions: {
                         only: ['organizer'],
-                        redirectTo: function(){
+                        redirectTo: function () {
                             return 'exposition';
                         }
                     }
@@ -66,118 +66,142 @@ expositionApp.config(['$stateProvider', '$urlRouterProvider',
     }
 ]);
 
-expositionApp.controller('ExpositionsController', ['$scope', '$resource', '$state', '$location', 'ExpositionUpdateService', 'Upload', 'OfferUpdateService',
-    function ($scope, $resource, $state, $location, ExpositionUpdateService, Upload, OfferUpdateService) {
+expositionApp.controller('ExpositionsController', ['$scope', '$resource', '$state', '$location', 'ExpositionUpdateService', 'Upload', 'OfferUpdateService', 'ExpositionService',
+    function ($scope, $resource, $state, $location, ExpositionUpdateService, Upload, OfferUpdateService, ExpositionService) {
         var ExpositionResource = $resource('/exposition/:id'); //this will be the base URL for our rest express route.
         $scope.expositionUpdateService = new ExpositionUpdateService();
         $scope.offerUpdateService = new OfferUpdateService();
         var loadExpositions = function () {
-            return ExpositionResource.query(function (results) {
-                $scope.expositions = results;
-                if ($state.params.id) {
-                    $scope.findExposition($state.params.id);
-                }
-            });
+            ExpositionService.findAll().then(
+                function (data) {
+                    $scope.expositions = data.data;
+                    if ($state.params.id) {
+                        $scope.findExposition($state.params.id);
+                    }
+                }, function () {
+                    alert("Error loading expositions");
+                });
         };
-
 
         if (!$scope.expositions) {
             loadExpositions();
         }
+        $scope.exposition = {};
+        $scope.exposition.presentation = {};
+        $scope.exposition.photo = {};
+
+        $scope.findExposition = function (_id) {
+            ExpositionService.findOne(_id).then(function (data) {
+                console.log(data.data);
+                $scope.exposition = data.data;
+            }, function () {
+                alert("Error loading exposition");
+            });
+        };
 
         $scope.createExposition = function () {
             if ($scope.expositionCreateForm != 'undefined') {
-                var createExpositionResource = new ExpositionResource();
-                createExpositionResource.displayName = $scope.expositionName;
-                createExpositionResource.price = $scope.expositionPrice;
-                createExpositionResource.photo = $scope.uploadPhoto;
-                createExpositionResource.startDate = new Date($scope.startDate);
-                createExpositionResource.endDate = new Date($scope.endDate);
-                createExpositionResource.description = $scope.expositionDescription;
-                createExpositionResource.expectedAudience = $scope.expectedAudience;
-                createExpositionResource.minFeedBack = $scope.minFeedBack;
-                createExpositionResource.$save(function (result) {
-                    $scope.expositionName = '';
-                    $scope.expositions.push(result);
-                    $location.path("/exposition/")
+
+                if (this.exposition) {
+                    ExpositionService.save(this.exposition).then(function (result) {
+                        $scope.expositions.push(result);
+                        $location.path("/exposition/");
+                    }, function () {
+                        alert("Error on creating expostion");
+                    });
+                }
+            }
+        };
+
+        $scope.updateExposition = function (_id) {
+            if (this.exposition) {
+                ExpositionService.edit(_id, this.exposition).then(function () {
+                    $location.path("/exposition/" + _id + "/");
+                }, function () {
+                    alert("Error on editing expostion");
                 });
             }
         };
 
+        $scope.deleteExposition = function (_id) {
+            ExpositionService.delete(_id).then(function(){
+                $location.path("/exposition/");
+            }, function(){
+                alert("Error on deleting expostion");
+            });
+        };
+
         $scope.reset = function () {
-            $scope.$broadcast('show-errors-reset');
-            $scope.expositionName = "";
-            $scope.expositionDate = "";
-            $scope.expositionFromTime = "";
-            $scope.expositionToTime = "";
-            $scope.expositionVenue = "";
+            $scope.exposition = {};
             $location.path("/exposition/create/")
         };
 
+        $scope.uploadPhoto = function (image) {
+            var reader = new FileReader();
+            var type = 'image/png';
+            reader.addEventListener("load", function () {
+                var readyImg = resizeImg(reader.result);
+                document.getElementById("photo-preview").setAttribute('src', readyImg);
+                readyImg = readyImg.replace(type, "");
+                readyImg = readyImg.replace("data:", "");
+                readyImg = readyImg.replace(";base64,", "");
+                $scope.exposition.photo.content = readyImg;
+                $scope.exposition.photo.type = type;
+            }, false);
 
-        $scope.findExposition = function (_id) {
-            $scope.expositionUpdateService = new ExpositionUpdateService();
-            $scope.expositionUpdateService.$get({id: _id}, function (result) {
-                $scope.exposition = result;
-            });
-        };
-
-        $scope.updateExposition = function (_id) {
-            $scope.expositionUpdateService = new ExpositionUpdateService();
-            if ($scope.exposition.offer) {
-                $scope.expositionUpdateService.offer = $scope.exposition.offer;
-            } else {
-                $scope.expositionUpdateService.displayName = $scope.displayName;
+            if (image) {
+                reader.readAsDataURL(image);
             }
-            $scope.expositionUpdateService.$update({id: _id}, function (result) {
-                $location.path("/exposition/");
-            });
         };
 
-        $scope.deleteExposition = function (_id) {
-            $scope.expositionUpdateService.$delete({id: _id}, function (result) {
-                $scope.reloadPage();
+        $scope.uploadPresentation = function (file) {
+            var reader = new FileReader();
+            reader.addEventListener("load", function () {
+                var presentationBase64 = reader.result;
+                document.getElementById("presentation-name").textContent = "123";
+                presentationBase64 = presentationBase64.replace(file.type, "");
+                presentationBase64 = presentationBase64.replace("data:", "");
+                presentationBase64 = presentationBase64.replace(";base64,", "");
+                $scope.exposition.presentation.content = presentationBase64;
+                $scope.exposition.presentation.type = file.type;
+            }, false);
 
-            });
-        };
-        $scope.reloadPage = function () {
-            window.location.reload();
-        };
-
-        $scope.upload = function (file) {
-            Upload.upload({
-                url: '/uploadImage',
-                data: {file: file, 'username': $scope.username}
-            }).then(function (resp) {
-                var fileName = resp.data.split('/')[3];
-                $scope.uploadPhoto = fileName;
-                $("#photoSpan").text(resp.config.data.file.name);
-                console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
-            }, function (resp) {
-                console.log('Error status: ' + resp.status);
-            }, function (evt) {
-                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
-            });
+            if (file) {
+                reader.readAsDataURL(file);
+            }
         };
 
-        $scope.uploadOffer = function (file) {
-            Upload.upload({
-                url: '/uploadImage',
-                data: {file: file, 'username': $scope.username}
-            }).then(function (resp) {
-                var fileName = resp.data.split('/')[3];
-                $scope.exposition.offer.photo = fileName;
-                $("#photoSpan").text(resp.config.data.file.name);
-                console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
-            }, function (resp) {
-                console.log('Error status: ' + resp.status);
-            }, function (evt) {
-                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
-            });
-        };
+        function resizeImg(file) {
+            var canvas = document.createElement('canvas');
+            var img = new Image();
+            img.src = file;
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
 
+            var MAX_WIDTH = 200;
+            var MAX_HEIGHT = 300;
+            var width = img.width;
+            var height = img.height;
+
+            if (width > height) {
+                if (width > MAX_WIDTH) {
+                    height *= MAX_WIDTH / width;
+                    width = MAX_WIDTH;
+                }
+            } else {
+                if (height > MAX_HEIGHT) {
+                    width *= MAX_HEIGHT / height;
+                    height = MAX_HEIGHT;
+                }
+            }
+            canvas.width = width;
+            canvas.height = height;
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+
+            var dataurl = canvas.toDataURL("image/png");
+            return dataurl;
+        }
 
     }
 ]);

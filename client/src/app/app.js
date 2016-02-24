@@ -23,7 +23,10 @@ angular.module('app').config(['$stateProvider', '$urlRouterProvider', '$httpProv
 }]);
 angular.module('app').controller('AppCtrl', ['$scope', '$location', '$rootScope', 'AuthServices', function ($scope, $location, $rootScope, AuthServices) {
     $rootScope.isOwner = function (id) {
-        return $rootScope.currentUser.name === id;
+        if($rootScope.currentUser){
+            return $rootScope.currentUser.id === id;
+        }
+        return false;
     }
 }]);
 

@@ -1,14 +1,64 @@
 <div>
-    <a href="/#/exposition/">Back</a>
+    <a href="/#/exposition/{{exposition._id}}/">Back</a>
 </div>
 
 <h3>Edit Exposition Details</h3>
-
-
-<form ng-submit="updateExposition(exposition._id)">
-    <label class="sr-only" for="expositionName">Exposition Name</label>
-    <input type="text" ng-model="exposition.name" id="expositionName">
-
-    <button type="submit">Save</button>
+<form name="expositionEditForm" class="expositionEditForm">
+    <table>
+        <tr>
+            <td>Название выставки</td>
+            <td><input type="text" name="expositionName" ng-model="exposition.displayName" id="expositionName"/></td>
+        </tr>
+        <tr>
+            <td>Город</td>
+            <td><input type="text" name="expositionLocation" ng-model="exposition.location" id="expositionLocation"/></td>
+        </tr>
+        <tr>
+            <td>Веб-сайт</td>
+            <td><input type="text" name="expositionWebsite" ng-model="exposition.website" id="expositionWebsite"/></td>
+        </tr>
+        <tr>
+            <td>Цена</td>
+            <td><input type="text" name="expositionPrice" ng-model="exposition.price" id="expositionPrice"/></td>
+        </tr>
+        <tr>
+            <td>Фотография</td>
+            <td>
+                <button ngf-select="uploadPhoto($file)">Выбрать</button>
+                <input type="text" ng-model="exposition.photo.content" ng-show="false">
+                <input type="text" ng-model="exposition.photo.type" ng-show="false">
+                <img id="photo-preview" data-ng-src="data:{{exposition.photo.ext}};base64,{{exposition.photo.contentString}}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Дата начала</td>
+            <td><input type="text" class="date" ng-model="exposition.startDate"></td>
+        </tr>
+        <tr>
+            <td>Дата окончания</td>
+            <td><input type="text" class="date" ng-model="exposition.endDate"></td>
+        </tr>
+        <tr>
+            <td>Презентация</td>
+            <td>
+                <button ngf-select="uploadPresentation($file)">Выбрать</button>
+                <input type="text" ng-model="exposition.presentation.content" ng-show="false">
+                <input type="text" ng-model="exposition.presentation.type" ng-show="false">
+                <a ng-show="exposition.presentation.contentString" ng-href="data:{{exposition.presentation.ext}};base64,{{exposition.presentation.contentString}}" target="_blank" download >Презентация</a>
+                <span id="presentation-name"></span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                Описание<br/>
+                <textarea name="expositionDescription" ng-model="exposition.description" id="expositionDesc" style="width: 100%; height: 50px;"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: right;">
+                <button type="submit" ng-click="updateExposition(exposition._id)">Сохранить</button>
+            </td>
+        </tr>
+    </table>
 </form>
 

@@ -10,12 +10,22 @@ var ExpositionSchema = mongoose.Schema({
         default: Date.now()
     },
     displayName: String,
+    location: String,
+    website: String,
     creator: Number,
     price: Number,
-    photo: String,
+    photo: {
+        ext: String,
+        contentBase64: Buffer,
+        contentString: String
+    },
     startDate: Date,
     endDate: Date,
-    presentation: Buffer,
+    presentation: {
+        ext: String,
+        contentBase64: Buffer,
+        contentString: String
+    },
     description: String,
     additional: {
         name: String,
@@ -28,11 +38,10 @@ var ExpositionSchema = mongoose.Schema({
             default: Date.now()
         },
         name: String,
-        creator: Number,
-        //creator: {
-        //    type: mongoose.Schema.Types.ObjectId,
-        //    ref: 'User'
-        //},
+        creator: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        },
         photo: String,
         description: String,
         additional: {
