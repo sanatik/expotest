@@ -1,0 +1,29 @@
+<h4>Создать предложение</h4>
+<form name="offerCreateForm" class="offerCreateForm">
+    <table>
+        <tr>
+            <td>Название предложения</td>
+            <td><input type="text" ng-model="offer.name"/></td>
+        </tr>
+        <tr>
+            <td>Фотография</td>
+            <td>
+                <button ngf-select="uploadPhoto($file)">Выбрать</button>
+                <input type="text" ng-model="offer.photo.content" ng-show="false">
+                <input type="text" ng-model="offer.photo.type" ng-show="false">
+                <img id="photo-preview"/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                Описание<br/>
+                <textarea ng-model="offer.description" style="width: 100%; height: 50px;"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: right;">
+                <button type="submit" ng-click="createOffer()">Добавить</button>
+            </td>
+        </tr>
+    </table>
+</form>

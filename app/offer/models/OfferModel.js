@@ -10,12 +10,15 @@ var OfferSchema = mongoose.Schema({
         default: Date.now()
     },
     name: String,
-    creator: Number,
-    //creator: {
-    //    type: mongoose.Schema.Types.ObjectId,
-    //    ref: 'User'
-    //},
-    photo: String,
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    photo: {
+        ext: String,
+        content: Buffer,
+        contentString: String
+    },
     description: String,
     additional: {
         name: String,

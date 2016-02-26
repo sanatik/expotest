@@ -7,7 +7,8 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="/#/exposition/">Expositions</a></li>
+                <li><a href="/#/exposition/">Выставки</a></li>
+                <li ng-show="currentUser"><a href="/#/offer/">Мои предложения</a></li>
                 <li ng-hide="currentUser"><a href="/#/auth/">Login</a></li>
                 <li ng-hide="currentUser"><a href="/#/auth/signup/">Signup</a></li>
                 <li ng-show="currentUser"><a ng-click="logout()" href="">Logout</a></li>

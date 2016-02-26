@@ -19,7 +19,7 @@ module.exports = function (passport) {
             if (user) {
                 res.user = user;
                 var token = jwt.sign({
-                    id: user.id,
+                    userId: user._id,
                     name: user.displayName,
                     username: user.login,
                     role: user.role

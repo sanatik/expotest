@@ -3,14 +3,13 @@
  */
 var mongoose = require('mongoose');
 var Exposition = require('../models/ExpositionModel');
-var Offer = require('../models/OfferModel');
 
 var ObjectId = mongoose.Types.ObjectId;
 
 exports.create = function (req, res) {
     var exposition = new Exposition();
     exposition.displayName = req.body.displayName;
-    exposition.creator = req.decoded.id;
+    exposition.creator = req.decoded.userId;
     exposition.price = req.body.price;
     exposition.location = req.body.location;
     exposition.website = req.body.website;

@@ -1,0 +1,15 @@
+<a permission only="'exponent'" href="/#/offer/create/">Создать новое предложение</a>
+<h1>
+    Создано {{offers.length}} предложений
+</h1>
+<table class="table table-striped" ng-show="offers.length">
+    <tr>
+        <td>Название предложения</td>
+    </tr>
+    <tr ng-repeat="offer in offers">
+        <td>
+            <a href="/#/offer/{{offer._id}}/" ng-click="findOffer(offer._id)">
+                {{offer.name}} </a>
+        </td>
+    </tr>
+</table>

@@ -54,7 +54,6 @@ connect();
 mongoose.connection.on('error', console.log);
 mongoose.connection.on('disconnected', connect);
 app.use(function (req, res, next) {
-    console.log(1231231231231);
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
     if (token) {
         jwt.verify(token, config.privateKey, function (err, decoded) {

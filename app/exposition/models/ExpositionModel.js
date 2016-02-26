@@ -12,7 +12,10 @@ var ExpositionSchema = mongoose.Schema({
     displayName: String,
     location: String,
     website: String,
-    creator: Number,
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
     price: Number,
     photo: {
         ext: String,

@@ -25,13 +25,20 @@ var UserSchema = new mongoose.Schema({
         data: String
     }],
     cart: [{
+        orderNumber: mongoose.Schema.ObjectId,
         exposition: Object,
         offer: Object,
-        state: Number,
+        state: Number,//1 - Unpaid
         history: [{
-            date: Date,
+            date: {
+                type: Date,
+                default: Date.now()
+            },
             state: Number,
-            modifier: Number
+            modifier: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User'
+            }
         }]
     }],
     balance: Number,

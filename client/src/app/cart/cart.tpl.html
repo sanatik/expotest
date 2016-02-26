@@ -1,0 +1,24 @@
+<h3>Корзина</h3>
+
+<table>
+    <tr>
+        <td>Название предложения</td>
+        <td>Название выставки</td>
+        <td>Сумма к оплате</td>
+        <td>Действия</td>
+    </tr>
+    <tr ng-repeat="cartItem in cart">
+        <td>
+            {{cartItem.offer.name}}
+        </td>
+        <td>
+            {{cartItem.exposition.displayName}}
+        </td>
+        <td>
+            {{cartItem.exposition.price}}
+        </td>
+        <td>
+            <a href="" ng-click="deleteCartItem(cartItem._id)">Удалить</a>
+        </td>
+    </tr>
+</table>

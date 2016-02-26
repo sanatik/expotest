@@ -3,9 +3,20 @@
  */
 var expositionApp = angular.module('expositions', ['ngResource', 'permission', 'ui.router', 'exposition.services', 'angularMoment', 'offer.services', 'auth.services'])
     .run(function (RoleStore, AuthServices, $q) {
-        RoleStore.defineRole('organizer', [], function (stateParams) {
+        RoleStore.defineRole('organizer', [], function () {
             var deferred = $q.defer();
             AuthServices.hasRole('organizer').success(function (data) {
+                if (data.hasRole === true) {
+                    deferred.resolve();
+                } else {
+                    deferred.reject();
+                }
+            });
+            return deferred.promise;
+        });
+        RoleStore.defineRole('exponent', [], function () {
+            var deferred = $q.defer();
+            AuthServices.hasRole('exponent').success(function (data) {
                 if (data.hasRole === true) {
                     deferred.resolve();
                 } else {
@@ -48,29 +59,12 @@ expositionApp.config(['$stateProvider', '$urlRouterProvider',
                 url: "/exposition/:id/edit/",
                 templateUrl: 'app/exposition/edit.tpl.html',
                 controller: 'ExpositionsController'
-            }).state('offer', {
-                url: "/exposition/:id/offer/",
-                templateUrl: 'app/exposition/listOffers.tpl.html',
-                controller: 'ExpositionsController'
-            })
-            .state('offercreate', {
-                url: "/exposition/:id/offer/create/",
-                templateUrl: 'app/exposition/createOffer.tpl.html',
-                controller: 'ExpositionsController'
-            })
-            .state('offerview', {
-                url: "/offer/:id/",
-                templateUrl: 'app/exposition/detailsOffer.tpl.html',
-                controller: 'ExpositionsController'
             });
     }
 ]);
 
-expositionApp.controller('ExpositionsController', ['$scope', '$resource', '$state', '$location', 'ExpositionUpdateService', 'Upload', 'OfferUpdateService', 'ExpositionService',
-    function ($scope, $resource, $state, $location, ExpositionUpdateService, Upload, OfferUpdateService, ExpositionService) {
-        var ExpositionResource = $resource('/exposition/:id'); //this will be the base URL for our rest express route.
-        $scope.expositionUpdateService = new ExpositionUpdateService();
-        $scope.offerUpdateService = new OfferUpdateService();
+expositionApp.controller('ExpositionsController', ['$scope', '$resource', '$state', '$location', 'Upload', 'ExpositionService', '$rootScope',
+    function ($scope, $resource, $state, $location, Upload, ExpositionService, $rootScope) {
         var loadExpositions = function () {
             ExpositionService.findAll().then(
                 function (data) {
@@ -101,9 +95,12 @@ expositionApp.controller('ExpositionsController', ['$scope', '$resource', '$stat
 
         $scope.createExposition = function () {
             if ($scope.expositionCreateForm != 'undefined') {
-
                 if (this.exposition) {
                     ExpositionService.save(this.exposition).then(function (result) {
+                        if(result.errors){
+                            alert("Error");
+                            return;
+                        }
                         $scope.expositions.push(result);
                         $location.path("/exposition/");
                     }, function () {
