@@ -7,23 +7,23 @@ module.exports = {
     roles: [
         {
             name: 'anonymous',
-            id: -1,
-            permissions: ['/auth/login', '/auth/signup', '/api/createOrUpdate', '/api/expositions', '/exposition']
+            id: 0,
+            permissions: ['/auth/login', '/auth/signup', '/api/createOrUpdate', '/api/expositions', '/exposition', '/favicon.ico']
         },
         {
             name: 'visitor',
-            id: -1,
-            permissions: ['/auth/login', '/auth/signup', '/api/createOrUpdate', '/api/expositions', '/exposition']
+            id: 3,
+            permissions: ['/auth/login', '/auth/signup', '/api/createOrUpdate', '/api/expositions', '/exposition', '/favicon.ico', '/auth/hasRole']
         },
         {
             name: 'exponent',
-            id: -1,
-            permissions: ['/auth/login', '/auth/signup', '/api/createOrUpdate', '/api/expositions', '/exposition']
+            id: 2,
+            permissions: ['/auth/login', '/auth/signup', '/api/createOrUpdate', '/api/expositions', '/exposition', '/favicon.ico', '/auth/hasRole']
         },
         {
             name: 'organizer',
-            id: -1,
-            permissions: ['/auth/login', '/auth/signup', '/api/createOrUpdate', '/api/expositions', '/exposition']
+            id: 1,
+            permissions: ['/auth/login', '/auth/signup', '/api/createOrUpdate', '/api/expositions', '/exposition', '/favicon.ico', '/auth/hasRole']
         }
     ]
 };
