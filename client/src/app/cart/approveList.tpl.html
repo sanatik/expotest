@@ -1,0 +1,26 @@
+<h1>Список предложений для подтверждения</h1>
+<table>
+    <tr>
+        <td>
+            Название выставки
+        </td>
+        <td>
+            Имя предложения
+        </td>
+        <td>
+            Действия
+        </td>
+    </tr>
+    <tr ng-repeat="al in approveList">
+        <td>
+            {{al.item.exposition.displayName}}
+        </td>
+        <td>
+            {{al.item.offer.name}}
+        </td>
+        <td>
+            <a href="" ng-click="approve(al.item._id)">Подтвердить</a>
+            <a href="" ng-click="cancelItem(al.item._id)">Отменить</a>
+        </td>
+    </tr>
+</table>

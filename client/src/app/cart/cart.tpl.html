@@ -5,6 +5,7 @@
         <td>Название предложения</td>
         <td>Название выставки</td>
         <td>Сумма к оплате</td>
+        <td>Статус</td>
         <td>Действия</td>
     </tr>
     <tr ng-repeat="cartItem in cart">
@@ -18,6 +19,10 @@
             {{cartItem.exposition.price}}
         </td>
         <td>
+            {{cartItem.state}}
+        </td>
+        <td>
+            <a href="" ng-click="pay(cartItem._id)">Оплатить</a>
             <a href="" ng-click="deleteCartItem(cartItem._id)">Удалить</a>
         </td>
     </tr>

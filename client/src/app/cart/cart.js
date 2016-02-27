@@ -17,6 +17,11 @@ expositionApp.config(['$stateProvider', '$urlRouterProvider',
                 url: "/cart/",
                 templateUrl: 'app/cart/cart.tpl.html',
                 controller: 'CartController'
+            })
+            .state('cartapprove', {
+                url: '/cart/approve/',
+                templateUrl: 'app/cart/approveList.tpl.html',
+                controller: 'CartController'
             });
     }
 ]);
@@ -27,11 +32,11 @@ expositionApp.controller('CartController', ['$scope', 'CartService', '$location'
         CartService.getAll().then(
             function (data) {
                 $scope.cart = data.data;
-                if($state.params.expId){
+                if ($state.params.expId) {
                     $scope.expositionId = $state.params.expId;
-                    OfferService.findAll().then(function(data){
+                    OfferService.findAll().then(function (data) {
                         $scope.offers = data.data;
-                    }, function(){
+                    }, function () {
                         alert("Error loading offers");
                     })
                 }
@@ -39,10 +44,24 @@ expositionApp.controller('CartController', ['$scope', 'CartService', '$location'
                 alert("Error loading expositions");
             });
     };
+    var loadApproveList = function(){
+        CartService.approveList().then(function(result){
+            $scope.approveList = result.data;
+        }, function(){
+            alert("Error loading approve list");
+        });
+    };
 
-    if (!$scope.cart) {
-        loadCart();
+    if($state.current.name === 'cartapprove'){
+        if(!$scope.approveList){
+            loadApproveList();
+        }
+    }else{
+        if (!$scope.cart) {
+            loadCart();
+        }
     }
+
 
     $scope.addCartItem = function () {
         if ($scope.offer && $scope.expositionId) {
@@ -58,15 +77,51 @@ expositionApp.controller('CartController', ['$scope', 'CartService', '$location'
         }
     };
 
-    $scope.deleteCartItem = function(id){
-        CartService.remove(id).then(function(result){
-            if(result.data.success === true){
+    $scope.deleteCartItem = function (id) {
+        CartService.remove(id).then(function (result) {
+            if (result.data.success === true) {
                 $state.reload();
-            }else{
+            } else {
                 alert("Error deleting cart item");
             }
-        }, function(){
+        }, function () {
             alert("Error deleting cart item");
         })
+    };
+
+    $scope.pay = function (cartId) {
+        CartService.pay(cartId).then(function (result) {
+            if (result.data.success === true) {
+                $state.reload();
+            } else {
+                alert("Error on paying cart item");
+            }
+        }, function () {
+            alert("Error on paying cart item");
+        });
+    };
+
+    $scope.approve = function (cartId) {
+        CartService.approve(cartId).then(function (result) {
+            if (result.data.success === true) {
+                $state.reload();
+            } else {
+                alert("Error on approve cart item");
+            }
+        }, function () {
+            alert("Error on approve cart item");
+        });
+    };
+
+    $scope.cancelItem = function (cartId) {
+        CartService.cancel(cartId).then(function (result) {
+            if (result.data.success === true) {
+                $state.reload();
+            } else {
+                alert("Error on cancel cart item");
+            }
+        }, function () {
+            alert("Error on cancel cart item");
+        });
     }
 }]);

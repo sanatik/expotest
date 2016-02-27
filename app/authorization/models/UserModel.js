@@ -28,7 +28,7 @@ var UserSchema = new mongoose.Schema({
         orderNumber: mongoose.Schema.ObjectId,
         exposition: Object,
         offer: Object,
-        state: Number,//1 - Unpaid
+        state: Number,//1 - Unpaid, 2 - Paid, 3 - Approved, 4 - CancelledByExponent, 5 - CancelledByOrganizer, 6  - CancelledByModerator, 7 - CancelledByAdmin
         history: [{
             date: {
                 type: Date,
@@ -41,7 +41,10 @@ var UserSchema = new mongoose.Schema({
             }
         }]
     }],
-    balance: Number,
+    balance: {
+        type: Number,
+        default: 0
+    },
     topUps: [{
         orderNumber: String,
         sum: Number,

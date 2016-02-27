@@ -12,7 +12,30 @@ angular.module('app', [
     'auth',
     'auth.services',
     'cart'
-]);
+]).run(function (RoleStore, AuthServices, $q) {
+    RoleStore.defineRole('organizer', [], function () {
+        var deferred = $q.defer();
+        AuthServices.hasRole('organizer').success(function (data) {
+            if (data.hasRole === true) {
+                deferred.resolve();
+            } else {
+                deferred.reject();
+            }
+        });
+        return deferred.promise;
+    });
+    RoleStore.defineRole('exponent', [], function () {
+        var deferred = $q.defer();
+        AuthServices.hasRole('exponent').success(function (data) {
+            if (data.hasRole === true) {
+                deferred.resolve();
+            } else {
+                deferred.reject();
+            }
+        });
+        return deferred.promise;
+    });
+});
 angular.module('app').config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, $httpProvider) {
     $urlRouterProvider.otherwise("/");
     $stateProvider
@@ -25,7 +48,7 @@ angular.module('app').config(['$stateProvider', '$urlRouterProvider', '$httpProv
 }]);
 angular.module('app').controller('AppCtrl', ['$scope', '$location', '$rootScope', 'AuthServices', function ($scope, $location, $rootScope, AuthServices) {
     $rootScope.isOwner = function (id) {
-        if($rootScope.currentUser){
+        if ($rootScope.currentUser) {
             return $rootScope.currentUser.userId === id;
         }
         return false;
@@ -48,15 +71,15 @@ angular.module('app').controller('HeaderCtrl', ['$scope', '$location', '$rootSco
         AuthServices.login(this.loginFormData)
             .success(function (data) {
                 if (data.message === 'OK') {
-                    AuthServices.getUser().success(function(data){
-                        $timeout(function() {
+                    AuthServices.getUser().success(function (data) {
+                        $timeout(function () {
                             $rootScope.$apply(function () {
                                 $rootScope.currentUser = data;
                             });
 
                         });
                         $location.path('/exposition/');
-                    }).error(function(){
+                    }).error(function () {
                         $rootScope.currentUser = false;
                         alert("Error on login");
                     });

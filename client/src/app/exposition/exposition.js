@@ -1,31 +1,7 @@
 /**
  * Created by bosone on 2/3/16.
  */
-var expositionApp = angular.module('expositions', ['ngResource', 'permission', 'ui.router', 'exposition.services', 'angularMoment', 'offer.services', 'auth.services'])
-    .run(function (RoleStore, AuthServices, $q) {
-        RoleStore.defineRole('organizer', [], function () {
-            var deferred = $q.defer();
-            AuthServices.hasRole('organizer').success(function (data) {
-                if (data.hasRole === true) {
-                    deferred.resolve();
-                } else {
-                    deferred.reject();
-                }
-            });
-            return deferred.promise;
-        });
-        RoleStore.defineRole('exponent', [], function () {
-            var deferred = $q.defer();
-            AuthServices.hasRole('exponent').success(function (data) {
-                if (data.hasRole === true) {
-                    deferred.resolve();
-                } else {
-                    deferred.reject();
-                }
-            });
-            return deferred.promise;
-        });
-    });
+var expositionApp = angular.module('expositions', ['ngResource', 'permission', 'ui.router', 'exposition.services', 'angularMoment', 'offer.services', 'auth.services']);
 
 expositionApp.config(['$stateProvider', '$urlRouterProvider',
 
@@ -58,6 +34,11 @@ expositionApp.config(['$stateProvider', '$urlRouterProvider',
             .state('expositionedit', {
                 url: "/exposition/:id/edit/",
                 templateUrl: 'app/exposition/edit.tpl.html',
+                controller: 'ExpositionsController'
+            })
+            .state('expositiooffersview', {
+                url: "/exposition/:id/offers/",
+                templateUrl: 'app/exposition/offerList.tpl.html',
                 controller: 'ExpositionsController'
             });
     }
@@ -97,7 +78,7 @@ expositionApp.controller('ExpositionsController', ['$scope', '$resource', '$stat
             if ($scope.expositionCreateForm != 'undefined') {
                 if (this.exposition) {
                     ExpositionService.save(this.exposition).then(function (result) {
-                        if(result.errors){
+                        if (result.errors) {
                             alert("Error");
                             return;
                         }
@@ -121,9 +102,9 @@ expositionApp.controller('ExpositionsController', ['$scope', '$resource', '$stat
         };
 
         $scope.deleteExposition = function (_id) {
-            ExpositionService.delete(_id).then(function(){
+            ExpositionService.delete(_id).then(function () {
                 $location.path("/exposition/");
-            }, function(){
+            }, function () {
                 alert("Error on deleting expostion");
             });
         };

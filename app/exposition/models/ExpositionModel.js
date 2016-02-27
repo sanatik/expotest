@@ -34,24 +34,7 @@ var ExpositionSchema = mongoose.Schema({
         name: String,
         data: String
     },
-    offers: [{
-        id: mongoose.Schema.ObjectId,
-        added: {
-            type: Date,
-            default: Date.now()
-        },
-        name: String,
-        creator: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
-        },
-        photo: String,
-        description: String,
-        additional: {
-            name: String,
-            data: String
-        }
-    }],
+    offers: [],
     audience: [{
         firstName: String,
         lastName: String,
