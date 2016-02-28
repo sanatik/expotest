@@ -7,6 +7,7 @@ var expositions = require('../routes/exposition');
 var api = require('../routes/api');
 var cart = require('../routes/cart');
 var offer = require('../routes/offer');
+var user = require('../routes/user');
 var auths = require('../routes/auth')(passport);
 module.exports = function (app) {
     app.use('/', index);

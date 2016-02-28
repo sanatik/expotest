@@ -18,7 +18,10 @@ var UserSchema = new mongoose.Schema({
     salt: String,
     role: Number,
     hasPremium: Boolean,
-    avatar: Buffer,
+    avatar: {
+        ext: String,
+        content: Buffer
+    },
     description: String,
     additional: [{
         name: String,

@@ -25,5 +25,8 @@ module.exports = {
             id: 1,
             permissions: ['/auth/login', '/auth/signup', '/api/createOrUpdate', '/api/expositions', '/exposition', '/favicon.ico', '/auth/hasRole']
         }
-    ]
+    ],
+    premiumAvailable: true,
+    premiumCost: 3000,
+    commission: 200
 };
