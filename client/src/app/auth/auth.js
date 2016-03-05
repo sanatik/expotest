@@ -25,17 +25,19 @@ authApp.controller('AuthController', ['$scope', '$resource', '$state', '$locatio
         $scope.user.additional = [];
 
         $scope.signup = function () {
+            $("#loader").show();
             AuthServices.signup(this.user,
                 function (data) {
                     if (data.message === 'OK') {
                         $location.path('/auth/');
                     } else {
-                        alert(data.message);
+                        $("#message").html(data.message).show();
                     }
+                    $("#loader").hide();
                 },
-                function (data) {
-                    alert(data.message);
-                })
+                function () {
+                    $("#loader").hide();
+                });
         };
         $scope.upload = function (image) {
             var reader = new FileReader();

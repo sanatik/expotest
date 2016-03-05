@@ -1,0 +1,27 @@
+<h3>Описание предложения {{offer.name}} </h3>
+
+<table>
+    <tr>
+        <td>Название</td>
+        <td>{{offer.name}}</td>
+    </tr>
+    <tr>
+        <td>Фото</td>
+        <td><img data-ng-src="data:{{offer.photo.ext}};base64,{{offer.photo.contentString}}"></td>
+    </tr>
+    <tr>
+        <td>Описание</td>
+        <td>{{offer.description}}</td>
+    </tr>
+</table>
+
+<div>
+    <a href="/#/offer/">Back</a>
+</div>
+<div>
+    <a ng-show="isOwner(offer.creator)" class="btn btn-inverse" href="/#/offer/{{offer._id}}/edit/"
+       ng-click="findOffer(offer._id)">
+        Изменить
+    </a>
+    <a ng-show="isOwner(offer.creator)" ng-click="deleteOffer(offer._id)" href="">Удалить</a>
+</div>

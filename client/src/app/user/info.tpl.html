@@ -23,3 +23,7 @@
         <td>{{user.lock}}</td>
     </tr>
 </table>
+<p>
+    <a ng-show="isOwner(user._id) || hasRole(5)" href="/#/user/edit/{{user._id}}/">Изменить</a>
+    <a ng-show="isOwner(user._id) && !user.hasPremium && hasRole(1)" href="" ng-click="buyPremium()">Купить премиум</a>
+</p>

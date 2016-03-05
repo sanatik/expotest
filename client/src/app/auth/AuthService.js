@@ -41,7 +41,7 @@ authServices.factory('AuthServices', ['$http', 'AuthToken', function ($http, Aut
             });
             return owner;
         }
-    }
+    };
 }]).factory('AuthToken', ['$window', function ($window) {
     return {
         getToken: function () {
@@ -55,7 +55,7 @@ authServices.factory('AuthServices', ['$http', 'AuthToken', function ($http, Aut
                 $window.localStorage.removeItem('token');
             }
         }
-    }
+    };
 }]).factory('AuthInterceptor', ['$q', '$location', 'AuthToken', function ($q, $location, AuthToken) {
 
     return {
@@ -67,11 +67,11 @@ authServices.factory('AuthServices', ['$http', 'AuthToken', function ($http, Aut
             return config;
         },
         responseError: function (response) {
-            if (response.status == 403) {
+            if (response.status === 403) {
                 AuthToken.setToken();
-                $location.path('/login');
+                $location.path('/auth/');
             }
             return $q.reject(response);
         }
-    }
+    };
 }]);

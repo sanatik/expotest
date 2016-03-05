@@ -4,88 +4,120 @@
 var expositionApp = angular.module('expositions', ['ngResource', 'permission', 'ui.router', 'exposition.services', 'angularMoment', 'offer.services', 'auth.services']);
 
 expositionApp.config(['$stateProvider', '$urlRouterProvider',
-
     function ($stateProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise("/");
         $stateProvider
-            .state('exposition', {
-                url: "/exposition/",
-                templateUrl: 'app/exposition/list.tpl.html',
-                controller: 'ExpositionsController'
-            })
-            .state('expositioncreate', {
-                url: "/exposition/create/",
-                templateUrl: 'app/exposition/create.tpl.html',
-                controller: 'ExpositionsController',
-                data: {
-                    permissions: {
-                        only: ['organizer'],
-                        redirectTo: function () {
-                            return 'exposition';
+                .state('exposition', {
+                    url: "/exposition/",
+                    templateUrl: 'app/exposition/list.tpl.html',
+                    controller: 'ExpositionsController'
+                })
+                .state('expositioncreate', {
+                    url: "/exposition/create/",
+                    templateUrl: 'app/exposition/create.tpl.html',
+                    controller: 'ExpositionsController',
+                    data: {
+                        permissions: {
+                            only: ['organizer'],
+                            redirectTo: function () {
+                                return 'exposition';
+                            }
                         }
                     }
-                }
-            })
-            .state('expositionview', {
-                url: "/exposition/:id/",
-                templateUrl: 'app/exposition/details.tpl.html',
-                controller: 'ExpositionsController'
-            })
-            .state('expositionedit', {
-                url: "/exposition/:id/edit/",
-                templateUrl: 'app/exposition/edit.tpl.html',
-                controller: 'ExpositionsController'
-            })
-            .state('expositiooffersview', {
-                url: "/exposition/:id/offers/",
-                templateUrl: 'app/exposition/offerList.tpl.html',
-                controller: 'ExpositionsController'
-            });
+                })
+                .state('expositionview', {
+                    url: "/exposition/:id/",
+                    templateUrl: 'app/exposition/details.tpl.html',
+                    controller: 'ExpositionsController'
+                })
+                .state('expositionedit', {
+                    url: "/exposition/:id/edit/",
+                    templateUrl: 'app/exposition/edit.tpl.html',
+                    controller: 'ExpositionsController'
+                })
+                .state('expositiooffersview', {
+                    url: "/exposition/:id/offers/",
+                    templateUrl: 'app/exposition/offerList.tpl.html',
+                    controller: 'ExpositionsController'
+                })
+                .state('expositiooffersviewoffer', {
+                    url: "/exposition/:id/offers/:oId/",
+                    templateUrl: 'app/exposition/offerDetails.tpl.html',
+                    controller: 'ExpositionsController'
+                });
     }
 ]);
 
-expositionApp.controller('ExpositionsController', ['$scope', '$resource', '$state', '$location', 'Upload', 'ExpositionService', '$rootScope',
-    function ($scope, $resource, $state, $location, Upload, ExpositionService, $rootScope) {
+expositionApp.controller('ExpositionsController', ['$scope', '$state', '$location', 'ExpositionService',
+    function ($scope, $state, $location, ExpositionService) {
         var loadExpositions = function () {
+            $("#loader").show();
             ExpositionService.findAll().then(
-                function (data) {
-                    $scope.expositions = data.data;
-                    if ($state.params.id) {
-                        $scope.findExposition($state.params.id);
-                    }
-                }, function () {
-                    alert("Error loading expositions");
-                });
+                    function (data) {
+                        $scope.expositions = data.data;
+                        $("#loader").hide();
+                    },
+                    function () {
+                        $("#loader").hide();
+                        $("#message").html("Error loading expositions").show();
+                    });
         };
-
-        if (!$scope.expositions) {
-            loadExpositions();
-        }
-        $scope.exposition = {};
-        $scope.exposition.presentation = {};
-        $scope.exposition.photo = {};
 
         $scope.findExposition = function (_id) {
             ExpositionService.findOne(_id).then(function (data) {
-                console.log(data.data);
-                $scope.exposition = data.data;
+                $scope.exposition = data;
             }, function () {
-                alert("Error loading exposition");
+                $("#message").html("Error loading expositions").show();
             });
         };
 
+        if (!$scope.expositions && $state.current.name === 'exposition') {
+            loadExpositions();
+        }
+        $scope.offer = {};
+        if (!$scope.exposition &&
+                ($state.current.name === 'expositionview'
+                        || $state.current.name === 'expositionedit'
+                        || $state.current.name === 'expositiooffersview'
+                        || $state.current.name === 'expositiooffersviewoffer')) {
+            if ($state.params.id) {
+                $scope.findExposition($state.params.id);
+                if ($state.params.oId) {
+                    var offers = $scope.exposition.offers;
+                    var o = {};
+                    for (var i = 0; i < offers.length; i++) {
+                        var offer = offers[i];
+                        if (offer._id === $state.params.oId) {
+                            o = offer;
+                            break;
+                        }
+                    }
+                    $scope.offer = o;
+                }
+            }
+        }
+        if (!$scope.exposition && $scope.exposition === 'expositioncreate') {
+            $scope.exposition = {};
+            $scope.exposition.presentation = {};
+            $scope.exposition.photo = {};
+        }
+
         $scope.createExposition = function () {
-            if ($scope.expositionCreateForm != 'undefined') {
+
+            if ($scope.expositionCreateForm !== 'undefined') {
                 if (this.exposition) {
+                    $("#loader").show();
                     ExpositionService.save(this.exposition).then(function (result) {
                         if (result.errors) {
-                            alert("Error");
+                            $("#loader").hide();
+                            $("#message").html(result.errors).show();
                             return;
                         }
                         $scope.expositions.push(result);
                         $location.path("/exposition/");
                     }, function () {
-                        alert("Error on creating expostion");
+                        $("#loader").hide();
+                        $("#message").html("Error on creating expostion").show();
                     });
                 }
             }

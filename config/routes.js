@@ -16,5 +16,6 @@ module.exports = function (app) {
     app.use('/api', api);
     app.use('/cart', cart);
     app.use('/offer', offer);
+    app.use('/user', user);
 };
 

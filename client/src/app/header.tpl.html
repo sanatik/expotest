@@ -8,9 +8,10 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li><a href="/#/exposition/">Выставки</a></li>
-                <li ng-show="currentUser"><a href="/#/user/">Мой профиль</a></li>
-                <li ng-show="currentUser" permission only="'exponent'"><a href="/#/offer/">Мои предложения</a></li>
-                <li ng-show="currentUser" permission only="'organizer'"><a href="/#/cart/approve/">Мои предложения для подтверждения</a></li>
+                <li ng-show="currentUser"><a href="/#/user/me/">Мой профиль</a></li>
+                <li ng-show="currentUser && hasRole(5)"><a href="/#/users/all/">Пользователи</a></li>
+                <li ng-show="currentUser && hasRole(2)"><a href="/#/offer/">Мои предложения</a></li>
+                <li ng-show="currentUser && hasRole(1)"><a href="/#/cart/approve/">Мои предложения для подтверждения</a></li>
                 <li ng-hide="currentUser"><a href="/#/auth/">Login</a></li>
                 <li ng-hide="currentUser"><a href="/#/auth/signup/">Signup</a></li>
                 <li ng-show="currentUser"><a ng-click="logout()" href="">Logout</a></li>

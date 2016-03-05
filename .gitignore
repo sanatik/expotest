@@ -30,4 +30,4 @@ build/Release
 node_modules
 client/img
 .idea
-
+nbproject

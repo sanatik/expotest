@@ -1,5 +1,5 @@
 <h1>
-    Создано {{offers.length}} предложений в выставке {{exposition.displayName}}
+    Создано {{exposition.offers.length}} предложений в выставке {{exposition.displayName}}
 </h1>
 <table class="table table-striped" ng-show="exposition.offers.length">
     <tr>
@@ -7,7 +7,7 @@
     </tr>
     <tr ng-repeat="offer in exposition.offers">
         <td>
-            <a href="/#/exposition/{{exposition._id}}/offer/{{offer._id}}/" ng-click="findOffer(offer._id)">
+            <a href="/#/exposition/{{exposition._id}}/offers/{{offer._id}}/" ng-click="findOffer(offer._id)">
                 {{offer.name}} </a>
         </td>
     </tr>
