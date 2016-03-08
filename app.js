@@ -75,8 +75,17 @@ app.use(function (req, res, next) {
             if (role.id === 0) {
                 for (var url in role.permissions) {
                     var perm = role.permissions[url];
+                    if(req.url.indexOf('hasRole') > 0){
+                        hasAccess = true;
+                        break;
+                    }
+                    if(req.url.indexOf('exposition') > 0){
+                        hasAccess = true;
+                        break;
+                    }
                     if (perm === req.url) {
                         hasAccess = true;
+                        break;
                     }
                 }
             }

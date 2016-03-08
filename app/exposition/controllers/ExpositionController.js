@@ -140,3 +140,39 @@ exports.delete = function (req, res) {
     }
 };
 
+exports.respond = function (req, res) {
+    var id = req.params.id;
+    var oId = req.params.oId;
+    var currentUser = req.decoded;
+    if (currentUser && id) {
+        id = new ObjectId(id);
+        Exposition.findById(id, function (err, exposition) {
+            if (err) {
+                res.send(err);
+            }
+            mongoose.model('User').findById(currentUser.userId, function (err, user) {
+                if (err) {
+                    res.send(err);
+                }
+                var audience = {};
+                if (!exposition.audience) {
+                    exposition.audience = [];
+                }
+                audience.firstName = user.name;
+                audience.feedback = [];
+                var feedback = {};
+                oId = new ObjectId(oId);
+                feedback.offerId = oId;
+                feedback.answer = req.body.answer;
+                audience.feedback.push(feedback);
+                exposition.audience.push(audience);
+                exposition.save(function (err) {
+                    if (err)
+                        res.send(err);
+                    res.json({message: "Ok"});
+                });
+            });
+        });
+    }
+};
+

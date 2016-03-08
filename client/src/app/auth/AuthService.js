@@ -69,7 +69,6 @@ authServices.factory('AuthServices', ['$http', 'AuthToken', function ($http, Aut
         responseError: function (response) {
             if (response.status === 403) {
                 AuthToken.setToken();
-                $location.path('/auth/');
             }
             return $q.reject(response);
         }

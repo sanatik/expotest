@@ -14,14 +14,10 @@
         <td>{{offer.description}}</td>
     </tr>
 </table>
+<div>
+    <a href="" ng-click="respond()">Отреагировать</a>
+</div>
 
 <div>
-    <a href="/#/offer/">Back</a>
-</div>
-<div>
-    <a ng-show="isOwner(offer.creator)" class="btn btn-inverse" href="/#/offer/{{offer._id}}/edit/"
-       ng-click="findOffer(offer._id)">
-        Изменить
-    </a>
-    <a ng-show="isOwner(offer.creator)" ng-click="deleteOffer(offer._id)" href="">Удалить</a>
+    <a href="" ng-click="back()">Back</a>
 </div>

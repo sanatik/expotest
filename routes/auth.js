@@ -58,23 +58,31 @@ module.exports = function (passport) {
 
     router.get('/hasRole', function (req, res) {
         var user = req.decoded;
-        var roleName = req.param('roleName');
-        var roles = config.roles;
-        var hasRole = false;
-        for(var i in roles){
-            var role = roles[i];
-            if(role.id === user.role){
-                if(role.name === roleName){
-                    hasRole = true;
-                    break;
+        if (user) {
+            var roleName = req.param('roleName');
+            var roles = config.roles;
+            var hasRole = false;
+            for (var i in roles) {
+                var role = roles[i];
+                if (role.id === user.role) {
+                    if (role.name === roleName) {
+                        hasRole = true;
+                        break;
+                    }
                 }
             }
+            res.json({hasRole: hasRole});
+        } else {
+            res.json({hasRole: false});
         }
-        res.json({hasRole: hasRole});
     });
 
-    router.get('/me', function(req, res){
-        res.json(req.decoded);
+    router.get('/me', function (req, res) {
+        if (req.decoded) {
+            res.json(req.decoded);
+        } else {
+            res.json({userId: 0, role: 0});
+        }
     });
 
     return router;

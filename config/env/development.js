@@ -8,7 +8,7 @@ module.exports = {
         {
             name: 'anonymous',
             id: 0,
-            permissions: ['/auth/login', '/auth/signup', '/api/createOrUpdate', '/api/expositions', '/exposition', '/favicon.ico']
+            permissions: ['/auth/login', '/auth/signup', '/auth/me', '/api/createOrUpdate', '/api/expositions', '/exposition', '/favicon.ico', '/auth/hasRole']
         },
         {
             name: 'visitor',

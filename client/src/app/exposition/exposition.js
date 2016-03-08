@@ -15,15 +15,7 @@ expositionApp.config(['$stateProvider', '$urlRouterProvider',
                 .state('expositioncreate', {
                     url: "/exposition/create/",
                     templateUrl: 'app/exposition/create.tpl.html',
-                    controller: 'ExpositionsController',
-                    data: {
-                        permissions: {
-                            only: ['organizer'],
-                            redirectTo: function () {
-                                return 'exposition';
-                            }
-                        }
-                    }
+                    controller: 'ExpositionsController'
                 })
                 .state('expositionview', {
                     url: "/exposition/:id/",
@@ -48,8 +40,8 @@ expositionApp.config(['$stateProvider', '$urlRouterProvider',
     }
 ]);
 
-expositionApp.controller('ExpositionsController', ['$scope', '$state', '$location', 'ExpositionService',
-    function ($scope, $state, $location, ExpositionService) {
+expositionApp.controller('ExpositionsController', ['$scope', '$state', '$location', 'ExpositionService', '$window',
+    function ($scope, $state, $location, ExpositionService, $window) {
         var loadExpositions = function () {
             $("#loader").show();
             ExpositionService.findAll().then(
@@ -66,6 +58,18 @@ expositionApp.controller('ExpositionsController', ['$scope', '$state', '$locatio
         $scope.findExposition = function (_id) {
             ExpositionService.findOne(_id).then(function (data) {
                 $scope.exposition = data;
+                if ($state.params.oId) {
+                    var offers = $scope.exposition.offers;
+                    var o = {};
+                    for (var i = 0; i < offers.length; i++) {
+                        var offer = offers[i];
+                        if (offer._id === $state.params.oId) {
+                            o = offer;
+                            break;
+                        }
+                    }
+                    $scope.offer = o;
+                }
             }, function () {
                 $("#message").html("Error loading expositions").show();
             });
@@ -82,18 +86,6 @@ expositionApp.controller('ExpositionsController', ['$scope', '$state', '$locatio
                         || $state.current.name === 'expositiooffersviewoffer')) {
             if ($state.params.id) {
                 $scope.findExposition($state.params.id);
-                if ($state.params.oId) {
-                    var offers = $scope.exposition.offers;
-                    var o = {};
-                    for (var i = 0; i < offers.length; i++) {
-                        var offer = offers[i];
-                        if (offer._id === $state.params.oId) {
-                            o = offer;
-                            break;
-                        }
-                    }
-                    $scope.offer = o;
-                }
             }
         }
         if (!$scope.exposition && $scope.exposition === 'expositioncreate') {
@@ -179,6 +171,10 @@ expositionApp.controller('ExpositionsController', ['$scope', '$state', '$locatio
             if (file) {
                 reader.readAsDataURL(file);
             }
+        };
+        
+        $scope.back = function(){
+            $window.history.back();
         };
 
         function resizeImg(file) {
