@@ -8,25 +8,30 @@ module.exports = {
         {
             name: 'anonymous',
             id: 0,
-            permissions: ['/auth/login', '/auth/signup', '/api/createOrUpdate', '/api/expositions', '/exposition', '/favicon.ico']
+            permissions: ['/auth/login', '/auth/signup', '/auth/me', '/api/createOrUpdate', '/api/expositions', '/exposition', '/favicon.ico', '/auth/hasRole']
         },
         {
             name: 'visitor',
             id: 3,
-            permissions: ['/auth/login', '/auth/signup', '/api/createOrUpdate', '/api/expositions', '/exposition', '/favicon.ico', '/auth/hasRole']
+            permissions: ['/auth/login', '/auth/signup', '/auth/me', '/api/createOrUpdate', '/api/expositions', '/exposition', '/favicon.ico', '/auth/hasRole']
         },
         {
             name: 'exponent',
             id: 2,
-            permissions: ['/auth/login', '/auth/signup', '/api/createOrUpdate', '/api/expositions', '/exposition', '/favicon.ico', '/auth/hasRole']
+            permissions: ['/auth/login', '/auth/signup', '/auth/me', '/api/createOrUpdate', '/api/expositions', '/exposition', '/favicon.ico', '/auth/hasRole']
         },
         {
             name: 'organizer',
             id: 1,
-            permissions: ['/auth/login', '/auth/signup', '/api/createOrUpdate', '/api/expositions', '/exposition', '/favicon.ico', '/auth/hasRole']
+            permissions: ['/auth/login', '/auth/signup', '/auth/me', '/api/createOrUpdate', '/api/expositions', '/exposition', '/favicon.ico', '/auth/hasRole', '/user/buyPremium']
+        },
+        {
+            name: 'admin',
+            id: 5,
+            permissions: ['/auth/login', '/auth/signup', '/auth/me', '/api/createOrUpdate', '/api/expositions', '/exposition', '/favicon.ico', '/auth/hasRole']
         }
     ],
     premiumAvailable: true,
-    premiumCost: 3000,
+    premiumCost: 3,
     commission: 200
 };
