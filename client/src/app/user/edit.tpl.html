@@ -1,0 +1,23 @@
+<div id='loader' style="width: auto; position: absolute; z-index: 10;display: none;">
+    <img src="/img/loader.gif" style='opacity: 0.5' />
+</div>
+<h1>Изменение профиля</h1>
+<table>
+    <tr>
+        <td>Имя</td>
+        <td>Логин</td>
+        <td>Почта</td>
+        <td>Номер телефона</td>
+        <td>Описание</td>
+    </tr>
+    <tr>
+        <td><input type="text" ng-model="user.displayName" /></td>
+        <td><input type="text" ng-model="user.login" /></td>
+        <td><input type="text" ng-model="user.email" /></td>
+        <td><input type="text" ng-model="user.phone" /></td>
+        <td><input type="text" ng-model="user.description" /></td>
+    </tr>
+</table>
+<p>
+    <a href="" ng-click="edit(user._id)">Сохранить</a>
+</p>
