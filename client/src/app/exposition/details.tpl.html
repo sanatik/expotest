@@ -43,11 +43,16 @@
     </tr>
 </table>
 <div>
-    <a permission only="'exponent'" href="/#/cart/add/{{exposition._id}}/">Тестировать</a>
+    <a ng-show="hasRole(2)" href="/#/cart/add/{{exposition._id}}/">Тестировать</a>
     <a href="/#/exposition/{{exposition._id}}/offers/">Список предложений</a>
     <a ng-show="isOwner(exposition.creator)" class="btn btn-inverse" href="/#/exposition/{{exposition._id}}/edit/"
        ng-click="findExposition(exposition._id)">
         Изменить
     </a>
+    <a ng-show="isOwner(exposition.creator)" ng-click="generateLetter()" href="">Сгенерировать письмо</a>
     <a ng-show="isOwner(exposition.creator)" ng-click="deleteExposition(exposition._id)" href="">Удалить</a>
+</div>
+
+<div>
+    <textarea ng-model="letter" ng-show="showLetter"></textarea>
 </div>

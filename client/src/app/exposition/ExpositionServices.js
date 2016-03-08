@@ -10,11 +10,11 @@ module.factory('ExpositionService', ['$http', function ($http) {
             },
             findOne: function (id) {
                 $("#loader").show();
-                return $http.get('/exposition/' + id).then(function(result){
+                return $http.get('/exposition/' + id).then(function (result) {
                     $("#loader").hide();
                     return result.data;
-                }, function(){
-                    
+                }, function () {
+
                 });
             },
             save: function (expostion) {
@@ -25,6 +25,13 @@ module.factory('ExpositionService', ['$http', function ($http) {
             },
             delete: function (id) {
                 return $http.delete('/exposition/' + id);
+            },
+            respond: function (expositionId, offerId, data) {
+                $("#loader").show();
+                return $http.post('/exposition/respond/' + expositionId + '/' + offerId, data).then(function(data){
+                    $("#loader").hide();
+                    return data.data;
+                });
             }
         };
     }]);

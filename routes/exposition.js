@@ -6,6 +6,7 @@ var router = express.Router();
 var expositionController = require('../app/exposition/controllers/ExpositionController');
 
 router.post('/',expositionController.create);
+router.post('/respond/:id/:oId',expositionController.respond);
 router.get('/',expositionController.getAll);
 router.get('/:id',expositionController.get);
 router.put('/:id',expositionController.update);

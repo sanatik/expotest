@@ -169,7 +169,7 @@ exports.respond = function (req, res) {
                 exposition.save(function (err) {
                     if (err)
                         res.send(err);
-                    res.json({message: "Ok"});
+                    res.json({success: true});
                 });
             });
         });

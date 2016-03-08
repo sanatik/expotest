@@ -176,6 +176,31 @@ expositionApp.controller('ExpositionsController', ['$scope', '$state', '$locatio
         $scope.back = function(){
             $window.history.back();
         };
+        
+        $scope.respond = function(id, oId, answer){
+            ExpositionService.respond(id, oId, {answer: answer}).then(function(data){
+                if(data.success === true){
+                    alert("Спасибо за фидбек. Ваш голос принят.");
+                }
+            });
+        };
+        
+        $scope.generateLetter = function(){
+            var offers = $scope.exposition.offers;
+            var html = '<html>';
+            html += '<table>';
+            for(var i in offers){
+                var offer = offers[i];
+                html += '<tr><td>';
+                html += offer.name;
+                html += '</td><td>';
+                html += offer.description;
+                html += '</td></tr>';
+            }
+            html +='</table></html>';
+            $scope.letter = html;
+            $scope.showLetter = true;
+        };
 
         function resizeImg(file) {
             var canvas = document.createElement('canvas');
