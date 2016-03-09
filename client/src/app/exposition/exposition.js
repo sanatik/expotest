@@ -88,7 +88,7 @@ expositionApp.controller('ExpositionsController', ['$scope', '$state', '$locatio
                 $scope.findExposition($state.params.id);
             }
         }
-        if (!$scope.exposition && $scope.exposition === 'expositioncreate') {
+        if ($state.current.name === 'expositioncreate') {
             $scope.exposition = {};
             $scope.exposition.presentation = {};
             $scope.exposition.photo = {};
@@ -105,7 +105,6 @@ expositionApp.controller('ExpositionsController', ['$scope', '$state', '$locatio
                             $("#message").html(result.errors).show();
                             return;
                         }
-                        $scope.expositions.push(result);
                         $location.path("/exposition/");
                     }, function () {
                         $("#loader").hide();
