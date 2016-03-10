@@ -11,6 +11,7 @@
                 <li ng-show="currentUser && currentUser.name"><a href="/#/user/me/">Мой профиль</a></li>
                 <li ng-show="currentUser && hasRole(5)"><a href="/#/users/all/">Пользователи</a></li>
                 <li ng-show="currentUser && hasRole(2)"><a href="/#/offer/">Мои предложения</a></li>
+                <li ng-show="currentUser && hasRole(2)"><a href="/#/cart/">Моя корзина</a></li>
                 <li ng-show="currentUser && hasRole(1)"><a href="/#/cart/approve/">Мои предложения для подтверждения</a></li>
                 <li ng-hide="currentUser && currentUser.name"><a href="/#/auth/">Login</a></li>
                 <li ng-hide="currentUser && currentUser.name"><a href="/#/auth/signup/">Signup</a></li>

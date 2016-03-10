@@ -120,6 +120,7 @@ angular.module('app').controller('HeaderCtrl', ['$scope', '$location', '$rootSco
 
                                 });
                                 $location.path('/exposition/');
+                                window.location.reload();
                             }).error(function () {
                                 $rootScope.currentUser = false;
                                 alert("Error on login");

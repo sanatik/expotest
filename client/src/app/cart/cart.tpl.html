@@ -22,7 +22,8 @@
             {{cartItem.state}}
         </td>
         <td>
-            <a href="" ng-click="pay(cartItem._id)">Оплатить</a>
+            <a href="" ng-click="pay(cartItem._id)" ng-show="cartItem.state === 1">Оплатить</a>
+            <a href="" ng-click="cancelItem(cartItem._id)" ng-show="cartItem.state !== 1">Отменить</a>
             <a href="" ng-click="deleteCartItem(cartItem._id)">Удалить</a>
         </td>
     </tr>

@@ -86,7 +86,7 @@ exports.add = function (req, res) {
                     res.json({
                         success: true
                     });
-                })
+                });
             });
         });
     });
@@ -180,17 +180,35 @@ exports.approve = function (req, res) {
                     if (cart[j].state === 2) {
                         cart[j].state = 3;
                         user.cart = cart;
-                        user.save(function (err, result) {
-                            if(!err){
-                                res.json({
-                                    success: true
-                                });
-                            }else{
+                        mongoose.model('Exposition').findById(cart[j].exposition._id, function (err, exposition) {
+                            if (err) {
                                 res.json({
                                     success: false,
-                                    message: "Cannot save user"
+                                    message: "Exposition not found"
                                 });
                             }
+                            exposition = pushOfferToExposition(exposition, cart[j].offer);
+                            user.save(function (err, result) {
+                                if (!err) {
+                                    exposition.save(function (err, e) {
+                                        if (!err) {
+                                            res.json({
+                                                success: true
+                                            });
+                                        } else {
+                                            res.json({
+                                                success: false,
+                                                message: "Cannot save exposition"
+                                            });
+                                        }
+                                    });
+                                } else {
+                                    res.json({
+                                        success: false,
+                                        message: "Cannot save user"
+                                    });
+                                }
+                            });
                         });
                     } else {
                         res.json({
@@ -198,6 +216,7 @@ exports.approve = function (req, res) {
                             message: "Cart item has wrong state"
                         });
                     }
+                    break;
                 }
             }
         } else {
@@ -208,7 +227,7 @@ exports.approve = function (req, res) {
         }
     });
 
-}
+};
 
 exports.cancel = function (req, res) {
     var currentUser = req.decoded;
@@ -373,23 +392,13 @@ exports.pay = function (req, res) {
                                         var ownerBalance = setUserBalance(expositionOwner.balance, exposition.price, 'plus');
                                         if (ownerBalance) {
                                             expositionOwner.balance = ownerBalance;
-                                            exposition = pushOfferToExposition(exposition, cartAndCartItem.cartItem.offer);
 
                                             user.save(function (err, u) {
                                                 if (!err) {
                                                     expositionOwner.save(function (err, eo) {
                                                         if (!err) {
-                                                            exposition.save(function (err, e) {
-                                                                if (!err) {
-                                                                    res.json({
-                                                                        success: true
-                                                                    });
-                                                                } else {
-                                                                    res.json({
-                                                                        success: false,
-                                                                        message: "Error save exposition"
-                                                                    });
-                                                                }
+                                                            res.json({
+                                                                success: true
                                                             });
                                                         } else {
                                                             res.json({
