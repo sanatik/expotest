@@ -13,10 +13,10 @@
     </tr>
     <tr ng-repeat="al in approveList">
         <td>
-            {{al.item.exposition.displayName}}
+            <a href="/#/exposition/{{al.item.exposition._id}}/">{{al.item.exposition.displayName}}</a>
         </td>
         <td>
-            {{al.item.offer.name}}
+            <a href="/#/offer/{{al.item.offer._id}}/">{{al.item.offer.name}}</a>
         </td>
         <td>
             <a href="" ng-click="approve(al.item._id)">Подтвердить</a>
