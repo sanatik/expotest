@@ -14,12 +14,76 @@
         <td>{{offer.description}}</td>
     </tr>
 </table>
-<div ng-show="hasRole(3)">
-    <span style="font-weight: bold;">Отреагировать</span> <br />
-    <a href="" ng-click="respond(exposition._id, offer._id, true)">Нравится</a>
-    <a href="" ng-click="respond(false)">Не нравится</a>
+<div ng-show="checkRespond(exposition._id, offer._id)">
+    <span style="font-weight: bold;">Вы уже проголосовали, спасибо!</span> <br />
 </div>
-
+<div ng-show="!checkRespond(exposition._id, offer._id)">
+    <span style="font-weight: bold;">Отреагировать</span> <br />
+    <a href="" ng-click="respond(currentUser, exposition._id, offer._id, true)">Нравится</a>
+    <a href="" ng-click="respond(currentUser, exposition._id, offer._id, false)">Не нравится</a>
+</div>
+<form ng-show="showUserForm">
+    <table>
+        <tr>
+            <td>Имя</td>
+            <td><input type="text" ng-model="newUser.name" /></td>
+        </tr>
+        <tr>
+            <td>Город</td>
+            <td><input type="text" ng-model="newUser.city" /></td>
+        </tr>
+        <tr>
+            <td>Компания</td>
+            <td><input type="text" ng-model="newUser.company" /></td>
+        </tr>
+        <tr>
+            <td>Должность</td>
+            <td><input type="text" ng-model="newUser.position" /></td>
+        </tr>
+        <tr>
+            <td>Телефон</td>
+            <td><input type="text" ng-model="newUser.phone" /></td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td><input type="text" ng-model="newUser.email" /></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button ng-click="respond(currentUser, exposition._id, offer._id, true)">Отправить</button>
+            </td>
+        </tr>
+    </table>
+</form>
 <div>
     <a href="" ng-click="back()">Back</a>
+    <br />
+    <a href="" ng-show="isOwner(exposition.creator) || isOwner(offer.creator)" ng-click="getStatistic(exposition._id, offer._id)">Показать статистику</a>
 </div>
+<table ng-show="statistic">
+    <tr>
+        <td>ФИО</td>
+        <td>Компания</td>
+        <td>Должность</td>
+        <td>Телефон</td>
+        <td>Город</td>
+        <td>Email</td>
+        <td>Ответ</td>
+    </tr>
+    <tr ng-repeat="s in statistic">
+        <td>{{s.name}}</td>
+        <td>{{s.company}}</td>
+        <td>{{s.position}}</td>
+        <td>{{s.phone}}</td>
+        <td>{{s.city}}</td>
+        <td>{{s.email}}</td>
+        <td>{{s.feedback}}</td>
+    </tr>
+    <tr>
+        <td colspan="7">
+            Всего: {{statistic.length}}
+            <br />
+            Положительных: {{positive}}
+        </td>
+    </tr>
+</table>

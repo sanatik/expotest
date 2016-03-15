@@ -171,24 +171,60 @@ expositionApp.controller('ExpositionsController', ['$scope', '$state', '$locatio
                 reader.readAsDataURL(file);
             }
         };
-        
-        $scope.back = function(){
+
+        $scope.back = function () {
             $window.history.back();
         };
-        
-        $scope.respond = function(id, oId, answer){
-            ExpositionService.respond(id, oId, {answer: answer}).then(function(data){
-                if(data.success === true){
-                    alert("Спасибо за фидбек. Ваш голос принят.");
+        $scope.newUser = {};
+        $scope.respond = function (user, id, oId, answer) {
+            if (user.name) {
+                ExpositionService.respond(id, oId, {answer: answer}).then(function (data) {
+                    if (data.success === true) {
+                        $scope.showUserForm = false;
+                        $scope.answer = {};
+                        alert("Спасибо за фидбек. Ваш голос принят.");
+                    }
+                });
+            } else {
+                console.log($scope.newUser);
+                if ($scope.newUser.name) {
+                    ExpositionService.respond(id, oId, {answer: $scope.answer, newUser: $scope.newUser}).then(function (data) {
+                        if (data.success === true) {
+                            $scope.showUserForm = false;
+                            $scope.answer = {};
+                            alert("Спасибо за фидбек. Ваш голос принят.");
+                        }
+                    });
+                } else {
+                    $scope.showUserForm = true;
+                    $scope.answer = answer;
                 }
-            });
+            }
         };
-        
-        $scope.generateLetter = function(){
+
+        $scope.checkRespond = function (expositionId, offerId) {
+            var result = false;
+            ExpositionService.checkRespond(expositionId, offerId, function (res) {
+                console.log(res);
+                result = res;
+            });
+            return result;
+        };
+
+        $scope.getStatistic = function (expositionId, offerId) {
+             ExpositionService.statistic(expositionId, offerId).then(function (data) {
+                        if (data.success === true) {
+                            $scope.statistic = data.result;
+                            $scope.positive = data.positive;
+                        }
+                    });
+        };
+
+        $scope.generateLetter = function () {
             var offers = $scope.exposition.offers;
             var html = '<html>';
             html += '<table>';
-            for(var i in offers){
+            for (var i in offers) {
                 var offer = offers[i];
                 html += '<tr><td>';
                 html += offer.name;
@@ -196,7 +232,7 @@ expositionApp.controller('ExpositionsController', ['$scope', '$state', '$locatio
                 html += offer.description;
                 html += '</td></tr>';
             }
-            html +='</table></html>';
+            html += '</table></html>';
             $scope.letter = html;
             $scope.showLetter = true;
         };

@@ -144,13 +144,14 @@ exports.respond = function (req, res) {
     var id = req.params.id;
     var oId = req.params.oId;
     var currentUser = req.decoded;
-    if (currentUser && id) {
-        id = new ObjectId(id);
-        Exposition.findById(id, function (err, exposition) {
+    var newUser = req.body.newUser;
+    if (id) {
+        getUserInfo(currentUser, newUser, function (err, newUser) {
             if (err) {
                 res.send(err);
             }
-            mongoose.model('User').findById(currentUser.userId, function (err, user) {
+            id = new ObjectId(id);
+            Exposition.findById(id, function (err, exposition) {
                 if (err) {
                     res.send(err);
                 }
@@ -158,7 +159,22 @@ exports.respond = function (req, res) {
                 if (!exposition.audience) {
                     exposition.audience = [];
                 }
-                audience.firstName = user.name;
+                audience.name = newUser.name;
+                if (newUser.position) {
+                    audience.position = newUser.position;
+                }
+                if (newUser.company) {
+                    audience.company = newUser.company;
+                }
+                if (newUser.phone) {
+                    audience.phone = newUser.phone;
+                }
+                if (newUser.city) {
+                    audience.city = newUser.city;
+                }
+                if (newUser.email) {
+                    audience.email = newUser.email;
+                }
                 audience.feedback = [];
                 var feedback = {};
                 oId = new ObjectId(oId);
@@ -175,4 +191,62 @@ exports.respond = function (req, res) {
         });
     }
 };
+
+exports.statistic = function (req, res) {
+    var currentUser = req.decoded;
+    var id = req.params.id;
+    var oId = req.params.oId;
+    if (currentUser && id && oId) {
+        oId = new ObjectId(oId);
+        Exposition.findById(id, function (err, exposition) {
+            var result = [];
+            if (err) {
+                res.send(err);
+            }
+            var positive = 0;
+            var audience = exposition.audience;
+            if (audience) {
+                for (var i in audience) {
+                    var feedback = audience[i].feedback;
+                    if (feedback) {
+                        for (var j in feedback) {
+                            var f = feedback[j];
+                            if (oId.equals(f.offerId)) {
+                                var r = {};
+                                r.name = audience[i].name;
+                                r.position = audience[i].position;
+                                r.company = audience[i].company;
+                                r.phone = audience[i].phone;
+                                r.city = audience[i].city;
+                                r.email = audience[i].email;
+                                r.feedback = f.answer;
+                                positive++;
+                                result.push(r);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            res.json({success: true, result: result, positive: positive});
+        });
+    }
+}
+
+function getUserInfo(currentUser, newUser, callback) {
+    if (currentUser) {
+        mongoose.model('User').findById(currentUser.userId, function (err, user) {
+            if (err) {
+                callback(err, false);
+            }
+            callback(false, user);
+        });
+    } else {
+        if (newUser) {
+            callback(false, newUser);
+        } else {
+            callback("User not found", false);
+        }
+    }
+}
 

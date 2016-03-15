@@ -3,7 +3,7 @@
  */
 var module = angular.module('exposition.services', ['ngResource']);
 
-module.factory('ExpositionService', ['$http', function ($http) {
+module.factory('ExpositionService', ['$http', '$window', function ($http, $window) {
         return {
             findAll: function () {
                 return $http.get('/exposition');
@@ -28,10 +28,36 @@ module.factory('ExpositionService', ['$http', function ($http) {
             },
             respond: function (expositionId, offerId, data) {
                 $("#loader").show();
-                return $http.post('/exposition/respond/' + expositionId + '/' + offerId, data).then(function(data){
+                return $http.post('/exposition/respond/' + expositionId + '/' + offerId, data).then(function (data) {
+                    $("#loader").hide();
+                    var responds = $window.localStorage.getItem('responds');
+                    if (!responds) {
+                        responds = [];
+                    }
+                    responds.push({exposition: expositionId, offer: offerId});
+                    $window.localStorage.setItem('responds', JSON.stringify(responds));
+                    return data.data;
+                });
+            },
+            statistic: function (expositionId, offerId) {
+                $("#loader").show();
+                return $http.post('/exposition/statistic/' + expositionId + '/' + offerId).then(function (data) {
                     $("#loader").hide();
                     return data.data;
                 });
+            },
+            checkRespond: function (expositionId, offerId, callback) {
+                var responds = $window.localStorage.getItem('responds');
+                responds = JSON.parse(responds);
+                var res = false;
+                for(var i in responds){
+                    var respond = responds[i];
+                    if(respond.exposition === expositionId && respond.offer === offerId){
+                        res = true;
+                        break;
+                    }
+                }
+                callback(res);
             }
         };
     }]);

@@ -36,8 +36,7 @@ var ExpositionSchema = mongoose.Schema({
     },
     offers: [],
     audience: [{
-        firstName: String,
-        lastName: String,
+        name: String,
         position: String,
         company: String,
         phone: String,

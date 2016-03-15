@@ -7,6 +7,7 @@ var expositionController = require('../app/exposition/controllers/ExpositionCont
 
 router.post('/',expositionController.create);
 router.post('/respond/:id/:oId',expositionController.respond);
+router.post('/statistic/:id/:oId',expositionController.statistic);
 router.get('/',expositionController.getAll);
 router.get('/:id',expositionController.get);
 router.put('/:id',expositionController.update);

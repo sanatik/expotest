@@ -47,7 +47,7 @@ var connect = function () {
             }
         }
     };
-    mongoose.connect('mongodb://expotest:expotest@ds059155.mongolab.com:59155/expotest', options);
+    mongoose.connect('mongodb://expotest:expotest@ds059155.mlab.com:59155/expotest', options);
     console.log('connected');
 };
 connect();
