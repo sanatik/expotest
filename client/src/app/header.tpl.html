@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse" role="navigation" ng-controller="HeaderCtrl" >
+<!--<nav class="navbar navbar-inverse" role="navigation" ng-controller="HeaderCtrl" >
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="/#/">Expotest</a>
@@ -19,4 +19,27 @@
             </ul>
         </div>
     </div>
-</nav>
+</nav>-->
+
+<header class="NS_layouts__navigation site-nav" id="header" role="banner" ng-controller="HeaderCtrl">
+    <h1 class="site-logo">
+        <a class="ksr-logo" href="/#/">Expotest</a>
+    </h1>
+    <nav aria-labelledby="main-navigation" class="left" role="navigation">
+        <ul class="primary-menu">
+            <li ng-show="currentUser && currentUser.name" class="primary-menu-link "><a href="/#/user/me/">Мой профиль</a></li>
+            <li ng-show="currentUser && hasRole(5)" class="primary-menu-link "><a href="/#/users/all/">Пользователи</a></li>
+            <li ng-show="currentUser && hasRole(2)" class="primary-menu-link "><a href="/#/offer/">Мои предложения</a></li>
+            <li ng-show="currentUser && hasRole(2)" class="primary-menu-link "><a href="/#/cart/">Моя корзина</a></li>
+            <li ng-show="currentUser && hasRole(1)" class="primary-menu-link "><a href="/#/cart/">Мои предложения для подтверждения</a></li>
+            
+        </ul>
+    </nav>
+    <nav aria-labelledby="user-navigation" class="right" role="navigation">
+        <ul class="user-menu js-user-menu">
+            <li ng-hide="currentUser && currentUser.name" class="logged-out-link "><a href="/#/auth/">Login</a></li>
+            <li ng-hide="currentUser && currentUser.name" class="logged-out-link "><a href="/#/auth/signup/">Signup</a></li>
+            <li ng-show="currentUser && currentUser.name" class="logged-out-link "><a ng-click="logout()" href="">Logout</a></li>
+        </ul>
+    </nav>
+</header>
