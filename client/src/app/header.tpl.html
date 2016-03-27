@@ -1,45 +1,37 @@
-<!--<nav class="navbar navbar-inverse" role="navigation" ng-controller="HeaderCtrl" >
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/#/">Expotest</a>
-            <br /> <span ng-show="currentUser && currentUser.name">Привет, {{currentUser.name}} ({{currentUser.role}})</span>
+<!-- Header -->
+<header class="clearfix" ng-controller="HeaderCtrl">
+    <a href="./" class="logo"><img src="/img/logo.png" alt=""></a>
+    
+    <div class="language-select">
+        <a href="#" class="active">RU</a> / <a href="#">ENG</a>
+    </div>
+    
+    <div class="user" ng-show="currentUser && currentUser.name">
+        <a class="name" href="/#/user/me/">{{currentUser.name}}</a> <a href="#" class="question">?</a>
+    </div>
+    
+    <nav id="main-nav">
+        <div class="clearfix">
+            <a ng-show="currentUser && hasRole(5)" href="/#/users/all/">Пользователи</a>
+            <a ng-show="currentUser && hasRole(2)" href="/#/offer/">Мои предложения <span class="light-blue-color">(2)</span></a>
+            <a ng-show="currentUser && hasRole(2)" href="/#/cart/">Моя корзина</a>
+            <a ng-show="currentUser && hasRole(1)" href="/#/cart/approve/">Мои предложения для подтверждения</a>
+            <a ng-hide="currentUser && currentUser.name" href="/#/auth/">Войти</a>
+            <a ng-hide="currentUser && currentUser.name" href="/#/auth/signup/">Зарегистрироваться</a>
+            <a ng-show="currentUser && currentUser.name" ng-click="logout()" href="">Выйти</a>
         </div>
+    </nav>
 
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li><a href="/#/exposition/">Выставки</a></li>
-                <li ng-show="currentUser && currentUser.name"><a href="/#/user/me/">Мой профиль</a></li>
-                <li ng-show="currentUser && hasRole(5)"><a href="/#/users/all/">Пользователи</a></li>
-                <li ng-show="currentUser && hasRole(2)"><a href="/#/offer/">Мои предложения</a></li>
-                <li ng-show="currentUser && hasRole(2)"><a href="/#/cart/">Моя корзина</a></li>
-                <li ng-show="currentUser && hasRole(1)"><a href="/#/cart/approve/">Мои предложения для подтверждения</a></li>
-                <li ng-hide="currentUser && currentUser.name"><a href="/#/auth/">Login</a></li>
-                <li ng-hide="currentUser && currentUser.name"><a href="/#/auth/signup/">Signup</a></li>
-                <li ng-show="currentUser && currentUser.name"><a ng-click="logout()" href="">Logout</a></li>
-            </ul>
+    <div id="mobile-nav">
+        <div class="show_elements_button"></div>
+        <div class="hidden-menu">
+            <a ng-show="currentUser && hasRole(5)" href="/#/users/all/">Пользователи</a>
+            <a ng-show="currentUser && hasRole(2)" href="/#/offer/">Мои предложения <span class="light-blue-color">(2)</span></a>
+            <a ng-show="currentUser && hasRole(2)" href="/#/cart/">Моя корзина</a>
+            <a ng-show="currentUser && hasRole(1)" href="/#/cart/approve/">Мои предложения для подтверждения</a>
+            <a ng-hide="currentUser && currentUser.name" href="/#/auth/">Войти</a>
+            <a ng-hide="currentUser && currentUser.name" href="/#/auth/signup/">Зарегистрироваться</a>
+            <a ng-show="currentUser && currentUser.name" ng-click="logout()" href="">Выйти</a>
         </div>
     </div>
-</nav>-->
-
-<header class="NS_layouts__navigation site-nav" id="header" role="banner" ng-controller="HeaderCtrl">
-    <h1 class="site-logo">
-        <a class="ksr-logo" href="/#/">Expotest</a>
-    </h1>
-    <nav aria-labelledby="main-navigation" class="left" role="navigation">
-        <ul class="primary-menu">
-            <li ng-show="currentUser && currentUser.name" class="primary-menu-link "><a href="/#/user/me/">Мой профиль</a></li>
-            <li ng-show="currentUser && hasRole(5)" class="primary-menu-link "><a href="/#/users/all/">Пользователи</a></li>
-            <li ng-show="currentUser && hasRole(2)" class="primary-menu-link "><a href="/#/offer/">Мои предложения</a></li>
-            <li ng-show="currentUser && hasRole(2)" class="primary-menu-link "><a href="/#/cart/">Моя корзина</a></li>
-            <li ng-show="currentUser && hasRole(1)" class="primary-menu-link "><a href="/#/cart/">Мои предложения для подтверждения</a></li>
-            
-        </ul>
-    </nav>
-    <nav aria-labelledby="user-navigation" class="right" role="navigation">
-        <ul class="user-menu js-user-menu">
-            <li ng-hide="currentUser && currentUser.name" class="logged-out-link "><a href="/#/auth/">Login</a></li>
-            <li ng-hide="currentUser && currentUser.name" class="logged-out-link "><a href="/#/auth/signup/">Signup</a></li>
-            <li ng-show="currentUser && currentUser.name" class="logged-out-link "><a ng-click="logout()" href="">Logout</a></li>
-        </ul>
-    </nav>
 </header>

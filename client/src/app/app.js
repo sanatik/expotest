@@ -50,12 +50,6 @@ angular.module('app', [
 });
 angular.module('app').config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, $httpProvider) {
         $urlRouterProvider.otherwise("/");
-        $stateProvider
-                .state('index', {
-                    url: "/",
-                    templateUrl: "app/index.tpl.html",
-                    controller: 'AppCtrl'
-                });
         $httpProvider.interceptors.push('AuthInterceptor');
     }]);
 angular.module('app').controller('AppCtrl', ['$scope', '$location', '$rootScope', 'AuthServices', '$q', function ($scope, $location, $rootScope, AuthServices, $q) {

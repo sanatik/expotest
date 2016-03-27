@@ -1,2 +1,102 @@
-<h3>Welcome</h3>
+<!-- Filters -->
+<section id="filters">
+    <div class="inner">
 
+        <div class="selects clearfix">
+            <div class="drop_big_320 filter-category">
+                <select name="filter-category">
+                    <option value="Выставки">Выставки</option>
+                    <option value="Выставка 1">Выставка 1</option>
+                    <option value="Выставка 2">Выставка 2</option>
+                    <option value="Выставка 3">Выставка 3</option>
+                </select>
+            </div>
+
+            <div class="place">
+                <div class="clearfix">
+                    <div class="drop_small_200">
+                        <select name="filter-country">
+                            <option value="Выбрать страну">Выбрать страну</option>
+                            <option value="Страна 1">Страна 1</option>
+                            <option value="Страна 2">Страна 2</option>
+                        </select>
+                    </div>
+
+                    <div class="drop_small_200">
+                        <select name="filter-city">
+                            <option value="Выбрать город">Выбрать город</option>
+                            <option value="Город 1">Город 1</option>
+                            <option value="Город 2">Город 2</option>
+                        </select>
+                    </div>
+
+                    <div class="drop_small_200">
+                        <select name="filter-month">
+                            <option value="Выбрать месяц">Выбрать месяц</option>
+                            <option value="Месяц 1">Месяц 1</option>
+                            <option value="Месяц 2">Месяц 2</option>
+                        </select>
+                    </div>
+
+                    <button class="submit-button not-submitted">OK</button>
+                    <button class="reset-button">Сброс</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tags">
+            <div class="clearfix">
+
+                <div class="tag_boxed">Бизнес</div>
+                <div class="tag_boxed active">Конференция</div>
+                <div class="tag_boxed">Семинар</div>
+                <div class="tag_boxed">Обзор</div>
+
+                <button class="button_blue_text">Добавить направление</button>
+                <button class="button_blue_icon trash"></button>
+
+            </div>
+        </div>
+    </div>
+</section>
+<section id="events" class="clearfix">
+    <div class="inner">
+        <div class="grid clearfix" masonry>
+            <!-- Single item -->
+            <a href="#" class="grid_item add_new" masonry-brick>
+                <button class="button_blue_text">Добавить выставку</button>
+            </a>
+
+            <!-- Single item -->
+            <div masonry-brick class="masonry-brick grid_item" ng-repeat="exposition in expositions">
+                <a href="#" class="photo">
+                    <img data-ng-src="data:{{exposition.photo.ext}};base64,{{exposition.photo.contentString}}">
+                    <div href="#" class="rocket button_green_icon">Тестировать</div>
+                </a>
+
+                <div class="info">
+                    <div class="date">24-26 февраля 2016</div>
+
+                    <a href="/#/exposition/{{exposition._id}}/" ng-click="findExposition(exposition._id)" class="title">{{exposition.displayName}}</a>
+
+                    <div class="city">{{exposition.location}}</div>
+
+                    <div class="tags">
+                        <a href="#" class="single-tag">Машиностроение</a>, <a href="#" class="single-tag">Промышленные насосы и клапаны</a>, <a href="#" class="single-tag">Гидравлика и пневматика</a>, <a href="#" class="single-tag">Промышленное оборудование</a>, <a href="#" class="single-tag">Металлообрабатывающие станки</a>, <a href="#" class="single-tag">Гидравлика и пневматика</a>, <a href="#" class="single-tag">Машиностроение</a>
+                    </div>
+                </div>
+
+                <div class="numbers clearfix">
+                    <div class="people">> {{exposition.expectedAudience}}</div>
+
+                    <div class="man">{{exposition.minFeedBack}}</div>
+
+                    <div class="price">{{exposition.price}} &#8381;</div>
+                </div>
+            </div>
+        </div>
+    </div><!--/inner-->
+
+    <button class="button_gray_border_text load_more">Загрузить еще</button>
+
+</section>

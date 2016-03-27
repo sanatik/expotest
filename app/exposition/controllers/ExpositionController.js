@@ -47,6 +47,17 @@ exports.getAll = function (req, res) {
         if (err) {
             res.send(err);
         }
+        for(var i in results){
+            var exposition = results[i];
+            if (exposition.photo.contentBase64) {
+                var photo = exposition.photo.contentBase64.toString('base64');
+                exposition.photo.contentString = photo;
+            }
+            if (exposition.presentation.contentBase64) {
+                var content = exposition.presentation.contentBase64.toString('base64');
+                exposition.presentation.contentString = content;
+            }
+        }
         res.json(results);
     });
 };

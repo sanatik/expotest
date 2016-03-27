@@ -1,15 +1,15 @@
 /**
  * Created by bosone on 2/3/16.
  */
-var expositionApp = angular.module('expositions', ['ngResource', 'permission', 'ui.router', 'exposition.services', 'angularMoment', 'offer.services', 'auth.services']);
+var expositionApp = angular.module('expositions', ['ngResource', 'permission', 'ui.router', 'exposition.services', 'angularMoment', 'offer.services', 'auth.services', 'wu.masonry']);
 
 expositionApp.config(['$stateProvider', '$urlRouterProvider',
     function ($stateProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise("/");
         $stateProvider
                 .state('exposition', {
-                    url: "/exposition/",
-                    templateUrl: 'app/exposition/list.tpl.html',
+                    url: "/",
+                    templateUrl: "app/index.tpl.html",
                     controller: 'ExpositionsController'
                 })
                 .state('expositioncreate', {
@@ -43,11 +43,14 @@ expositionApp.config(['$stateProvider', '$urlRouterProvider',
 expositionApp.controller('ExpositionsController', ['$scope', '$state', '$location', 'ExpositionService', '$window',
     function ($scope, $state, $location, ExpositionService, $window) {
         var loadExpositions = function () {
-            $("#loader").show();
             ExpositionService.findAll().then(
                     function (data) {
                         $scope.expositions = data.data;
-                        $("#loader").hide();
+                        $('.grid').masonry({
+                            itemSelector: '.grid_item',
+                            columnWidth: 250,
+                            gutter: 30
+                        });
                     },
                     function () {
                         $("#loader").hide();
@@ -75,7 +78,8 @@ expositionApp.controller('ExpositionsController', ['$scope', '$state', '$locatio
             });
         };
 
-        if (!$scope.expositions && $state.current.name === 'exposition') {
+        if (!$scope.expositions &&
+                ($state.current.name === 'exposition')) {
             loadExpositions();
         }
         $scope.offer = {};
@@ -212,12 +216,12 @@ expositionApp.controller('ExpositionsController', ['$scope', '$state', '$locatio
         };
 
         $scope.getStatistic = function (expositionId, offerId) {
-             ExpositionService.statistic(expositionId, offerId).then(function (data) {
-                        if (data.success === true) {
-                            $scope.statistic = data.result;
-                            $scope.positive = data.positive;
-                        }
-                    });
+            ExpositionService.statistic(expositionId, offerId).then(function (data) {
+                if (data.success === true) {
+                    $scope.statistic = data.result;
+                    $scope.positive = data.positive;
+                }
+            });
         };
 
         $scope.generateLetter = function () {
@@ -244,7 +248,7 @@ expositionApp.controller('ExpositionsController', ['$scope', '$state', '$locatio
             var ctx = canvas.getContext("2d");
             ctx.drawImage(img, 0, 0);
 
-            var MAX_WIDTH = 200;
+            var MAX_WIDTH = 250;
             var MAX_HEIGHT = 300;
             var width = img.width;
             var height = img.height;
