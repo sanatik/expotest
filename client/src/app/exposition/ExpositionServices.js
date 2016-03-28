@@ -27,12 +27,12 @@ module.factory('ExpositionService', ['$http', '$window', function ($http, $windo
                 return $http.delete('/exposition/' + id);
             },
             respond: function (expositionId, offerId, data) {
-                $("#loader").show();
                 return $http.post('/exposition/respond/' + expositionId + '/' + offerId, data).then(function (data) {
-                    $("#loader").hide();
                     var responds = $window.localStorage.getItem('responds');
                     if (!responds) {
                         responds = [];
+                    } else {
+                        responds = JSON.parse(responds);
                     }
                     responds.push({exposition: expositionId, offer: offerId});
                     $window.localStorage.setItem('responds', JSON.stringify(responds));
@@ -50,14 +50,14 @@ module.factory('ExpositionService', ['$http', '$window', function ($http, $windo
                 var responds = $window.localStorage.getItem('responds');
                 responds = JSON.parse(responds);
                 var res = false;
-                for(var i in responds){
+                for (var i in responds) {
                     var respond = responds[i];
-                    if(respond.exposition === expositionId && respond.offer === offerId){
+                    if (respond.exposition === expositionId && respond.offer === offerId) {
                         res = true;
                         break;
                     }
                 }
-                callback(res);
+                return callback(res);
             }
         };
     }]);

@@ -40,11 +40,27 @@ expositionApp.config(['$stateProvider', '$urlRouterProvider',
     }
 ]);
 
-expositionApp.controller('ExpositionsController', ['$scope', '$state', '$location', 'ExpositionService', '$window',
-    function ($scope, $state, $location, ExpositionService, $window) {
+expositionApp.controller('ExpositionsController', ['$scope', '$state', '$location', 'ExpositionService', '$window', '$filter', '$rootScope',
+    function ($scope, $state, $location, ExpositionService, $window, $filter, $rootScope) {
         var loadExpositions = function () {
             ExpositionService.findAll().then(
                     function (data) {
+                        for (var i in data.data) {
+                            var exposition = data.data[i];
+                            if (exposition.startDate) {
+                                if (exposition.endDate) {
+                                    var filter = 'd MMM';
+                                    var startDate = new Date(exposition.startDate);
+                                    var endDate = new Date(exposition.endDate);
+                                    if (startDate.getMonth() === endDate.getMonth()) {
+                                        filter = 'd';
+                                    }
+                                    exposition.startDateString = $filter('date')(exposition.startDate, filter);
+                                    exposition.endDateString = $filter('date')(exposition.endDate, 'd MMMM yyyy г.');
+                                }
+
+                            }
+                        }
                         $scope.expositions = data.data;
                         $('.grid').masonry({
                             itemSelector: '.grid_item',
@@ -181,7 +197,7 @@ expositionApp.controller('ExpositionsController', ['$scope', '$state', '$locatio
         };
         $scope.newUser = {};
         $scope.respond = function (user, id, oId, answer) {
-            if (user.name) {
+            if (user.displayName) {
                 ExpositionService.respond(id, oId, {answer: answer}).then(function (data) {
                     if (data.success === true) {
                         $scope.showUserForm = false;
@@ -190,19 +206,22 @@ expositionApp.controller('ExpositionsController', ['$scope', '$state', '$locatio
                     }
                 });
             } else {
-                console.log($scope.newUser);
-                if ($scope.newUser.name) {
-                    ExpositionService.respond(id, oId, {answer: $scope.answer, newUser: $scope.newUser}).then(function (data) {
-                        if (data.success === true) {
-                            $scope.showUserForm = false;
-                            $scope.answer = {};
-                            alert("Спасибо за фидбек. Ваш голос принят.");
+                $rootScope.checkCurrentUser(function (data) {
+                    if (data) {
+                        if (data.message === 'ok') {
+                            ExpositionService.respond(id, oId, {answer: $scope.answer, newUser: $rootScope.currentUser}).then(function (data) {
+                                if (data.success === true) {
+                                    $scope.showUserForm = false;
+                                    $scope.answer = {};
+                                    alert("Спасибо за фидбек. Ваш голос принят.");
+                                }
+                            });
+                        } else {
+                            $scope.showUserForm = true;
+                            $scope.answer = answer;
                         }
-                    });
-                } else {
-                    $scope.showUserForm = true;
-                    $scope.answer = answer;
-                }
+                    }
+                });
             }
         };
 

@@ -15,7 +15,7 @@ module.exports = function (passport) {
 
             findOrCreateUser = function () {
                 // find a user in Mongo with provided username
-                UserModel.findOne({'login': username}, function (err, user) {
+                UserModel.findOne({$or: [{'login': username}, {'email': username}, {'phone': username}]}, function (err, user) {
                     // In case of any error, return using the done method
                     if (err) {
                         console.log('Error in SignUp: ' + err);

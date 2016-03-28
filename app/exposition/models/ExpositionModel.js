@@ -36,21 +36,19 @@ var ExpositionSchema = mongoose.Schema({
     },
     offers: [],
     audience: [{
-        name: String,
-        position: String,
-        company: String,
-        phone: String,
-        city: String,
-        email: String,
-        feedback: [{
-            offerId: {
+            userId: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'Offer'
+                ref: 'User'
             },
-            key: String,
-            answer: Boolean
-        }]
-    }],
+            feedback: [{
+                    offerId: {
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: 'Offer'
+                    },
+                    key: String,
+                    answer: Boolean
+                }]
+        }],
     expectedAudience: Number,
     minFeedBack: Number,
     testFlightRequest: Boolean,

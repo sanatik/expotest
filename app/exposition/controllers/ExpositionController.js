@@ -3,6 +3,9 @@
  */
 var mongoose = require('mongoose');
 var Exposition = require('../models/ExpositionModel');
+var UserModel = mongoose.model('User');
+var bCrypt = require('bcrypt-nodejs');
+var passport = require('passport');
 
 var ObjectId = mongoose.Types.ObjectId;
 
@@ -47,7 +50,7 @@ exports.getAll = function (req, res) {
         if (err) {
             res.send(err);
         }
-        for(var i in results){
+        for (var i in results) {
             var exposition = results[i];
             if (exposition.photo.contentBase64) {
                 var photo = exposition.photo.contentBase64.toString('base64');
@@ -170,29 +173,31 @@ exports.respond = function (req, res) {
                 if (!exposition.audience) {
                     exposition.audience = [];
                 }
-                audience.name = newUser.name;
-                if (newUser.position) {
-                    audience.position = newUser.position;
+                var userExists = false;
+                for (var i in exposition.audience) {
+                    var a = exposition.audience[i];
+                    if (a.userId && a.userId.equals(newUser._id)) {
+                        var f = {};
+                        oId = new ObjectId(oId);
+                        f.offerId = oId;
+                        f.answer = req.body.answer;
+                        a.feedback.push(f);
+                        userExists = true;
+                        exposition.audience[i] = a;
+                        break;
+                    }
                 }
-                if (newUser.company) {
-                    audience.company = newUser.company;
+                if (!userExists) {
+                    audience.userId = newUser._id;
+                    audience.feedback = [];
+                    var feedback = {};
+                    oId = new ObjectId(oId);
+                    feedback.offerId = oId;
+                    feedback.answer = req.body.answer;
+                    audience.feedback.push(feedback);
+                    exposition.audience.push(audience);
                 }
-                if (newUser.phone) {
-                    audience.phone = newUser.phone;
-                }
-                if (newUser.city) {
-                    audience.city = newUser.city;
-                }
-                if (newUser.email) {
-                    audience.email = newUser.email;
-                }
-                audience.feedback = [];
-                var feedback = {};
-                oId = new ObjectId(oId);
-                feedback.offerId = oId;
-                feedback.answer = req.body.answer;
-                audience.feedback.push(feedback);
-                exposition.audience.push(audience);
+
                 exposition.save(function (err) {
                     if (err)
                         res.send(err);
@@ -244,7 +249,7 @@ exports.statistic = function (req, res) {
     }
 }
 
-function getUserInfo(currentUser, newUser, callback) {
+function getUserInfo(currentUser, user, callback) {
     if (currentUser) {
         mongoose.model('User').findById(currentUser.userId, function (err, user) {
             if (err) {
@@ -253,11 +258,55 @@ function getUserInfo(currentUser, newUser, callback) {
             callback(false, user);
         });
     } else {
-        if (newUser) {
-            callback(false, newUser);
+        if (user) {
+            UserModel.findOne({$or: [{'email': user.email}, {'phone': user.phone}]}, function (err, u) {
+                // In case of any error, return using the done method
+                if (err) {
+                    console.log('Error in SignUp: ' + err);
+                    callback('User already exists with username11: ', false);
+                }
+                // already exists
+                if (u) {
+                    console.log('User already exists with username: '+user.email);
+                    callback('User already exists with username: ', false);
+                } else {
+                    // if there is no user with that email
+                    // create the user
+                    var newUser = new UserModel();
+
+                    newUser.displayName = user.displayName;
+                    newUser.login = user.username;
+                    newUser.password = createHash(user.password);
+                    newUser.email = user.email;
+                    newUser.phone = user.phone;
+                    newUser.position = user.position;
+                    newUser.company = user.company;
+                    newUser.city = user.city;
+                    newUser.role = 3;
+                    newUser.description = user.description;
+                    if (user.avatar) {
+                        var avatar = new Buffer(user.avatar).toString('base64');
+                        newUser.avatar = new Buffer(avatar, 'base64');
+                    }
+                    newUser.additional = user.additional;
+                    // save the user
+                    newUser.save(function (err) {
+                        if (err) {
+                            callback(err, false);
+                        }
+                        callback(false, newUser);
+                    });
+                }
+            });
+
+
         } else {
             callback("User not found", false);
         }
     }
+}
+
+var createHash = function (password) {
+    return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
 }
 

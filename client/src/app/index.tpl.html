@@ -63,19 +63,19 @@
     <div class="inner">
         <div class="grid clearfix" masonry>
             <!-- Single item -->
-            <a href="#" class="grid_item add_new" masonry-brick>
+            <a permission only="'organizer'" href="/#/exposition/create/" class="grid_item add_new" masonry-brick>
                 <button class="button_blue_text">Добавить выставку</button>
             </a>
 
             <!-- Single item -->
             <div masonry-brick class="masonry-brick grid_item" ng-repeat="exposition in expositions">
-                <a href="#" class="photo">
+                <a href="/#/cart/add/{{exposition._id}}/" class="photo">
                     <img data-ng-src="data:{{exposition.photo.ext}};base64,{{exposition.photo.contentString}}">
-                    <div href="#" class="rocket button_green_icon">Тестировать</div>
+                    <div href="/#/cart/add/{{exposition._id}}/" class="rocket button_green_icon">Тестировать</div>
                 </a>
 
                 <div class="info">
-                    <div class="date">24-26 февраля 2016</div>
+                    <div class="date">{{exposition.startDateString}} - {{exposition.endDateString}}</div>
 
                     <a href="/#/exposition/{{exposition._id}}/" ng-click="findExposition(exposition._id)" class="title">{{exposition.displayName}}</a>
 
