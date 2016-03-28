@@ -228,7 +228,6 @@ expositionApp.controller('ExpositionsController', ['$scope', '$state', '$locatio
         $scope.checkRespond = function (expositionId, offerId) {
             var result = false;
             ExpositionService.checkRespond(expositionId, offerId, function (res) {
-                console.log(res);
                 result = res;
             });
             return result;

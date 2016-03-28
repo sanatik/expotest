@@ -40,6 +40,12 @@ var ExpositionSchema = mongoose.Schema({
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'User'
             },
+            name: String,
+            position: String,
+            company: String,
+            phone: String,
+            city: String,
+            email: String,
             feedback: [{
                     offerId: {
                         type: mongoose.Schema.Types.ObjectId,

@@ -67,8 +67,14 @@ angular.module('app').controller('AppCtrl', ['$scope', '$location', '$rootScope'
         $rootScope.checkCurrentUser = function (callback) {
             if (!$rootScope.currentUser) {
                 AuthServices.getUser().success(function (data) {
-                    $rootScope.currentUser = data;
-                    callback({message: "ok"});
+                    if (data.displayName) {
+                        $rootScope.currentUser = data;
+                        callback({message: "ok"});
+                    } else {
+                        $rootScope.currentUser = false;
+                        callback({message: "not found"});
+                    }
+
                 }).error(function () {
                     $rootScope.currentUser = false;
                     callback({message: "not found"});

@@ -163,47 +163,52 @@ exports.respond = function (req, res) {
         getUserInfo(currentUser, newUser, function (err, newUser) {
             if (err) {
                 res.send(err);
-            }
-            id = new ObjectId(id);
-            Exposition.findById(id, function (err, exposition) {
-                if (err) {
-                    res.send(err);
-                }
-                var audience = {};
-                if (!exposition.audience) {
-                    exposition.audience = [];
-                }
-                var userExists = false;
-                for (var i in exposition.audience) {
-                    var a = exposition.audience[i];
-                    if (a.userId && a.userId.equals(newUser._id)) {
-                        var f = {};
-                        oId = new ObjectId(oId);
-                        f.offerId = oId;
-                        f.answer = req.body.answer;
-                        a.feedback.push(f);
-                        userExists = true;
-                        exposition.audience[i] = a;
-                        break;
-                    }
-                }
-                if (!userExists) {
-                    audience.userId = newUser._id;
-                    audience.feedback = [];
-                    var feedback = {};
-                    oId = new ObjectId(oId);
-                    feedback.offerId = oId;
-                    feedback.answer = req.body.answer;
-                    audience.feedback.push(feedback);
-                    exposition.audience.push(audience);
-                }
-
-                exposition.save(function (err) {
-                    if (err)
+            } else {
+                id = new ObjectId(id);
+                Exposition.findById(id, function (err, exposition) {
+                    if (err) {
                         res.send(err);
-                    res.json({success: true});
+                    }
+                    var audience = {};
+                    if (!exposition.audience) {
+                        exposition.audience = [];
+                    }
+                    var userExists = false;
+                    for (var i in exposition.audience) {
+                        var a = exposition.audience[i];
+                        if (a.userId && a.userId.equals(newUser._id)) {
+                            var f = {};
+                            oId = new ObjectId(oId);
+                            f.offerId = oId;
+                            f.answer = req.body.answer;
+                            a.feedback.push(f);
+                            userExists = true;
+                            exposition.audience[i] = a;
+                            break;
+                        }
+                    }
+                    if (!userExists) {
+                        audience.name = newUser._id;
+                        audience.position = newUser.position;
+                        audience.company = newUser.company;
+                        audience.city = newUser.city;
+                        audience.email = newUser.email;
+                        audience.feedback = [];
+                        var feedback = {};
+                        oId = new ObjectId(oId);
+                        feedback.offerId = oId;
+                        feedback.answer = req.body.answer;
+                        audience.feedback.push(feedback);
+                        exposition.audience.push(audience);
+                    }
+
+                    exposition.save(function (err) {
+                        if (err)
+                            res.send(err);
+                        res.json({success: true});
+                    });
                 });
-            });
+            }
         });
     }
 };
@@ -267,7 +272,7 @@ function getUserInfo(currentUser, user, callback) {
                 }
                 // already exists
                 if (u) {
-                    console.log('User already exists with username: '+user.email);
+                    console.log('User already exists with username: ' + user.email);
                     callback('User already exists with username: ', false);
                 } else {
                     // if there is no user with that email
@@ -298,8 +303,6 @@ function getUserInfo(currentUser, user, callback) {
                     });
                 }
             });
-
-
         } else {
             callback("User not found", false);
         }
