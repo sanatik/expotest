@@ -9,8 +9,9 @@ var ExpositionSchema = mongoose.Schema({
         type: Date,
         default: Date.now()
     },
+    format: Number,
     displayName: String,
-    location: String,
+    location: Object,
     website: String,
     creator: {
         type: mongoose.Schema.Types.ObjectId,

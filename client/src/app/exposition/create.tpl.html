@@ -2,12 +2,23 @@
 <form name="expositionCreateForm" class="expositionCreateForm">
     <table>
         <tr>
+            <td>Формат</td>
+            <td>
+                <select ng-model="exposition.format">
+                    <option ng-value="1">Выставка</option>
+                    <option ng-value="2">Премия</option>
+                    <option ng-value="3">Конференция</option>
+                    <option ng-value="4">Форум</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
             <td>Название выставки</td>
             <td><input type="text" name="expositionName" ng-model="exposition.displayName" id="expositionName"/></td>
         </tr>
         <tr>
             <td>Город</td>
-            <td><input type="text" name="expositionLocation" ng-model="exposition.location" id="expositionLocation" g-places-autocomplete options="types=cities"/></td>
+            <td><input type="text" name="expositionLocation" ng-model="exposition.location" id="expositionLocation" g-places-autocomplete options="autocompleteOptions"/></td>
         </tr>
         <tr>
             <td>Веб-сайт</td>
@@ -67,7 +78,7 @@
 </form>
 <script>
     $(function () {
-        $(".date").each(function(){
+        $(".date").each(function () {
             $(this).datepicker({minDate: "0d"});
         });
     });

@@ -5,8 +5,8 @@ var module = angular.module('exposition.services', ['ngResource']);
 
 module.factory('ExpositionService', ['$http', '$window', function ($http, $window) {
         return {
-            findAll: function () {
-                return $http.get('/exposition');
+            findAll: function (params) {
+                return $http.get('/exposition', {params: params});
             },
             findOne: function (id) {
                 $("#loader").show();

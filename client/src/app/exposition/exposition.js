@@ -47,8 +47,8 @@ expositionApp.config(['$stateProvider', '$urlRouterProvider',
 
 expositionApp.controller('ExpositionsController', ['$scope', '$state', '$location', 'ExpositionService', '$window', '$filter', '$rootScope', 'AuthServices',
     function ($scope, $state, $location, ExpositionService, $window, $filter, $rootScope, AuthServices) {
-        var loadExpositions = function () {
-            ExpositionService.findAll().then(
+        var loadExpositions = function (params) {
+            ExpositionService.findAll(params).then(
                     function (data) {
                         for (var i in data.data) {
                             var exposition = data.data[i];
@@ -105,9 +105,14 @@ expositionApp.controller('ExpositionsController', ['$scope', '$state', '$locatio
 
         if (!$scope.expositions &&
                 ($state.current.name === 'exposition')) {
-            loadExpositions();
+            loadExpositions({});
         }
         $scope.offer = {};
+        $scope.autocompleteOptions = {
+            types: ['(regions)']
+        }
+        $scope.filter = {};
+        $scope.filter.month = 0;
         if (!$scope.exposition &&
                 ($state.current.name === 'expositionview'
                         || $state.current.name === 'expositionedit'
@@ -142,6 +147,14 @@ expositionApp.controller('ExpositionsController', ['$scope', '$state', '$locatio
                     });
                 }
             }
+        };
+        
+        $scope.loadExpos = function(){
+            var params = {};
+            if($scope.filter.month){
+                params.month = $scope.filter.month;
+            }
+            loadExpositions(params);
         };
 
         $scope.updateExposition = function (_id) {
@@ -240,7 +253,7 @@ expositionApp.controller('ExpositionsController', ['$scope', '$state', '$locatio
         };
 
         $scope.getStatistic = function (expositionId, offerId) {
-            if(!offerId){
+            if (!offerId) {
                 offerId = $scope.chosenOfferId;
             }
             ExpositionService.statistic(expositionId, offerId).then(function (data) {
@@ -267,6 +280,11 @@ expositionApp.controller('ExpositionsController', ['$scope', '$state', '$locatio
             $scope.letter = html;
             $scope.showLetter = true;
         };
+        
+        $scope.onChangeFilterIndex = function(){
+            $('button.reset-button').addClass('submitted');
+            $('button.submit-button').removeClass('not-submitted');
+        }
 
         function resizeImg(file) {
             var canvas = document.createElement('canvas');

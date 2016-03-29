@@ -45,11 +45,18 @@ exports.create = function (req, res) {
 };
 
 exports.getAll = function (req, res) {
-    console.log(req.user);
-    Exposition.find({}, function (err, results) {
+    var location = req.query.location;
+    var month = req.query.month;
+    var format = req.query.format;
+    var options = {};
+    if (format) {
+        options = {'format': format};
+    }
+    Exposition.find(options, function (err, results) {
         if (err) {
             res.send(err);
         }
+        var expositions = [];
         for (var i in results) {
             var exposition = results[i];
             if (exposition.photo.contentBase64) {
@@ -60,8 +67,28 @@ exports.getAll = function (req, res) {
                 var content = exposition.presentation.contentBase64.toString('base64');
                 exposition.presentation.contentString = content;
             }
+            if (month || location) {
+                var filterDateStart = new Date();
+                filterDateStart.setMonth(month - 1);
+                filterDateStart.setDate(1);
+                var filterDateEnd = new Date();
+                if(month > 11){
+                    month = 0;
+                }
+                filterDateEnd.setMonth(month);
+                filterDateEnd.setDate(0);
+                console.log(exposition.startDate);
+                console.log(filterDateEnd);
+                if (exposition.startDate.getTime() <= filterDateEnd.getTime()
+                        && exposition.endDate.getTime() >= filterDateStart.getTime()) {
+                    expositions.push(exposition);
+                }
+            }else{
+                expositions.push(exposition);
+            }
+
         }
-        res.json(results);
+        res.json(expositions);
     });
 };
 
@@ -243,7 +270,7 @@ exports.statistic = function (req, res) {
                                 r.city = audience[i].city;
                                 r.email = audience[i].email;
                                 r.feedback = f.answer;
-                                if(r.feedback === true){
+                                if (r.feedback === true) {
                                     positive++;
                                 }
                                 result.push(r);

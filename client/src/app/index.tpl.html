@@ -15,30 +15,33 @@
             <div class="place">
                 <div class="clearfix">
                     <div class="drop_small_200">
-                        <select name="filter-country">
+                        <input ng-change="onChangeFilterIndex()" ng-model="filter.location" type="text" placeholder="Выбрать страну" style="color: white;"  g-places-autocomplete options="autocompleteOptions"/>
+<!--                        <select name="filter-country">
                             <option value="Выбрать страну">Выбрать страну</option>
                             <option value="Страна 1">Страна 1</option>
                             <option value="Страна 2">Страна 2</option>
-                        </select>
+                        </select>-->
                     </div>
 
                     <div class="drop_small_200">
-                        <select name="filter-city">
-                            <option value="Выбрать город">Выбрать город</option>
-                            <option value="Город 1">Город 1</option>
-                            <option value="Город 2">Город 2</option>
+                        <select name="filter-month" ng-change="onChangeFilterIndex()" ng-model="filter.month">
+                            <option value="0">Выбрать месяц</option>
+                            <option value="1">Январь</option>
+                            <option value="2">Февраль</option>
+                            <option value="3">Март</option>
+                            <option value="4">Апрель</option>
+                            <option value="5">Май</option>
+                            <option value="6">Июнь</option>
+                            <option value="7">Июль</option>
+                            <option value="8">Август</option>
+                            <option value="9">Сентябрь</option>
+                            <option value="10">Октябрь</option>
+                            <option value="11">Ноябрь</option>
+                            <option value="12">Декабрь</option>
                         </select>
                     </div>
 
-                    <div class="drop_small_200">
-                        <select name="filter-month">
-                            <option value="Выбрать месяц">Выбрать месяц</option>
-                            <option value="Месяц 1">Месяц 1</option>
-                            <option value="Месяц 2">Месяц 2</option>
-                        </select>
-                    </div>
-
-                    <button class="submit-button not-submitted">OK</button>
+                    <button class="submit-button not-submitted" ng-click="loadExpos()">OK</button>
                     <button class="reset-button">Сброс</button>
                 </div>
             </div>
@@ -79,7 +82,7 @@
 
                     <a href="/#/exposition/{{exposition._id}}/" ng-click="findExposition(exposition._id)" class="title">{{exposition.displayName}}</a>
 
-                    <div class="city">{{exposition.location}}</div>
+                    <div class="city">{{exposition.location.formatted_address}}</div>
 
                     <div class="tags">
                         <a href="#" class="single-tag">Машиностроение</a>, <a href="#" class="single-tag">Промышленные насосы и клапаны</a>, <a href="#" class="single-tag">Гидравлика и пневматика</a>, <a href="#" class="single-tag">Промышленное оборудование</a>, <a href="#" class="single-tag">Металлообрабатывающие станки</a>, <a href="#" class="single-tag">Гидравлика и пневматика</a>, <a href="#" class="single-tag">Машиностроение</a>
