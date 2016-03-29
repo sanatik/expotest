@@ -1,0 +1,87 @@
+<section id="eventinfo">
+    <div class="clearfix">
+
+        <img data-ng-src="data:{{exposition.photo.ext}};base64,{{exposition.photo.contentString}}" class="photo">
+
+        <div class="right-col">
+
+            <div class="title">{{exposition.displayName}}</div>
+
+            <div class="filters clearfix">
+
+                <div class="drop_big_320">
+                    <select name="filter-offer" ng-change="getStatistic(exposition._id, false)" ng-model="chosenOfferId">
+                        <option ng-repeat="offer in exposition.offers" value="{{offer._id}}">{{offer.name}}</option>
+                    </select>
+                </div>
+
+                <div class="drop_big_320">
+                    <select name="filter-country">
+                        <option value="Выберите страну">Выберите страну</option>
+                        <option value="Страна 1">Страна 1</option>
+                        <option value="Страна 2">Страна 2</option>
+                    </select>
+                </div>
+
+                <div class="drop_big_320">
+                    <select name="filter-region">
+                        <option value="Выберите регион">Выберите регион</option>
+                        <option value="Регион 1">Регион 1</option>
+                        <option value="Регион 2">Регион 2</option>
+                    </select>
+                </div>
+
+                <button class="submit-button not-submitted">OK</button>
+                <button class="reset-button">Сброс</button>
+            </div>
+
+            <div class="list-title">Списки заинтересованных людей:</div>
+
+        </div>
+
+        <div class="download"></div>
+
+    </div>
+</section>
+
+<section id="userlist">
+    <table>
+        <tr>
+            <th>Имя</th>
+            <th>Компания</th>
+            <th>Должность</th>
+            <th>Email</th>
+            <th>Телефон</th>
+            <th>Город</th>
+            <th>Отклик</th>
+        </tr>
+        <tr ng-show="statistic.length < 1">
+            <td colspan="7">
+                Записей не найдено
+            </td>
+        </tr>
+        <tr ng-repeat="s in statistic">
+            <td>{{s.name}}</td>
+            <td>{{s.company}}</td>
+            <td>{{s.position}}</td>
+            <td>{{s.email}}</td>
+            <td>{{s.phone}}</td>
+            <td>{{s.city}}</td>
+            <td>{{s.feedback === true ? "Да" : "Нет"}}</td>
+        </tr>
+    </table>
+</section>
+
+<section id="pagination" ng-show="statistic && statistic.length > 10">
+
+    <div id="pages" class="clearfix">
+        <a href="#" class="page active">1</a>
+        <a href="#" class="page">2</a>
+        <a href="#" class="page">3</a>
+        <a href="#" class="page">4</a>
+        <a href="#" class="page">5</a>
+        <span class="dots">...</span>
+        <a href="#" class="page">23</a>
+    </div>
+
+</section>
