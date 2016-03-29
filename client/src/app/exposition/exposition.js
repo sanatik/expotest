@@ -156,6 +156,11 @@ expositionApp.controller('ExpositionsController', ['$scope', '$state', '$locatio
             }
             loadExpositions(params);
         };
+        
+        $scope.resetFilter = function(){
+            $scope.filter = {};
+            $scope.filter.month = 0;
+        }
 
         $scope.updateExposition = function (_id) {
             if (this.exposition) {
