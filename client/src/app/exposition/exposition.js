@@ -22,6 +22,11 @@ expositionApp.config(['$stateProvider', '$urlRouterProvider',
                     templateUrl: 'app/exposition/details.tpl.html',
                     controller: 'ExpositionsController'
                 })
+                .state('expositionstatistic', {
+                    url: "/exposition/:id/statistics/",
+                    templateUrl: 'app/exposition/userlist.tpl.html',
+                    controller: 'ExpositionsController'
+                })
                 .state('expositionedit', {
                     url: "/exposition/:id/edit/",
                     templateUrl: 'app/exposition/edit.tpl.html',
@@ -40,8 +45,8 @@ expositionApp.config(['$stateProvider', '$urlRouterProvider',
     }
 ]);
 
-expositionApp.controller('ExpositionsController', ['$scope', '$state', '$location', 'ExpositionService', '$window', '$filter', '$rootScope',
-    function ($scope, $state, $location, ExpositionService, $window, $filter, $rootScope) {
+expositionApp.controller('ExpositionsController', ['$scope', '$state', '$location', 'ExpositionService', '$window', '$filter', '$rootScope', 'AuthServices',
+    function ($scope, $state, $location, ExpositionService, $window, $filter, $rootScope, AuthServices) {
         var loadExpositions = function () {
             ExpositionService.findAll().then(
                     function (data) {
@@ -77,6 +82,10 @@ expositionApp.controller('ExpositionsController', ['$scope', '$state', '$locatio
         $scope.findExposition = function (_id) {
             ExpositionService.findOne(_id).then(function (data) {
                 $scope.exposition = data;
+                if ($state.current.name === 'expositionstatistic') {
+                    $scope.getStatistic($scope.exposition._id, $scope.exposition.offers[0]._id);
+                    $scope.chosenOfferId = $scope.exposition.offers[0]._id;
+                }
                 if ($state.params.oId) {
                     var offers = $scope.exposition.offers;
                     var o = {};
@@ -103,7 +112,8 @@ expositionApp.controller('ExpositionsController', ['$scope', '$state', '$locatio
                 ($state.current.name === 'expositionview'
                         || $state.current.name === 'expositionedit'
                         || $state.current.name === 'expositiooffersview'
-                        || $state.current.name === 'expositiooffersviewoffer')) {
+                        || $state.current.name === 'expositiooffersviewoffer'
+                        || $state.current.name === 'expositionstatistic')) {
             if ($state.params.id) {
                 $scope.findExposition($state.params.id);
             }
@@ -196,9 +206,9 @@ expositionApp.controller('ExpositionsController', ['$scope', '$state', '$locatio
             $window.history.back();
         };
         $scope.newUser = {};
-        $scope.respond = function (user, id, oId, answer) {
-            if (user.displayName) {
-                ExpositionService.respond(id, oId, {answer: answer}).then(function (data) {
+        $scope.respond = function (id, oId, answer) {
+            if ($scope.newUser.displayName) {
+                ExpositionService.respond(id, oId, {answer: answer, newUser: $scope.newUser}).then(function (data) {
                     if (data.success === true) {
                         $scope.showUserForm = false;
                         $scope.answer = {};
@@ -206,22 +216,18 @@ expositionApp.controller('ExpositionsController', ['$scope', '$state', '$locatio
                     }
                 });
             } else {
-                $rootScope.checkCurrentUser(function (data) {
-                    if (data) {
-                        if (data.message === 'ok') {
-                            ExpositionService.respond(id, oId, {answer: $scope.answer, newUser: $rootScope.currentUser}).then(function (data) {
-                                if (data.success === true) {
-                                    $scope.showUserForm = false;
-                                    $scope.answer = {};
-                                    alert("Спасибо за фидбек. Ваш голос принят.");
-                                }
-                            });
-                        } else {
-                            $scope.showUserForm = true;
-                            $scope.answer = answer;
+                if (AuthServices.isLoggedIn()) {
+                    ExpositionService.respond(id, oId, {answer: $scope.answer}).then(function (data) {
+                        if (data.success === true) {
+                            $scope.showUserForm = false;
+                            $scope.answer = {};
+                            alert("Спасибо за фидбек. Ваш голос принят.");
                         }
-                    }
-                });
+                    });
+                } else {
+                    $scope.showUserForm = true;
+                    $scope.answer = answer;
+                }
             }
         };
 
@@ -234,6 +240,9 @@ expositionApp.controller('ExpositionsController', ['$scope', '$state', '$locatio
         };
 
         $scope.getStatistic = function (expositionId, offerId) {
+            if(!offerId){
+                offerId = $scope.chosenOfferId;
+            }
             ExpositionService.statistic(expositionId, offerId).then(function (data) {
                 if (data.success === true) {
                     $scope.statistic = data.result;

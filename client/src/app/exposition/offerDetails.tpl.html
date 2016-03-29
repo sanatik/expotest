@@ -19,8 +19,8 @@
 </div>
 <div ng-show="!checkRespond(exposition._id, offer._id)">
     <span style="font-weight: bold;">Отреагировать</span> <br />
-    <a href="" ng-click="respond(currentUser, exposition._id, offer._id, true)">Нравится</a>
-    <a href="" ng-click="respond(currentUser, exposition._id, offer._id, false)">Не нравится</a>
+    <a href="" ng-click="respond(exposition._id, offer._id, true)">Нравится</a>
+    <a href="" ng-click="respond(exposition._id, offer._id, false)">Не нравится</a>
 </div>
 <form ng-show="showUserForm">
     <table>
@@ -54,7 +54,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                <button ng-click="respond(currentUser, exposition._id, offer._id, true)">Отправить</button>
+                <button ng-click="respond(exposition._id, offer._id, true)">Отправить</button>
             </td>
         </tr>
     </table>
@@ -64,30 +64,3 @@
     <br />
     <a href="" ng-show="isOwner(exposition.creator) || isOwner(offer.creator)" ng-click="getStatistic(exposition._id, offer._id)">Показать статистику</a>
 </div>
-<table ng-show="statistic">
-    <tr>
-        <td>ФИО</td>
-        <td>Компания</td>
-        <td>Должность</td>
-        <td>Телефон</td>
-        <td>Город</td>
-        <td>Email</td>
-        <td>Ответ</td>
-    </tr>
-    <tr ng-repeat="s in statistic">
-        <td>{{s.name}}</td>
-        <td>{{s.company}}</td>
-        <td>{{s.position}}</td>
-        <td>{{s.phone}}</td>
-        <td>{{s.city}}</td>
-        <td>{{s.email}}</td>
-        <td>{{s.feedback}}</td>
-    </tr>
-    <tr>
-        <td colspan="7">
-            Всего: {{statistic.length}}
-            <br />
-            Положительных: {{positive}}
-        </td>
-    </tr>
-</table>

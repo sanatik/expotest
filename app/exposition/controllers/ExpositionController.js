@@ -188,7 +188,9 @@ exports.respond = function (req, res) {
                         }
                     }
                     if (!userExists) {
-                        audience.name = newUser._id;
+                        audience.userId = newUser._id;
+                        audience.name = newUser.displayName;
+                        audience.phone = newUser.phone;
                         audience.position = newUser.position;
                         audience.company = newUser.company;
                         audience.city = newUser.city;
@@ -241,7 +243,9 @@ exports.statistic = function (req, res) {
                                 r.city = audience[i].city;
                                 r.email = audience[i].email;
                                 r.feedback = f.answer;
-                                positive++;
+                                if(r.feedback === true){
+                                    positive++;
+                                }
                                 result.push(r);
                                 break;
                             }
@@ -272,8 +276,7 @@ function getUserInfo(currentUser, user, callback) {
                 }
                 // already exists
                 if (u) {
-                    console.log('User already exists with username: ' + user.email);
-                    callback('User already exists with username: ', false);
+                    callback(false, u);
                 } else {
                     // if there is no user with that email
                     // create the user

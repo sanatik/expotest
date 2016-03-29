@@ -40,9 +40,7 @@ module.factory('ExpositionService', ['$http', '$window', function ($http, $windo
                 });
             },
             statistic: function (expositionId, offerId) {
-                $("#loader").show();
                 return $http.post('/exposition/statistic/' + expositionId + '/' + offerId).then(function (data) {
-                    $("#loader").hide();
                     return data.data;
                 });
             },

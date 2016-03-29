@@ -12,7 +12,8 @@ angular.module('app', [
     'auth',
     'auth.services',
     'cart',
-    'users'
+    'users',
+    'google.places'
 ]).run(function (RoleStore, AuthServices, $q) {
     RoleStore.defineRole('organizer', [], function () {
         var deferred = $q.defer();
@@ -55,21 +56,23 @@ angular.module('app').config(['$stateProvider', '$urlRouterProvider', '$httpProv
 angular.module('app').controller('AppCtrl', ['$scope', '$location', '$rootScope', 'AuthServices', '$q', function ($scope, $location, $rootScope, AuthServices, $q) {
         $rootScope.isOwner = function (id) {
             var owner = false;
-            $rootScope.checkCurrentUser(function (data) {
-                if (data) {
-                    if (data.message === 'ok') {
-                        owner = $rootScope.currentUser.userId === id;
+            if (AuthServices.isLoggedIn()) {
+                $rootScope.checkCurrentUser(function (data) {
+                    if (data) {
+                        if (data.message === 'ok') {
+                            owner = $rootScope.currentUser.userId === id;
+                        }
                     }
-                }
-            });
+                });
+            }
             return owner;
         };
         $rootScope.checkCurrentUser = function (callback) {
             if (!$rootScope.currentUser) {
                 AuthServices.getUser().success(function (data) {
-                    if (data.displayName) {
+                    if (data.username) {
                         $rootScope.currentUser = data;
-                        callback({message: "ok"});
+                        return callback({message: "ok"});
                     } else {
                         $rootScope.currentUser = false;
                         callback({message: "not found"});
