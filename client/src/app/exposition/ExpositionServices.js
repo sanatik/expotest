@@ -9,12 +9,8 @@ module.factory('ExpositionService', ['$http', '$window', function ($http, $windo
                 return $http.get('/exposition', {params: params});
             },
             findOne: function (id) {
-                $("#loader").show();
                 return $http.get('/exposition/' + id).then(function (result) {
-                    $("#loader").hide();
                     return result.data;
-                }, function () {
-
                 });
             },
             save: function (expostion) {

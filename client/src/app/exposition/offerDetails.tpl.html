@@ -30,7 +30,7 @@
         </tr>
         <tr>
             <td>Город</td>
-            <td><input type="text" ng-model="newUser.city" /></td>
+            <td><input type="text" ng-model="newUser.city" g-places-autocomplete options="autocompleteOptions" /></td>
         </tr>
         <tr>
             <td>Компания</td>
@@ -62,5 +62,5 @@
 <div>
     <a href="" ng-click="back()">Back</a>
     <br />
-    <a href="" ng-show="isOwner(exposition.creator) || isOwner(offer.creator)" ng-click="getStatistic(exposition._id, offer._id)">Показать статистику</a>
+    <a href="/#/exposition/{{exposition._id}}/statistics/" ng-show="isOwner(exposition.creator) || isOwner(offer.creator)">Показать статистику</a>
 </div>

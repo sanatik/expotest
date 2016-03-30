@@ -13,9 +13,11 @@
     <nav id="main-nav">
         <div class="clearfix">
             <a ng-show="currentUser && hasRole(5)" href="/#/users/all/">Пользователи</a>
-            <a ng-show="currentUser && hasRole(2)" href="/#/offer/">Мои предложения <span class="light-blue-color">(2)</span></a>
-            <a ng-show="currentUser && hasRole(2)" href="/#/cart/">Моя корзина</a>
-            <a ng-show="currentUser && hasRole(1)" href="/#/cart/approve/">Мои предложения для подтверждения</a>
+            <a ng-show="currentUser && currentUser.name" href="/#/exposition/">Мероприятия</a>
+            <a ng-show="currentUser && hasRole(2)" href="/#/offer/">Мои предложения</a>
+            <a ng-show="currentUser && hasRole(2)" href="/#/cart/">Мои заказы <span class="light-blue-color">({{currentUser.cartAmount || 0}})</span></a>
+            <a ng-show="currentUser && hasRole(1)" href="/#/exposition/my/">Мои выставки</a>
+            <a ng-show="currentUser && hasRole(1)" href="/#/cart/approve/">Мои заказы <span class="light-blue-color">({{currentUser.cartAmount || 0}})</span></a>
             <a ng-hide="currentUser && currentUser.name" href="/#/auth/">Войти</a>
             <a ng-hide="currentUser && currentUser.name" href="/#/auth/signup/">Зарегистрироваться</a>
             <a ng-show="currentUser && currentUser.name" ng-click="logout()" href="">Выйти</a>

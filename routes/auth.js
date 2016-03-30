@@ -22,7 +22,8 @@ module.exports = function (passport) {
                     userId: user._id,
                     name: user.displayName,
                     username: user.login,
-                    role: user.role
+                    role: user.role,
+                    cartAmount: user.cart.length
                 }, config.privateKey, {
                     expiresIn: 1440 * 60 // expires in 24 hours
                 });

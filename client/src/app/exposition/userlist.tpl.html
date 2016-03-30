@@ -11,7 +11,7 @@
 
                 <div class="drop_big_320">
                     <select name="filter-offer" ng-change="getStatistic(exposition._id, false)" ng-model="chosenOfferId">
-                        <option ng-repeat="offer in exposition.offers" value="{{offer._id}}">{{offer.name}}</option>
+                        <option ng-repeat="offer in exposition.offers" ng-show="((hasRole(1) && isOwner(exposition.creator)) || hasRole(2) && isOwner(offer.creator))" value="{{offer._id}}">{{offer.name}}</option>
                     </select>
                 </div>
 

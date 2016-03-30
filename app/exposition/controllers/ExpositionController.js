@@ -14,6 +14,7 @@ exports.create = function (req, res) {
     exposition.displayName = req.body.displayName;
     exposition.creator = req.decoded.userId;
     exposition.price = req.body.price;
+    exposition.format = req.body.format;
     exposition.location = req.body.location;
     exposition.website = req.body.website;
     if (req.body.photo.content) {
@@ -45,49 +46,74 @@ exports.create = function (req, res) {
 };
 
 exports.getAll = function (req, res) {
+    var user = req.decoded;
     var location = req.query.location;
     var month = req.query.month;
     var format = req.query.format;
+    var my = req.query.my;
     var options = {};
-    if (format) {
+    if (format && format !== '0') {
         options = {'format': format};
+    }
+    if (location) {
+        location = JSON.parse(location);
+    }
+    if (user && my && my === '1') {
+        options.creator = user.userId;
     }
     Exposition.find(options, function (err, results) {
         if (err) {
             res.send(err);
-        }
-        var expositions = [];
-        for (var i in results) {
-            var exposition = results[i];
-            if (exposition.photo.contentBase64) {
-                var photo = exposition.photo.contentBase64.toString('base64');
-                exposition.photo.contentString = photo;
-            }
-            if (exposition.presentation.contentBase64) {
-                var content = exposition.presentation.contentBase64.toString('base64');
-                exposition.presentation.contentString = content;
-            }
-            if (month || location) {
-                var filterDateStart = new Date();
-                filterDateStart.setMonth(month - 1);
-                filterDateStart.setDate(1);
-                var filterDateEnd = new Date();
-                if(month > 11){
-                    month = 0;
+        } else {
+            var expositions = [];
+            for (var i in results) {
+                var exposition = results[i];
+                if (exposition.photo.contentBase64) {
+                    var photo = exposition.photo.contentBase64.toString('base64');
+                    exposition.photo.contentString = photo;
                 }
-                filterDateEnd.setMonth(month);
-                filterDateEnd.setDate(0);
-                console.log(exposition.startDate);
-                console.log(filterDateEnd);
-                if (exposition.startDate.getTime() <= filterDateEnd.getTime()
-                        && exposition.endDate.getTime() >= filterDateStart.getTime()) {
+                if (exposition.presentation.contentBase64) {
+                    var content = exposition.presentation.contentBase64.toString('base64');
+                    exposition.presentation.contentString = content;
+                }
+                if (month || location) {
+                    var filterDateStart = new Date();
+                    filterDateStart.setMonth(month - 1);
+                    filterDateStart.setDate(1);
+                    var filterDateEnd = new Date();
+                    if (month > 11) {
+                        month = 0;
+                    }
+                    filterDateEnd.setMonth(month);
+                    filterDateEnd.setDate(0);
+                    if (exposition.startDate.getTime() <= filterDateEnd.getTime()
+                            && exposition.endDate.getTime() >= filterDateStart.getTime()) {
+                        expositions.push(exposition);
+                    } else if (location) {
+                        if (exposition.location) {
+
+                            var type = location.types[0];
+                            if (type === 'locality') {
+                                if (exposition.location.place_id === location.place_id) {
+                                    expositions.push(exposition);
+                                }
+                            } else if (type === 'country') {
+                                var acs = exposition.location.address_components;
+                                if (acs[acs.length - 1].types[0] === 'country') {
+                                    if (acs[acs.length - 1].long_name === location.address_components[0].long_name) {
+                                        expositions.push(exposition);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else {
                     expositions.push(exposition);
                 }
-            }else{
-                expositions.push(exposition);
-            }
 
+            }
         }
+
         res.json(expositions);
     });
 };
@@ -209,6 +235,12 @@ exports.respond = function (req, res) {
                             f.offerId = oId;
                             f.answer = req.body.answer;
                             a.feedback.push(f);
+
+                            a.position = newUser.position;
+                            a.company = newUser.company;
+                            a.city = newUser.city;
+                            a.displayName = newUser.displayName;
+
                             userExists = true;
                             exposition.audience[i] = a;
                             break;
@@ -303,7 +335,17 @@ function getUserInfo(currentUser, user, callback) {
                 }
                 // already exists
                 if (u) {
-                    callback(false, u);
+                    u.position = user.position;
+                    u.company = user.company;
+                    u.city = user.city;
+                    u.displayName = user.displayName;
+
+                    u.save(function (err) {
+                        if (err) {
+                            callback(err, false);
+                        }
+                        callback(false, u);
+                    });
                 } else {
                     // if there is no user with that email
                     // create the user

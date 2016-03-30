@@ -45,7 +45,7 @@ var ExpositionSchema = mongoose.Schema({
             position: String,
             company: String,
             phone: String,
-            city: String,
+            city: Object,
             email: String,
             feedback: [{
                     offerId: {

@@ -19,7 +19,7 @@ var UserSchema = new mongoose.Schema({
     role: Number,
     position: String,
     company: String,
-    city: String,
+    city: Object,
     hasPremium: {
         type: Boolean,
         default: false

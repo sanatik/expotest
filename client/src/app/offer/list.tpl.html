@@ -13,3 +13,56 @@
         </td>
     </tr>
 </table>
+
+<!-- Filters -->
+<section id="filters">
+    <div class="inner">
+
+        <div class="tags">
+            <div class="clearfix">
+
+                <div class="tag_boxed">Бизнес</div>
+                <div class="tag_boxed active">Конференция</div>
+                <div class="tag_boxed">Семинар</div>
+                <div class="tag_boxed">Обзор</div>
+
+                <button class="button_blue_text">Добавить направление</button>
+                <button class="button_blue_icon trash"></button>
+
+            </div>
+        </div>
+    </div>
+</section>
+<section id="events" class="clearfix">
+    <div class="inner">
+        <div class="grid clearfix" masonry>
+            <!-- Single item -->
+            <a permission only="'exponent'" href="/#/exposition/create/" class="grid_item add_new" masonry-brick>
+                <button class="button_blue_text">Добавить предложение</button>
+            </a>
+
+            <!-- Single item -->
+            <div masonry-brick class="masonry-brick grid_item" ng-repeat="offer in offers">
+                <a ng-click="findOffer(offer._id)" href="" class="photo">
+                    <img data-ng-src="data:{{offer.photo.ext}};base64,{{offer.photo.contentString}}">
+                </a>
+
+                <div class="info">
+
+                    <a ng-click="findOffer(offer._id)" class="title">{{offer.name}}</a>
+
+                    <div class="tags">
+                        {{offer.description}}
+                    </div>
+                </div>
+
+                <div class="numbers clearfix">
+                    
+                </div>
+            </div>
+        </div>
+    </div><!--/inner-->
+
+    <button class="button_gray_border_text load_more">Загрузить еще</button>
+
+</section>

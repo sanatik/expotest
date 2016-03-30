@@ -4,30 +4,29 @@
 var offerApp = angular.module('offers', ['ngResource', 'ui.router', 'offer.services', 'angularMoment', 'auth.services']);
 
 offerApp.config(['$stateProvider', '$urlRouterProvider',
-
     function ($stateProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise("/");
         $stateProvider
-            .state('offer', {
-                url: "/offer/",
-                templateUrl: 'app/offer/list.tpl.html',
-                controller: 'OfferController'
-            })
-            .state('offercreate', {
-                url: "/offer/create/",
-                templateUrl: 'app/offer/create.tpl.html',
-                controller: 'OfferController'
-            })
-            .state('offerview', {
-                url: "/offer/:id/",
-                templateUrl: 'app/offer/details.tpl.html',
-                controller: 'OfferController'
-            })
-            .state('offeredit', {
-                url: "/offer/:id/edit/",
-                templateUrl: 'app/offer/edit.tpl.html',
-                controller: 'OfferController'
-            });
+                .state('offer', {
+                    url: "/offer/",
+                    templateUrl: 'app/offer/list.tpl.html',
+                    controller: 'OfferController'
+                })
+                .state('offercreate', {
+                    url: "/offer/create/",
+                    templateUrl: 'app/offer/create.tpl.html',
+                    controller: 'OfferController'
+                })
+                .state('offerview', {
+                    url: "/offer/:id/",
+                    templateUrl: 'app/offer/details.tpl.html',
+                    controller: 'OfferController'
+                })
+                .state('offeredit', {
+                    url: "/offer/:id/edit/",
+                    templateUrl: 'app/offer/edit.tpl.html',
+                    controller: 'OfferController'
+                });
     }
 ]);
 
@@ -65,7 +64,7 @@ offerApp.controller('OfferController', ['$scope', '$resource', '$state', '$locat
             if ($scope.offerCreateForm != 'undefined') {
                 if (this.offer) {
                     OfferService.save(this.offer).then(function (result) {
-                        if(result.errors){
+                        if (result.errors) {
                             alert("Error");
                             return;
                         }
@@ -89,9 +88,9 @@ offerApp.controller('OfferController', ['$scope', '$resource', '$state', '$locat
         };
 
         $scope.deleteOffer = function (_id) {
-            OfferService.delete(_id).then(function(){
+            OfferService.delete(_id).then(function () {
                 $location.path("/offer/");
-            }, function(){
+            }, function () {
                 alert("Error on deleting offer");
             });
         };
@@ -126,7 +125,7 @@ offerApp.controller('OfferController', ['$scope', '$resource', '$state', '$locat
             var ctx = canvas.getContext("2d");
             ctx.drawImage(img, 0, 0);
 
-            var MAX_WIDTH = 200;
+            var MAX_WIDTH = 250;
             var MAX_HEIGHT = 300;
             var width = img.width;
             var height = img.height;

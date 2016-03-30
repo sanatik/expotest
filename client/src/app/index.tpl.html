@@ -4,11 +4,12 @@
 
         <div class="selects clearfix">
             <div class="drop_big_320 filter-category">
-                <select name="filter-category">
-                    <option value="Выставки">Выставки</option>
-                    <option value="Выставка 1">Выставка 1</option>
-                    <option value="Выставка 2">Выставка 2</option>
-                    <option value="Выставка 3">Выставка 3</option>
+                <select name="filter-category" ng-model="filter.format" ng-change="loadExpos()">
+                    <option value="0">Все</option>
+                    <option value="1">Выставки</option>
+                    <option value="2">Премии</option>
+                    <option value="3">Конференции</option>
+                    <option value="4">Форумы</option>
                 </select>
             </div>
 
@@ -16,11 +17,11 @@
                 <div class="clearfix">
                     <div class="drop_small_200">
                         <input ng-change="onChangeFilterIndex()" ng-model="filter.location" type="text" placeholder="Выбрать страну" style="color: white;"  g-places-autocomplete options="autocompleteOptions"/>
-<!--                        <select name="filter-country">
-                            <option value="Выбрать страну">Выбрать страну</option>
-                            <option value="Страна 1">Страна 1</option>
-                            <option value="Страна 2">Страна 2</option>
-                        </select>-->
+                        <!--                        <select name="filter-country">
+                                                    <option value="Выбрать страну">Выбрать страну</option>
+                                                    <option value="Страна 1">Страна 1</option>
+                                                    <option value="Страна 2">Страна 2</option>
+                                                </select>-->
                     </div>
 
                     <div class="drop_small_200">
@@ -72,9 +73,9 @@
 
             <!-- Single item -->
             <div masonry-brick class="masonry-brick grid_item" ng-repeat="exposition in expositions">
-                <a href="/#/cart/add/{{exposition._id}}/" class="photo">
+                <a ng-click="redirect(exposition._id)" href="" class="photo">
                     <img data-ng-src="data:{{exposition.photo.ext}};base64,{{exposition.photo.contentString}}">
-                    <div href="/#/cart/add/{{exposition._id}}/" class="rocket button_green_icon">Тестировать</div>
+                    <div ng-click="redirect(exposition._id)" class="rocket button_green_icon">Тестировать</div>
                 </a>
 
                 <div class="info">
@@ -82,7 +83,7 @@
 
                     <a href="/#/exposition/{{exposition._id}}/" ng-click="findExposition(exposition._id)" class="title">{{exposition.displayName}}</a>
 
-                    <div class="city">{{exposition.location.formatted_address}}</div>
+                    <div class="city">{{exposition.location.address_components[0].long_name}}, {{exposition.location.address_components[exposition.location.address_components.length - 1].long_name}}</div>
 
                     <div class="tags">
                         <a href="#" class="single-tag">Машиностроение</a>, <a href="#" class="single-tag">Промышленные насосы и клапаны</a>, <a href="#" class="single-tag">Гидравлика и пневматика</a>, <a href="#" class="single-tag">Промышленное оборудование</a>, <a href="#" class="single-tag">Металлообрабатывающие станки</a>, <a href="#" class="single-tag">Гидравлика и пневматика</a>, <a href="#" class="single-tag">Машиностроение</a>
@@ -102,4 +103,51 @@
 
     <button class="button_gray_border_text load_more">Загрузить еще</button>
 
+</section>
+
+<!-- Events -->
+<section id="new-test" class="clearfix">
+
+    <h1>Тестировать аудиторию</h1>
+
+    <div class="inner">
+
+        <div class="grid clearfix" masonry>
+           <!-- Single item -->
+            <a href="#" class="grid_item add_new">
+                <button class="button_blue_text">Создать предложение</button>
+            </a>
+            
+           <!-- Single item -->
+           <div masonry-brick class="grid_item" ng-repeat="offer in offers">
+                <a href="#" class="photo">
+                    <img data-ng-src="data:{{offer.photo.ext}};base64,{{offer.photo.contentString}}">
+                </a>
+                
+                <div class="info">
+                    
+                    <a href="#" class="title">{{offer.name}}</a>
+                    
+                    <div class="tags">
+                        {{offer.description}}
+                    </div>
+                </div>
+                
+                <div class="numbers clearfix">
+                    <button class="green_button" ng-click="addCartItem(offer._id)">Выбрать предложение</button>
+<!--                    <div class="people">> 5000</div>
+                    
+                    <div class="man">74</div>
+                    
+                    <div class="price">12000 &#8381;</div>-->
+                </div>
+            </div>
+            
+        </div><!--/grid-->
+    </div><!--/inner-->
+    
+    <div class="button_bg">
+        
+    </div>
+    
 </section>

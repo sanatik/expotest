@@ -12,7 +12,8 @@ angular.module('app', [
     'auth',
     'auth.services',
     'cart',
-    'users'
+    'users',
+    'google.places'
 ]).run(function (RoleStore, AuthServices, $q) {
     RoleStore.defineRole('organizer', [], function () {
         var deferred = $q.defer();
@@ -87,13 +88,15 @@ angular.module('app').controller('AppCtrl', ['$scope', '$location', '$rootScope'
         };
         $rootScope.hasRole = function (role) {
             var hasRole = false;
-            $rootScope.checkCurrentUser(function (data) {
-                if (data) {
-                    if (data.message === 'ok') {
-                        hasRole = $rootScope.currentUser.role === role;
+            if (AuthServices.isLoggedIn()) {
+                $rootScope.checkCurrentUser(function (data) {
+                    if (data) {
+                        if (data.message === 'ok') {
+                            hasRole = $rootScope.currentUser.role === role;
+                        }
                     }
-                }
-            });
+                });
+            }
             return hasRole;
         };
     }]);
