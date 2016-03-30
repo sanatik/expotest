@@ -69,6 +69,14 @@
             <td><input type="text" ng-model="exposition.minFeedBack"></td>
         </tr>
         <tr>
+            <td>Теги</td>
+            <td>
+                <tags-input ng-model="exposition.tags">
+<!--                    <auto-complete source="loadTags($query)"></auto-complete>-->
+                </tags-input>
+            </td>
+        </tr>
+        <tr>
             <td colspan="2" style="text-align: right;">
                 <button type="submit" ng-click="createExposition()">Добавить</button>
                 <a href="/#/exposition/create/" ng-click="reset()">Отменить</a>

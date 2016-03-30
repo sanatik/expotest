@@ -23,6 +23,7 @@
     "multiparty": "4.1.2",
     "nan": "^2.0.9",
     "ng-file-upload": "11.2.3",
+    "ng-tags-input": "^3.0.0",
     "node-uuid": "1.4.7",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",

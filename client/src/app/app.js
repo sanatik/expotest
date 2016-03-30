@@ -13,7 +13,8 @@ angular.module('app', [
     'auth.services',
     'cart',
     'users',
-    'google.places'
+    'google.places',
+    'ngTagsInput'
 ]).run(function (RoleStore, AuthServices, $q) {
     RoleStore.defineRole('organizer', [], function () {
         var deferred = $q.defer();
