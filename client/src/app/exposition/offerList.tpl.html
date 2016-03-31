@@ -11,8 +11,8 @@
                 <div class="tag_boxed">Обзор</div>
 
                 <button class="button_blue_text">Добавить направление</button>
-                <button class="button_blue_icon trash"></button>
-
+                <!--                <button class="button_blue_icon trash"></button>-->
+                <button ng-click="locationPath('/offer/create/')" class="button_blue_text" style="float: right;">Добавить свое предложение</button>
             </div>
         </div>
     </div>
@@ -27,13 +27,13 @@
 
             <!-- Single item -->
             <div masonry-brick class="masonry-brick grid_item" ng-repeat="offer in exposition.offers">
-                <a ng-click="findOffer(offer._id)" href="" class="photo">
+                <a href="/#/exposition/{{exposition._id}}/offers/{{offer._id}}/" class="photo">
                     <img data-ng-src="data:{{offer.photo.ext}};base64,{{offer.photo.content}}">
                 </a>
 
                 <div class="info">
 
-                    <a ng-click="findOffer(offer._id)" class="title">{{offer.name}}</a>
+                    <a href="/#/exposition/{{exposition._id}}/offers/{{offer._id}}/" class="title">{{offer.name}}</a>
 
                     <div class="tags">
                         {{offer.description}}
@@ -41,7 +41,7 @@
                 </div>
 
                 <div class="numbers clearfix">
-                    
+                    <button ng-click="locationPath('/exposition/' + exposition._id + '/offers/' + offer._id + '/')" class="button_blue_text">Подробнее</button>
                 </div>
             </div>
         </div>

@@ -25,7 +25,7 @@
             <td><input type="text" name="expositionWebsite" ng-model="exposition.website" id="expositionWebsite"/></td>
         </tr>
         <tr>
-            <td>Цена</td>
+            <td>Стоимость тестирования</td>
             <td><input type="text" name="expositionPrice" ng-model="exposition.price" id="expositionPrice"/></td>
         </tr>
         <tr>
@@ -61,6 +61,10 @@
             </td>
         </tr>
         <tr>
+            <td>Количество участников</td>
+            <td><input type="text" ng-model="exposition.participantsNumber"></td>
+        </tr>
+        <tr>
             <td>Ожидаемая аудитория</td>
             <td><input type="text" ng-model="exposition.expectedAudience"></td>
         </tr>
@@ -71,10 +75,14 @@
         <tr>
             <td>Теги</td>
             <td>
-                <tags-input ng-model="exposition.tags">
-<!--                    <auto-complete source="loadTags($query)"></auto-complete>-->
-                </tags-input>
-            </td>
+        <tags-input ng-model="exposition.tags" addOnComma="false" addOnSpace="true">
+            <!--                    <auto-complete source="loadTags($query)"></auto-complete>-->
+        </tags-input>
+        </td>
+        </tr>
+        <tr>
+            <td>Направление</td>
+            <td><button ng-click="showThemes()">Выбрать</button></td>
         </tr>
         <tr>
             <td colspan="2" style="text-align: right;">
@@ -84,6 +92,30 @@
         </tr>
     </table>
 </form>
+
+<section id="new-test" class="clearfix">
+
+    <h1>Выбрать направление</h1>
+
+    <div class="inner">
+
+        <div class="grid clearfix">
+            <ul class="leter-list" ng-repeat="(key, value) in tags">
+                <div class="leter"><font size="5">{{key}}</font></div>
+<!--                <li ng-repeat="theme in themes">
+                    <a href="/expo/theme/aviakosmicheskaya-promyishlennost/">{{theme.name}}</a>
+                </li>-->
+            </ul>
+        </div><!--/grid-->
+    </div><!--/inner-->
+
+    <div class="button_bg">
+        <button ng-class="activeChoseOfferButton ? '' : 'gray_button'" ng-click="addCartItem()">Выбрать предложение</button>
+        <button ng-click="locationPath('/offer/create/')" class="button_blue_text">Создать предложение</button>
+    </div>
+
+</section>
+
 <script>
     $(function () {
         $(".date").each(function () {

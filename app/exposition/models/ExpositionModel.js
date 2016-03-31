@@ -57,6 +57,7 @@ var ExpositionSchema = mongoose.Schema({
                 }]
         }],
     expectedAudience: Number,
+    participantsNumber: Number,
     minFeedBack: Number,
     testFlightRequest: Boolean,
     audienceCheckTarget: Number,

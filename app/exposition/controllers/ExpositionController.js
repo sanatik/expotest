@@ -33,6 +33,7 @@ exports.create = function (req, res) {
     exposition.description = req.body.description;
     exposition.additional = req.body.additional;
     exposition.expectedAudience = req.body.expectedAudience;
+    exposition.participantsNumber = req.body.participantsNumber;
     exposition.minFeedBack = req.body.minFeedBack;
     exposition.testFlightRequest = true;
     exposition.moderatorCheckingResult = 0;

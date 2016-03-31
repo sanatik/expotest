@@ -33,7 +33,7 @@ offerApp.config(['$stateProvider', '$urlRouterProvider',
 
 offerApp.controller('OfferController', ['$scope', '$resource', '$state', '$location', 'OfferService',
     function ($scope, $resource, $state, $location, OfferService) {
-
+        $('.shadow_overlay').fadeOut(100);
         var loadOffers = function () {
             OfferService.findAll().then(function (data) {
                 $scope.offers = data.data;

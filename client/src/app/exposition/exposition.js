@@ -126,6 +126,28 @@ expositionApp.controller('ExpositionsController',
                     loadExpositions(params);
                 };
 
+                $scope.tags = new Array();
+                $scope.loadTags = function () {
+                    ExpositionService.getTags().then(function (data) {
+                        var tags = $scope.tags;
+                        for (var i in data) {
+                            var theme = data[i];
+                            
+                            if (theme.name.charAt(0)) {
+                                if (!tags[theme.name.charAt(0)]) {
+                                    tags[theme.name.charAt(0)] = [];
+                                }
+                                tags[theme.name.charAt(0)].push(theme);
+                            }
+
+                        }
+                        console.log(tags);
+                        $scope.tags = (JSON.stringify(tags));
+                        console.log($scope.tags);
+//                        console.log($scope.tags.length);
+                    });
+                };
+
                 if (!$scope.expositions &&
                         ($state.current.name === 'exposition'
                                 )) {
@@ -154,6 +176,7 @@ expositionApp.controller('ExpositionsController',
                     }
                 }
                 if ($state.current.name === 'expositioncreate') {
+                    $scope.loadTags();
                     $scope.exposition = {};
                     $scope.exposition.presentation = {};
                     $scope.exposition.photo = {};
@@ -327,15 +350,32 @@ expositionApp.controller('ExpositionsController',
                     //$location.path(url);
                 };
 
-                $scope.addCartItem = function (offerId) {
-                    if (offerId && $scope.expositionId) {
-                        CartService.add({offerId: offerId, expositionId: $scope.expositionId}).then(function (data) {
+                $scope.locationPath = function (url) {
+                    $location.path(url);
+                };
+
+                $scope.addCartItem = function () {
+                    if ($scope.activeChoseOfferButton && $scope.offerId && $scope.expositionId) {
+                        CartService.add({offerId: $scope.offerId, expositionId: $scope.expositionId}).then(function (data) {
                             if (data.data.success === true) {
                                 $('.shadow_overlay').fadeOut(150);
                                 $location.path('/cart/');
                             }
                         });
                     }
+                };
+                $scope.chooseOffer = function (index, offerId) {
+                    $scope.chosenOffer = index;
+                    $scope.offerId = offerId;
+                    $scope.activeChoseOfferButton = true;
+                };
+                $scope.tags = [];
+                $scope.showThemes = function () {
+
+                    console.log($scope.tags);
+                    $('#new-test').css({opacity: 0, visibility: 'visible'}).animate({opacity: 1}, 100).addClass('active');
+                    $('.shadow_overlay').fadeIn(100);
+
                 };
 
                 function resizeImg(file) {

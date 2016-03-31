@@ -8,6 +8,7 @@ var api = require('../routes/api');
 var cart = require('../routes/cart');
 var offer = require('../routes/offer');
 var user = require('../routes/user');
+var tag = require('../routes/tag');
 var auths = require('../routes/auth')(passport);
 module.exports = function (app) {
     app.use('/', index);
@@ -17,5 +18,6 @@ module.exports = function (app) {
     app.use('/cart', cart);
     app.use('/offer', offer);
     app.use('/user', user);
+    app.use('/tags', tag);
 };
 
