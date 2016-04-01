@@ -37,6 +37,42 @@ exports.create = function (req, res) {
     exposition.minFeedBack = req.body.minFeedBack;
     exposition.testFlightRequest = true;
     exposition.moderatorCheckingResult = 0;
+    exposition.themes = req.body.themes;
+    var themeIds = [];
+    for (var i in exposition.themes) {
+        themeIds.push(exposition.themes[i]._id);
+    }
+    var tags = req.body.tags;
+    var insertTags = [];
+    for(var i in tags){
+        insertTags.push(tags[i].text);
+        for(var j in exposition.themes){
+            if(!exposition.themes[j].tags){
+                exposition.themes[j].tags = [];
+            }
+            exposition.themes[j].tags.push(tags[i].text);
+        }
+    }
+    mongoose.model('Tag').update({_id: {$in: themeIds}}, {$push: {tags: insertTags}});
+//    mongoose.model('Tag').find({_id: {$in: [themeIds]}}, function (err, themes) {
+//        if (err) {
+//            res.send(err);
+//        }
+//        for (var i in themes) {
+//            if (themes[i].tags) {
+//                for (var j in tags) {
+//                    if (!tagExists(tags[j], themes[i].tags)) {
+//                        themes[i].tags.push(tags[j]);
+//                    }
+//                }
+//            }else{
+//                themes[i].tags = [];
+//                for (var j in tags) {
+//                    themes[i].tags.push(tags[j]);
+//                }
+//            }
+//        }
+//    });
 
     exposition.save(function (err, result) {
         if (err) {
@@ -45,6 +81,15 @@ exports.create = function (req, res) {
         res.json(result);
     });
 };
+
+function tagExists(tag, tags) {
+    for (var i in tags) {
+        if (tags[i] === tag) {
+            return true;
+        }
+    }
+    return false;
+}
 
 exports.getAll = function (req, res) {
     var user = req.decoded;

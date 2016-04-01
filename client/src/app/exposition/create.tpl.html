@@ -73,17 +73,25 @@
             <td><input type="text" ng-model="exposition.minFeedBack"></td>
         </tr>
         <tr>
+            <td>Тематики</td>
+            <td>
+                <button ng-click="showThemes()">Добавить</button>
+                <ul>
+                    <li ng-repeat="theme in exposition.themes">
+                        {{theme.name}}
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
             <td>Теги</td>
             <td>
         <tags-input ng-model="exposition.tags" addOnComma="false" addOnSpace="true">
-            <!--                    <auto-complete source="loadTags($query)"></auto-complete>-->
+            <auto-complete source="findTag($query)"></auto-complete>
         </tags-input>
         </td>
         </tr>
-        <tr>
-            <td>Направление</td>
-            <td><button ng-click="showThemes()">Выбрать</button></td>
-        </tr>
+
         <tr>
             <td colspan="2" style="text-align: right;">
                 <button type="submit" ng-click="createExposition()">Добавить</button>
@@ -95,23 +103,22 @@
 
 <section id="new-test" class="clearfix">
 
-    <h1>Выбрать направление</h1>
+    <h1>Выбрать тематику</h1>
 
     <div class="inner">
 
         <div class="grid clearfix">
-            <ul class="leter-list" ng-repeat="(key, value) in tags">
-                <div class="leter"><font size="5">{{key}}</font></div>
-<!--                <li ng-repeat="theme in themes">
-                    <a href="/expo/theme/aviakosmicheskaya-promyishlennost/">{{theme.name}}</a>
-                </li>-->
+            <ul class="leter-list" ng-repeat="letter in letters">
+                <div class="leter"><font size="5">{{letter}}</font></div>
+                <li ng-repeat="theme in themes" ng-if="letter === theme.name.charAt(0)" style="max-width: 275px;" ng-class="checkChosenTheme(theme) ? 'active' : ''">
+                    <a href="" ng-click="choseThemes(theme)">{{theme.name}}</a>
+                </li>
             </ul>
         </div><!--/grid-->
     </div><!--/inner-->
 
     <div class="button_bg">
-        <button ng-class="activeChoseOfferButton ? '' : 'gray_button'" ng-click="addCartItem()">Выбрать предложение</button>
-        <button ng-click="locationPath('/offer/create/')" class="button_blue_text">Создать предложение</button>
+        <button ng-class="activeChoseThemeButton ? '' : 'gray_button'" ng-click="closeTheme()">Выбрать тематики</button>
     </div>
 
 </section>

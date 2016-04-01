@@ -51,8 +51,8 @@ expositionApp.config(['$stateProvider', '$urlRouterProvider',
 ]);
 
 expositionApp.controller('ExpositionsController',
-        ['$scope', '$state', '$location', 'ExpositionService', '$window', '$filter', '$rootScope', 'AuthServices', 'OfferService', 'CartService',
-            function ($scope, $state, $location, ExpositionService, $window, $filter, $rootScope, AuthServices, OfferService, CartService) {
+        ['$scope', '$state', '$location', 'ExpositionService', '$window', '$filter', '$rootScope', 'AuthServices', 'OfferService', 'CartService', '$q',
+            function ($scope, $state, $location, ExpositionService, $window, $filter, $rootScope, AuthServices, OfferService, CartService, $q) {
                 var loadExpositions = function (params) {
                     ExpositionService.findAll(params).then(
                             function (data) {
@@ -126,25 +126,25 @@ expositionApp.controller('ExpositionsController',
                     loadExpositions(params);
                 };
 
-                $scope.tags = new Array();
+                $scope.letters = [];
                 $scope.loadTags = function () {
-                    ExpositionService.getTags().then(function (data) {
-                        var tags = $scope.tags;
+                    ExpositionService.getTags().then(function (d) {
+                        var letters = $scope.letters;
+                        var data = d.data;
+                        $scope.tags = [];
                         for (var i in data) {
                             var theme = data[i];
-                            
                             if (theme.name.charAt(0)) {
-                                if (!tags[theme.name.charAt(0)]) {
-                                    tags[theme.name.charAt(0)] = [];
+                                if ($.inArray(theme.name.charAt(0), letters) === -1) {
+                                    letters.push(theme.name.charAt(0));
                                 }
-                                tags[theme.name.charAt(0)].push(theme);
                             }
-
+                            if(theme.tags){
+                                $scope.tags.push(theme.tags);
+                            }
                         }
-                        console.log(tags);
-                        $scope.tags = (JSON.stringify(tags));
-                        console.log($scope.tags);
-//                        console.log($scope.tags.length);
+                        $scope.letters = letters;
+                        $scope.themes = data;
                     });
                 };
 
@@ -176,7 +176,7 @@ expositionApp.controller('ExpositionsController',
                     }
                 }
                 if ($state.current.name === 'expositioncreate') {
-                    $scope.loadTags();
+                    $scope.loadTags(1);
                     $scope.exposition = {};
                     $scope.exposition.presentation = {};
                     $scope.exposition.photo = {};
@@ -369,13 +369,52 @@ expositionApp.controller('ExpositionsController',
                     $scope.offerId = offerId;
                     $scope.activeChoseOfferButton = true;
                 };
-                $scope.tags = [];
                 $scope.showThemes = function () {
-
-                    console.log($scope.tags);
                     $('#new-test').css({opacity: 0, visibility: 'visible'}).animate({opacity: 1}, 100).addClass('active');
                     $('.shadow_overlay').fadeIn(100);
+                };
+                $scope.exposition.themes = [];
+                $scope.choseThemes = function (theme) {
+                    var i = $scope.checkChosenTheme(theme);
+                    if (i) {
+                        $scope.exposition.themes.splice(i, 1);
+                    } else {
+                        $scope.exposition.themes.push(theme);
+                    }
+                    if ($scope.exposition.themes.length > 0) {
+                        $scope.activeChoseThemeButton = true;
+                    } else {
+                        $scope.activeChoseThemeButton = false;
+                    }
 
+                };
+
+                $scope.checkChosenTheme = function (theme) {
+                    for (var i in $scope.exposition.themes) {
+                        var t = $scope.exposition.themes[i];
+                        if (theme._id === t._id) {
+                            return i;
+                        }
+                    }
+                    return false;
+                };
+
+                $scope.closeTheme = function () {
+                    $('#mobile-nav .hidden-menu').slideUp(150);
+                    $('#mobile-nav .show_elements_button').removeClass('active');
+                    $('.shadow_overlay').fadeOut(150);
+                    $('#new-test').css('opacity', '1').animate({opacity: 0}, 150, function () {
+                        $('#new-test').css('visibility', 'hidden').removeClass('active');
+                    });
+                };
+
+                $scope.findTag = function ($query) {
+                    var deferred = $q.defer();
+                    if($scope.tags){
+                        tags = $scope.tags;
+                    }
+                    deferred.resolve(tags);
+                    return deferred.promise;
                 };
 
                 function resizeImg(file) {

@@ -16,7 +16,11 @@ var TagSchema = mongoose.Schema({
         type: String,
         unique: true
     },
-    type: Number
+    type: Number,
+    tags: [{
+            type: String,
+            unique: true
+        }]
 });
 
 module.exports = mongoose.model('Tag', TagSchema);

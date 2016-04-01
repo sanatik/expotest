@@ -25,6 +25,12 @@ and open the template in the editor.
     min-height: 6em;
 }
 .leter-list .leter {
-    color: #f60;
+    color: #06ca55;
     margin-bottom: 1em;
+}
+.leter-list li a{
+    color: #0091d5;
+}
+.leter-list li.active{
+    background-color: #ccc;
 }

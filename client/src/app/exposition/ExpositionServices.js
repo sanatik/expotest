@@ -54,9 +54,7 @@ module.factory('ExpositionService', ['$http', '$window', function ($http, $windo
                 return callback(res);
             },
             getTags: function(){
-                return $http.get("/tags").then(function(data){
-                    return data.data;
-                });
+                return $http.get("/tags");
             }
         };
     }]);

@@ -61,6 +61,9 @@ var ExpositionSchema = mongoose.Schema({
     minFeedBack: Number,
     testFlightRequest: Boolean,
     audienceCheckTarget: Number,
-    audienceCheckResult: Boolean
+    audienceCheckResult: Boolean,
+    themes: [
+        
+    ]
 });
 module.exports = mongoose.model('Exposition', ExpositionSchema);
