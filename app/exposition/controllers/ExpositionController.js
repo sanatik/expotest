@@ -44,16 +44,29 @@ exports.create = function (req, res) {
     }
     var tags = req.body.tags;
     var insertTags = [];
-    for(var i in tags){
+    for (var i in tags) {
         insertTags.push(tags[i].text);
-        for(var j in exposition.themes){
-            if(!exposition.themes[j].tags){
+        for (var j in exposition.themes) {
+            if (!exposition.themes[j].tags) {
                 exposition.themes[j].tags = [];
             }
             exposition.themes[j].tags.push(tags[i].text);
         }
     }
-    mongoose.model('Tag').update({_id: {$in: themeIds}}, {$push: {tags: insertTags}});
+    mongoose.model('Tag')
+            .update({_id: {$in: themeIds}}, {$addToSet: {tags: {$each: insertTags}}},
+            {upsert: true, multi: true}, function (err) {
+                if (err) {
+                    res.json(err);
+                } else {
+                    exposition.save(function (err, result) {
+                        if (err) {
+                            res.send(err);
+                        }
+                        res.json(result);
+                    });
+                }
+            });
 //    mongoose.model('Tag').find({_id: {$in: [themeIds]}}, function (err, themes) {
 //        if (err) {
 //            res.send(err);
@@ -74,12 +87,7 @@ exports.create = function (req, res) {
 //        }
 //    });
 
-    exposition.save(function (err, result) {
-        if (err) {
-            res.send(err);
-        }
-        res.json(result);
-    });
+
 };
 
 function tagExists(tag, tags) {

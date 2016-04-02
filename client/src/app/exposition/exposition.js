@@ -134,14 +134,14 @@ expositionApp.controller('ExpositionsController',
                         $scope.tags = [];
                         for (var i in data) {
                             var theme = data[i];
-                            if (theme.name.charAt(0)) {
-                                if ($.inArray(theme.name.charAt(0), letters) === -1) {
-                                    letters.push(theme.name.charAt(0));
+                            if (theme.name) {
+                                if (theme.name.charAt(0)) {
+                                    if ($.inArray(theme.name.charAt(0), letters) === -1) {
+                                        letters.push(theme.name.charAt(0));
+                                    }
                                 }
                             }
-                            if(theme.tags){
-                                $scope.tags.push(theme.tags);
-                            }
+
                         }
                         $scope.letters = letters;
                         $scope.themes = data;
@@ -156,7 +156,7 @@ expositionApp.controller('ExpositionsController',
                 $scope.offer = {};
                 $scope.autocompleteOptions = {
                     types: ['(regions)']
-                }
+                };
                 $scope.filter = {};
                 $scope.filter.month = 0;
                 $scope.filter.format = 0;
@@ -180,6 +180,7 @@ expositionApp.controller('ExpositionsController',
                     $scope.exposition = {};
                     $scope.exposition.presentation = {};
                     $scope.exposition.photo = {};
+                    $scope.exposition.themes = [];
                 }
 
                 $scope.createExposition = function () {
@@ -373,13 +374,20 @@ expositionApp.controller('ExpositionsController',
                     $('#new-test').css({opacity: 0, visibility: 'visible'}).animate({opacity: 1}, 100).addClass('active');
                     $('.shadow_overlay').fadeIn(100);
                 };
-                $scope.exposition.themes = [];
                 $scope.choseThemes = function (theme) {
                     var i = $scope.checkChosenTheme(theme);
                     if (i) {
                         $scope.exposition.themes.splice(i, 1);
                     } else {
                         $scope.exposition.themes.push(theme);
+                        console.log(theme);
+                        if (theme.tags) {
+                            if ($scope.tags) {
+                                $scope.tags = arrayUnique($scope.tags.concat(theme.tags));
+                            } else {
+                                $scope.tags = theme.tags;
+                            }
+                        }
                     }
                     if ($scope.exposition.themes.length > 0) {
                         $scope.activeChoseThemeButton = true;
@@ -410,7 +418,8 @@ expositionApp.controller('ExpositionsController',
 
                 $scope.findTag = function ($query) {
                     var deferred = $q.defer();
-                    if($scope.tags){
+                    var tags = [];
+                    if ($scope.tags) {
                         tags = $scope.tags;
                     }
                     deferred.resolve(tags);
@@ -447,6 +456,17 @@ expositionApp.controller('ExpositionsController',
 
                     var dataurl = canvas.toDataURL("image/png");
                     return dataurl;
+                }
+                function arrayUnique(array) {
+                    var a = array.concat();
+                    for (var i = 0; i < a.length; ++i) {
+                        for (var j = i + 1; j < a.length; ++j) {
+                            if (a[i] === a[j])
+                                a.splice(j--, 1);
+                        }
+                    }
+
+                    return a;
                 }
 
             }

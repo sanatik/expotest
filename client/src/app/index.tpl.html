@@ -86,7 +86,7 @@
                     <div class="city">{{exposition.location.address_components[0].long_name}}, {{exposition.location.address_components[exposition.location.address_components.length - 1].long_name}}</div>
 
                     <div class="tags">
-                        <a href="#" class="single-tag">Машиностроение</a>, <a href="#" class="single-tag">Промышленные насосы и клапаны</a>, <a href="#" class="single-tag">Гидравлика и пневматика</a>, <a href="#" class="single-tag">Промышленное оборудование</a>, <a href="#" class="single-tag">Металлообрабатывающие станки</a>, <a href="#" class="single-tag">Гидравлика и пневматика</a>, <a href="#" class="single-tag">Машиностроение</a>
+                        <a href="#" class="single-tag" ng-repeat="theme in exposition.themes">{{theme.name}} </a> 
                     </div>
                 </div>
 
