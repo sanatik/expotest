@@ -71,7 +71,7 @@
             <!-- Single item -->
             <div masonry-brick class="masonry-brick grid_item" ng-repeat="exposition in expositions">
                 <div class="photo">
-                    <a href="/#/exposition/{{exposition._id}}/"><img data-ng-src="data:{{exposition.photo.ext}};base64,{{exposition.photo.contentString}}" alt=""></a>
+                    <a href="/#/exposition/{{exposition._id}}/"><img style="max-width: 250px;" data-ng-src="data:{{exposition.photo.ext}};base64,{{exposition.photo.contentString}}" alt=""></a>
                     <a ng-click="redirect(exposition._id)" href="" class="rocket button_green_icon">Тестировать</a>
                 </div>
 
