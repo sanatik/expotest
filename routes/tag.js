@@ -5,6 +5,6 @@ var express = require('express');
 var router = express.Router();
 var tagController = require('../app/tags/controllers/TagController');
 
-router.get('/create',tagController.create);
-router.get('/',tagController.getAll);
+router.get('/',tagController.create);
+//router.get('/',tagController.getAll);
 module.exports = router;
