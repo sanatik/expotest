@@ -1,57 +1,275 @@
-<h3> Описание выставки </h3>
-<h4> {{exposition.displayName}}</h4>
-<div>
-    <a href="/#/exposition/">Назад</a>
-</div>
-<table>
-    <tr>
-        <td>Название</td>
-        <td>{{exposition.displayName}}</td>
-    </tr>
-    <tr>
-        <td>Город</td>
-        <td>{{exposition.location.address_components[0].long_name}}, {{exposition.location.address_components[exposition.location.address_components.length - 1].long_name}}</td>
-    </tr>
-    <tr>
-        <td>Вебсайт</td>
-        <td>{{exposition.website}}</td>
-    </tr>
-    <tr>
-        <td>Цена</td>
-        <td>{{exposition.price}}</td>
-    </tr>
-    <tr>
-        <td>Фото</td>
-        <td><img data-ng-src="data:{{exposition.photo.ext}};base64,{{exposition.photo.contentString}}"></td>
-    </tr>
-    <tr>
-        <td>Дата начала</td>
-        <td>{{exposition.startDate}}</td>
-    </tr>
-    <tr>
-        <td>Дата окончания</td>
-        <td>{{exposition.endDate}}</td>
-    </tr>
-    <tr>
-        <td>Презентация</td>
-        <td><a ng-show="exposition.presentation.contentString" ng-href="data:{{exposition.presentation.ext}};base64,{{exposition.presentation.contentString}}" target="_blank" download >Презентация</a> </td>
-    </tr>
-    <tr>
-        <td>Описание</td>
-        <td>{{exposition.description}}</td>
-    </tr>
-</table>
-<div>
-    <a ng-show="hasRole(2)" href="/#/cart/add/{{exposition._id}}/">Тестировать</a>
-    <a href="/#/exposition/{{exposition._id}}/offers/">Список предложений</a>
-    <a ng-show="isOwner(exposition.creator)" class="btn btn-inverse" href="/#/exposition/{{exposition._id}}/edit/"
-       ng-click="findExposition(exposition._id)">
-        Изменить
-    </a>
-    <a ng-show="isOwner(exposition.creator)" ng-click="generateLetter()" href="">Сгенерировать письмо</a>
-    <a ng-show="isOwner(exposition.creator)" ng-click="deleteExposition(exposition._id)" href="">Удалить</a>
+<link rel="stylesheet" href="css/kick.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+<section class="NS_projects__hero_funding">
+    <!-- / Hide this on mobile since we want the video to be at the top -->
+    <div class="mobile-hide py4 px2">
+        <div class="NS_projects__header center">
+            <h2 class="normal mb1"><a class="green-dark" href="#">{{exposition.displayName}}</a></h2>
+            <p class="green-dark h5 mb0 mobile-show">
+                {{exposition.startDateString}} - {{exposition.endDateString}}
+            </p>
+            <p class="green-dark h5 mb0 mobile-hide">
+                {{exposition.startDateString}} - {{exposition.endDateString}}
+            </p>
+        </div>
+
+    </div>
+    <div class="container-flex px2">
+        <div class="row">
+            <div class="table">
+                <div class="table-cell col-8 px-gutter">
+                    <div class="project-image" id="video-section">
+                        <img data-ng-src="data:{{exposition.photo.ext}};base64,{{exposition.photo.contentString}}">
+                    </div>
+
+                </div>
+                <div class="table-cell col-4 px-gutter">
+                    <!-- / Adding some markup here allows us to more closely replicate the mobile show template -->
+                    <div class="mobile-show mobile-center">
+                        <div class="py2">
+                            <div class="NS_projects__header center">
+                                <h2 class="normal mb1"><a class="green-dark" href="#">&quot;Oi&quot; : The bike bell that doesn&#39;t look like a bike bell.</a></h2>
+                                <p class="green-dark h5 mb0 mobile-show">
+                                    by <b><a class="green-dark" href="#">Knog</a></b>
+                                </p>
+                                <p class="green-dark h5 mb0 mobile-hide">
+                                    by <b><a class="remote_modal_dialog green-dark" href="#">Knog</a></b>
+                                </p>
+                            </div>
+
+                        </div>
+                        <div class="projects-hero-funding__blurb">
+                            Bike bells generally look and sound a bit ugly. But why? What if they looked sexy and sounded like an angel playing a glockenspiel?
+                            <a class="bold fastclick h5 nowrap" href="#">Read more</a>
+                        </div>
+                        <div class="project-progress-bar">
+                            <div class="project-percent-pledged" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    <div class="NS_projects__stats">
+                        <div class="digits_6" id="stats">
+                            <div class="row">
+                                <div class="col col-12 mb1 stat-item">
+                                    <div class="num h1 bold" id="backers_count">
+                                        <i class="fa fa-users"></i> > {{exposition.expectedAudience|| 0}}
+                                    </div>
+                                    <span class="text">посетителей</span>
+                                </div>
+                                <div class="col col-12 mb1 stat-item">
+                                    <div class="num h1 bold nowrap" id="pledged">
+                                        <i class="fa fa-user"></i> {{exposition.participantsNumber|| 0}}
+                                    </div>
+                                    <span class="text">
+                                        участников
+                                    </span>
+                                </div>
+                                <div class="col col-12 mb1 stat-item">
+                                    <div class="num h1 bold nowrap" id="pledged">
+                                        {{exposition.daysDiff}}
+                                    </div>
+                                    <span class="text">
+                                        дней до мероприятия
+                                    </span>
+                                </div>
+
+                                <span id="project_duration_data"></span>
+                                <div class="col col-12 stat-item">
+                                    <div class="Project1539660295">
+                                        <div class="ksr_page_timer poll stat">
+                                            <div class="num h1 bold">&nbsp;</div>
+                                            <span class="text">&nbsp;</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- / Only renders for non live projects -->
+                    <div class="Project1539660295"></div>
+                    <!-- / Back manage and star buttons -->
+                    <div class="NS_projects__back_and_star">
+                        <div class="Project1539660295">
+                            <div class="inline-block mobile-hide">
+                                <a class="btn btn--green btn--large" href="" ng-click="redirect(exposition._id)" id="button-back-this-proj">Тестировать</a>
+                            </div>
+                            <div class="mobile-show">
+                                <a class="btn btn--green btn--block" href="" ng-clieck="redirect(exposition._id)" id="button-back-this-proj">Тестировать</a>
+                            </div>
+                            <div class="align-middle inline-block pl1 mobile-hide"></div>
+                            <div class="ajax-container inline-block align-middle mobile-block py1" id="watching-widget">
+                                <div class="Project1539660295"></div>
+                                <div class="Project1539660295">
+                                    <div class="NS_watches__watch js-watch">
+                                        <a class="grey-dark mobile-hide h5 bold" href="#">
+                                            ( ? ) о тестировании
+                                        </a>
+                                        <a class="mobile-show btn btn--border-gray" href="#">
+                                            ( ? ) о тестировании
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mobile-show mobile-center pt2 border-top">
+                        <div class="NS_projects__category_location">
+                            <a class="grey-dark mr3 nowrap" href="#"><i class="fa fa-location-arrow"></i> {{exposition.location.address_components[0].long_name}}, {{exposition.location.address_components[exposition.location.address_components.length - 1].long_name}}</a>
+                            <a class="grey-dark mr3 nowrap" href="#"><i class="fa fa-tag"></i> {{exposition.format}}</a>
+                        </div>
+
+                        <div class="btn btn--border-gray btn--small mb2" href="#" id="project_share_mobile">Share this project</div>
+                    </div>
+                    <!-- / This project will only be funded if... -->
+                    <div class="NS_projects__deadline_copy">
+                        <div class="Project1539660295">
+                            <h4>Стоимость тестирования: {{exposition.price}} Р</h4>
+                            <p class="h6 grey-dark mb0">- Список заинтересованных посетителей до {{exposition.expectedAudience}} человек</p>
+                            <p class="h6 grey-dark mb0">- 2 рассылки по базе выставки</p>
+                            <p class="h6 grey-dark mb0">- анонс на сайте мероприятия</p>
+                        </div>
+                    </div>
+
+                    <!-- / Social avatars -->
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-8 py4">
+                <div class="mobile-hide">
+                    <div class="h5 mb3">
+                        <div class="NS_projects__category_location">
+                            <a class="grey-dark mr3 nowrap" href="#"><i class="fa fa-location-arrow"></i> {{exposition.location.address_components[0].long_name}}, {{exposition.location.address_components[exposition.location.address_components.length - 1].long_name}}</a>
+                            <a class="grey-dark mr3 nowrap" href="#"><i class="fa fa-tag"></i> {{exposition.format}}</a>
+
+                        </div>
+
+                    </div>
+                    <p class="h3 mb3">
+                        {{exposition.description}}
+                    </p>
+                    <div class="mb3">
+                        <div class="project-share mobile-hide NS_projects__project_share">
+                            <div class="project-share__label">Направления</div>
+                            <div class="inline-block" ng-repeat="theme in exposition.themes">
+                                <div class="inline-block">
+                                    <a class="project-share__btn" href="#" rel="nofollow">{{theme.name}}</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col col-4">
+                <div class="border-top py4">
+                    <div class="row clip">
+                        <div class="NS_projects__creator">
+                            <div class="col col-12">
+                                <div class="approved clearfix">
+                                    <div class="app-icon"><img src="http://placehold.it/60x60" alt=""></div>
+                                    <div class="info">
+                                        <p>Подтверждение аудитории:</p>
+                                        <p class="truth">проверен</p>
+                                    </div>
+                                </div>
+                                <p class="website">Сайт мероприятия: <a href="{{exposition.website}}">{{exposition.website}}</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="NS_projects__content">
+    <div class="NS_projects__project_nav js-project-nav" data-0="position:absolute;" data-top-top="position:fixed; top:0;">
+        <div class="container-flex js-project-nav-scroll">
+            <div class="row">
+                <div class="project-nav__links">
+                    <a class="is-active js-load-project-content js-load-project-description project-nav__link--campaign tabbed-nav__link" data-tab="1" href="#">
+                        Презентация
+                    </a>
+                    <a class="tabbed-nav__link project-nav__link--updates js-load-project-content js-load-project-updates" data-tab="2" href="#">
+                        Об аудитории
+                    </a>
+                    <a class="tabbed-nav__link project-nav__link--updates js-load-project-content js-load-project-updates" ng-show="hasRole(2)" href="/#/cart/add/{{exposition._id}}/">Тестировать</a>
+                    <a class="tabbed-nav__link project-nav__link--updates js-load-project-content js-load-project-updates" href="/#/exposition/{{exposition._id}}/offers/">Список предложений</a>
+                    <a class="tabbed-nav__link project-nav__link--updates js-load-project-content js-load-project-updates" ng-show="isOwner(exposition.creator)" class="btn btn-inverse" href="/#/exposition/{{exposition._id}}/edit/"
+                       ng-click="findExposition(exposition._id)">
+                        Изменить
+                    </a>
+                    <a class="tabbed-nav__link project-nav__link--updates js-load-project-content js-load-project-updates" ng-show="isOwner(exposition.creator)" ng-click="generateLetter()" href="">Сгенерировать письмо</a>
+                    <a class="tabbed-nav__link project-nav__link--updates js-load-project-content js-load-project-updates" ng-show="isOwner(exposition.creator)" ng-click="deleteExposition(exposition._id)" href="">Удалить</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div>
-    <textarea ng-model="letter" ng-show="showLetter"></textarea>
-</div>
+<section id="tab-content">
+    <div class="inner">
+        <div id="tab-1">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos incidunt ex consequuntur, autem id accusantium dolorum est expedita, distinctio provident. Sunt maxime molestiae itaque. Consectetur maiores quidem reprehenderit mollitia ratione blanditiis consequatur eligendi fuga, corporis deserunt animi praesentium recusandae ea autem illo, error, necessitatibus dolores architecto assumenda, ullam porro. Vero.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus aut voluptate nulla dignissimos? Temporibus tenetur distinctio dolore architecto, deleniti, aperiam.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet vel, facere dolore commodi error ea nihil maxime quibusdam, impedit nam at non labore consequuntur eius omnis repellendus velit voluptate molestias!</p>
+        </div>
+
+        <div id="tab-2">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos incidunt ex consequuntur, autem id accusantium dolorum est expedita, distinctio provident. Sunt maxime molestiae itaque. Consectetur maiores quidem reprehenderit mollitia ratione blanditiis consequatur eligendi fuga, corporis deserunt animi praesentium recusandae ea autem illo, error, necessitatibus dolores architecto assumenda, ullam porro. Vero.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus aut voluptate nulla dignissimos? Temporibus tenetur distinctio dolore architecto, deleniti, aperiam.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet vel, facere dolore commodi error ea nihil maxime quibusdam, impedit nam at non labore consequuntur eius omnis repellendus velit voluptate molestias!</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos incidunt ex consequuntur, autem id accusantium dolorum est expedita, distinctio provident. Sunt maxime molestiae itaque. Consectetur maiores quidem reprehenderit mollitia ratione blanditiis consequatur eligendi fuga, corporis deserunt animi praesentium recusandae ea autem illo, error, necessitatibus dolores architecto assumenda, ullam porro. Vero.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus aut voluptate nulla dignissimos? Temporibus tenetur distinctio dolore architecto, deleniti, aperiam.</p>
+        </div>
+    </div>
+</section>
+
+<section id="new-test" class="clearfix custom-modal">
+
+    <h1>Тестировать аудиторию</h1>
+
+    <div class="inner">
+
+        <div class="grid clearfix" masonry>
+            <!-- Single item -->
+            <a href="#" class="grid_item add_new">
+                <button class="button_blue_text">Создать предложение</button>
+            </a>
+
+            <!-- Single item -->
+            <div masonry-brick class="grid_item" ng-repeat="offer in offers" ng-click="chooseOffer($index, offer._id);" ng-class="$index === chosenOffer ? 'active' : ''">
+                <a href="/#/offer/{{offer._id}}/" class="photo">
+                    <img data-ng-src="data:{{offer.photo.ext}};base64,{{offer.photo.contentString}}">
+                </a>
+
+                <div class="info">
+
+                    <a href="/#/offer/{{offer._id}}/" class="title">{{offer.name}}</a>
+
+                    <div class="tags">
+                        {{offer.description}}
+                    </div>
+                </div>
+
+                <div class="numbers clearfix">
+                    <!--                    <div class="people">> 5000</div>
+                                        
+                                        <div class="man">74</div>
+                                        
+                                        <div class="price">12000 &#8381;</div>-->
+                </div>
+            </div>
+
+        </div><!--/grid-->
+    </div><!--/inner-->
+
+    <div class="button_bg">
+        <button ng-class="activeChoseOfferButton ? '' : 'gray_button'" ng-click="addCartItem()">Выбрать предложение</button>
+        <button ng-click="locationPath('/offer/create/')" class="button_blue_text">Создать предложение</button>
+    </div>
+
+</section>

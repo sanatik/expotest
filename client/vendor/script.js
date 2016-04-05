@@ -62,7 +62,7 @@ $(document).ready(function() {
     	if ($(this).hasClass('active')) {
 	    	$('#mobile-nav .hidden-menu').slideUp(150);
 	    	$(this).removeClass('active');
-	    	if ( $('#new-test').hasClass('active') ) { }
+	    	if ( $('#new-test').hasClass('active') || $('#themes').hasClass('active') ) { }
             else { $('.shadow_overlay').fadeOut(150); }
     	}
     	else {
@@ -91,6 +91,9 @@ $(document).ready(function() {
         $('.shadow_overlay').fadeOut(150);
         $('#new-test').css('opacity', '1').animate({opacity:0}, 150, function(){
             $('#new-test').css('visibility', 'hidden').removeClass('active');
+        });
+        $('#themes').css('opacity', '1').animate({opacity:0}, 150, function(){
+            $('#themes').css('visibility', 'hidden').removeClass('active');
         });
     });
 

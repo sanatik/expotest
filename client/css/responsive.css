@@ -2,9 +2,9 @@
   .inner {
     width: 1370px; }
 
-  #new-test {
+  .custom-modal {
     max-width: 1430px; }
-    #new-test .inner {
+    .custom-modal .inner {
       max-width: 1430px; }
 
   #filters .selects .filter-category {
@@ -38,9 +38,9 @@
   .inner {
     width: 1090px; }
 
-  #new-test {
+  .custom-modal {
     max-width: 1150px; }
-    #new-test .inner {
+    .custom-modal .inner {
       max-width: 1150px; }
 
   #filters .selects {
@@ -77,17 +77,17 @@
   #userlist th:nth-child(8) {
     width: 180px; } }
 @media all and (max-width: 1300px) {
-  #new-test {
+  .custom-modal {
     max-width: 1150px; }
-    #new-test .inner {
+    .custom-modal .inner {
       max-width: 1150px; } }
 @media all and (max-width: 1138px) {
   .inner {
     width: 810px; }
 
-  #new-test {
+  .custom-modal {
     max-width: 870px; }
-    #new-test .inner {
+    .custom-modal .inner {
       max-width: 870px; }
 
   #eventinfo .right-col {

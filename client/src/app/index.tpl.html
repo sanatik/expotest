@@ -51,12 +51,9 @@
         <div class="tags">
             <div class="clearfix">
 
-                <div class="tag_boxed">Бизнес</div>
-                <div class="tag_boxed active">Конференция</div>
-                <div class="tag_boxed">Семинар</div>
-                <div class="tag_boxed">Обзор</div>
+                <div class="tag_boxed" ng-repeat="theme in filter.themes">{{theme.name}}</div>
 
-                <button class="button_blue_text">Добавить направление</button>
+                <button class="button_blue_text" ng-click="showThemes()">Добавить направление</button>
                 <!--                <button class="button_blue_icon trash"></button>-->
                 <button ng-click="locationPath('/exposition/create/')" class="button_blue_text" style="float: right;">Добавить свою выставку</button>
             </div>
@@ -73,10 +70,10 @@
 
             <!-- Single item -->
             <div masonry-brick class="masonry-brick grid_item" ng-repeat="exposition in expositions">
-                <a ng-click="redirect(exposition._id)" href="" class="photo">
-                    <img data-ng-src="data:{{exposition.photo.ext}};base64,{{exposition.photo.contentString}}">
-                    <div ng-click="redirect(exposition._id)" class="rocket button_green_icon">Тестировать</div>
-                </a>
+                <div class="photo">
+                    <a href="/#/exposition/{{exposition._id}}/"><img data-ng-src="data:{{exposition.photo.ext}};base64,{{exposition.photo.contentString}}" alt=""></a>
+                    <a ng-click="redirect(exposition._id)" href="" class="rocket button_green_icon">Тестировать</a>
+                </div>
 
                 <div class="info">
                     <div class="date">{{exposition.startDateString}} - {{exposition.endDateString}}</div>
@@ -106,7 +103,7 @@
 </section>
 
 <!-- Events -->
-<section id="new-test" class="clearfix">
+<section id="new-test" class="clearfix custom-modal">
 
     <h1>Тестировать аудиторию</h1>
 
@@ -148,6 +145,28 @@
     <div class="button_bg">
         <button ng-class="activeChoseOfferButton ? '' : 'gray_button'" ng-click="addCartItem()">Выбрать предложение</button>
         <button ng-click="locationPath('/offer/create/')" class="button_blue_text">Создать предложение</button>
+    </div>
+
+</section>
+
+<section id="themes" class="clearfix custom-modal">
+
+    <h1>Выбрать тематику</h1>
+
+    <div class="inner">
+
+        <div class="grid clearfix">
+            <ul class="leter-list" ng-repeat="letter in letters">
+                <div class="leter"><font size="5">{{letter}}</font></div>
+                <li ng-repeat="theme in themes" ng-if="letter === theme.name.charAt(0)" style="max-width: 275px;" ng-class="checkChosenThemeFilter(theme) ? 'active' : ''">
+                    <a href="" ng-click="chooseThemesFilter(theme)">{{theme.name}}</a>
+                </li>
+            </ul>
+        </div><!--/grid-->
+    </div><!--/inner-->
+
+    <div class="button_bg">
+        <button ng-class="activeChoseThemeButton ? '' : 'gray_button'" ng-click="closeThemeFilter()">Выбрать тематики</button>
     </div>
 
 </section>

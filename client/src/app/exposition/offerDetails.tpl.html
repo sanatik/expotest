@@ -1,66 +1,168 @@
-<h3>Описание предложения {{offer.name}} </h3>
+<link rel="stylesheet" href="css/kick.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<style>
+    .shadow_overlay{
+        z-index: 999;
+    }
+    .custom-modal.active{
+        z-index: 1000;
+        width: 30%;
+    }
+</style>
+<section class="NS_projects__hero_funding">
+    <!-- / Hide this on mobile since we want the video to be at the top -->
+    <div class="mobile-hide py4 px2">
+        <div class="NS_projects__header center">
+            <h2 class="normal mb1"><a class="green-dark" href="#">{{offer.name}}</a></h2>
+        </div>
 
-<table>
-    <tr>
-        <td>Название</td>
-        <td>{{offer.name}}</td>
-    </tr>
-    <tr>
-        <td>Фото</td>
-        <td><img data-ng-src="data:{{offer.photo.ext}};base64,{{offer.photo.contentString}}"></td>
-    </tr>
-    <tr>
-        <td>Описание</td>
-        <td>{{offer.description}}</td>
-    </tr>
-</table>
-<div ng-show="checkRespond(exposition._id, offer._id)">
-    <span style="font-weight: bold;">Вы уже проголосовали, спасибо!</span> <br />
+    </div>
+    <div class="container-flex px2">
+        <div class="row">
+            <div class="table">
+                <div class="table-cell col-8 px-gutter">
+                    <div class="project-image" id="video-section">
+                        <img data-ng-src="data:{{offer.photo.ext}};base64,{{offer.photo.content}}">
+                    </div>
+
+                </div>
+                <div class="table-cell col-4 px-gutter">
+                    <!-- / Adding some markup here allows us to more closely replicate the mobile show template -->
+                    <div class="mobile-show mobile-center">
+                        <div class="py2">
+                            <div class="NS_projects__header center">
+                                <h2 class="normal mb1"><a class="green-dark" href="#">&quot;Oi&quot; : The bike bell that doesn&#39;t look like a bike bell.</a></h2>
+                                <p class="green-dark h5 mb0 mobile-show">
+                                    by <b><a class="green-dark" href="#">Knog</a></b>
+                                </p>
+                                <p class="green-dark h5 mb0 mobile-hide">
+                                    by <b><a class="remote_modal_dialog green-dark" href="#">Knog</a></b>
+                                </p>
+                            </div>
+
+                        </div>
+                        <div class="projects-hero-funding__blurb">
+                            Bike bells generally look and sound a bit ugly. But why? What if they looked sexy and sounded like an angel playing a glockenspiel?
+                            <a class="bold fastclick h5 nowrap" href="#">Read more</a>
+                        </div>
+                        <div class="project-progress-bar">
+                            <div class="project-percent-pledged" style="width: 100%"></div>
+                        </div>
+                    </div>
+
+                    <!-- / Only renders for non live projects -->
+                    <div class="Project1539660295"></div>
+                    <!-- / Back manage and star buttons -->
+                    <div class="NS_projects__back_and_star">
+                        <div class="Project1539660295">
+                            <div class="inline-block mobile-hide">
+                                <a class="btn btn--green btn--large" href="" ng-click="respond(exposition._id, offer._id, true)" id="button-back-this-proj">Интересно</a>
+                            </div>
+                            <div class="mobile-show">
+                                <a class="btn btn--green btn--block" href="" ng-click="respond(exposition._id, offer._id, true)" id="button-back-this-proj">Интересно</a>
+                            </div>
+                            <div class="align-middle inline-block pl1 mobile-hide"></div>
+                        </div>
+                    </div>
+
+                    <div class="mobile-show mobile-center pt2 border-top">
+                        <div class="NS_projects__category_location">
+                            <a class="grey-dark mr3 nowrap" href="#"><i class="fa fa-location-arrow"></i> {{exposition.location.address_components[0].long_name}}, {{exposition.location.address_components[exposition.location.address_components.length - 1].long_name}}</a>
+                            <a class="grey-dark mr3 nowrap" href="#"><i class="fa fa-tag"></i> {{exposition.format}}</a>
+                        </div>
+
+                        <div class="btn btn--border-gray btn--small mb2" href="#" id="project_share_mobile">Share this project</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-8 py4">
+                <div class="mobile-hide">
+                    <div class="h5 mb3">
+                        <div class="NS_projects__category_location">
+                            <a class="grey-dark mr3 nowrap" href="#"><i class="fa fa-location-arrow"></i> {{exposition.location.address_components[0].long_name}}, {{exposition.location.address_components[exposition.location.address_components.length - 1].long_name}}</a>
+                            <a class="grey-dark mr3 nowrap" href="#"><i class="fa fa-tag"></i> {{exposition.format}}</a>
+
+                        </div>
+
+                    </div>
+                    <p class="h3 mb3">
+                        {{offer.description}}
+                    </p>
+                    <div class="mb3">
+                        <div class="project-share mobile-hide NS_projects__project_share">
+                            <div class="project-share__label">Направления</div>
+                            <div class="inline-block" ng-repeat="theme in exposition.themes">
+                                <div class="inline-block">
+                                    <a class="project-share__btn" href="#" rel="nofollow">{{theme.name}}</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="NS_projects__content">
+    <div class="NS_projects__project_nav js-project-nav" data-0="position:absolute;" data-top-top="position:fixed; top:0;">
+        <div class="container-flex js-project-nav-scroll">
+            <div class="row">
+                <div class="project-nav__links">
+
+                    <a class="js-load-project-content js-load-project-description project-nav__link--campaign tabbed-nav__link" href="/#/exposition/{{exposition._id}}/statistics/" ng-show="isOwner(exposition.creator) || isOwner(offer.creator)">Показать статистику</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div ng-show="!checkRespond(exposition._id, offer._id)">
-    <span style="font-weight: bold;">Отреагировать</span> <br />
-    <a href="" ng-click="respond(exposition._id, offer._id, true)">Нравится</a>
-    <a href="" ng-click="respond(exposition._id, offer._id, false)">Не нравится</a>
-</div>
-<form ng-show="showUserForm">
-    <table>
-        <tr>
-            <td>Имя</td>
-            <td><input type="text" ng-model="newUser.displayName" /></td>
-        </tr>
-        <tr>
-            <td>Город</td>
-            <td><input type="text" ng-model="newUser.city" g-places-autocomplete options="autocompleteOptions" /></td>
-        </tr>
-        <tr>
-            <td>Компания</td>
-            <td><input type="text" ng-model="newUser.company" /></td>
-        </tr>
-        <tr>
-            <td>Должность</td>
-            <td><input type="text" ng-model="newUser.position" /></td>
-        </tr>
-        <tr>
-            <td>Телефон</td>
-            <td><input type="text" ng-model="newUser.phone" /></td>
-        </tr>
-        <tr>
-            <td>Email</td>
-            <td><input type="text" ng-model="newUser.email" /></td>
-        </tr>
-        <tr>
-            <td>Пароль</td>
-            <td><input type="password" ng-model="newUser.password" /></td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <button ng-click="respond(exposition._id, offer._id, true)">Отправить</button>
-            </td>
-        </tr>
-    </table>
-</form>
-<div>
-    <a href="" ng-click="back()">Back</a>
-    <br />
-    <a href="/#/exposition/{{exposition._id}}/statistics/" ng-show="isOwner(exposition.creator) || isOwner(offer.creator)">Показать статистику</a>
-</div>
+
+<section id="new-test" class="clearfix custom-modal" ng-show="showUserRespond()">
+
+    <h1>Это предложение мне интересно</h1>
+
+    <div class="inner">
+        <div class="grid clearfix" masonry>
+            <form>
+                <table>
+                    <tr>
+                        <td>Имя</td>
+                        <td><input type="text" ng-model="newUser.displayName" /></td>
+                    </tr>
+                    <tr>
+                        <td>Город</td>
+                        <td><input type="text" ng-model="newUser.city" g-places-autocomplete options="autocompleteOptions" /></td>
+                    </tr>
+                    <tr>
+                        <td>Компания</td>
+                        <td><input type="text" ng-model="newUser.company" /></td>
+                    </tr>
+                    <tr>
+                        <td>Должность</td>
+                        <td><input type="text" ng-model="newUser.position" /></td>
+                    </tr>
+                    <tr>
+                        <td>Телефон</td>
+                        <td><input type="text" ng-model="newUser.phone" /></td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td><input type="text" ng-model="newUser.email" /></td>
+                    </tr>
+                    <tr>
+                        <td>Пароль</td>
+                        <td><input type="password" ng-model="newUser.password" /></td>
+                    </tr>
+                </table>
+            </form>
+        </div><!--/grid-->
+    </div><!--/inner-->
+
+    <div class="button_bg">
+        <button ng-click="respond(exposition._id, offer._id, true)" class="button_blue_text">Отправить</button>
+    </div>
+
+</section>

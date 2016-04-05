@@ -105,6 +105,7 @@ exports.getAll = function (req, res) {
     var month = req.query.month;
     var format = req.query.format;
     var my = req.query.my;
+    var themes = req.query.themes;
     var options = {};
     if (format && format !== '0') {
         options = {'format': format};
@@ -114,6 +115,15 @@ exports.getAll = function (req, res) {
     }
     if (user && my && my === '1') {
         options.creator = user.userId;
+    }
+    var filterThemes = null;
+    if(themes){
+        if(themes instanceof Array){
+            filterThemes = themes;
+        }else{
+            filterThemes = [];
+            filterThemes.push(themes);
+        }
     }
     Exposition.find(options, function (err, results) {
         if (err) {
@@ -130,7 +140,7 @@ exports.getAll = function (req, res) {
                     var content = exposition.presentation.contentBase64.toString('base64');
                     exposition.presentation.contentString = content;
                 }
-                if (month || location) {
+                if (month || location || themes) {
                     var filterDateStart = new Date();
                     filterDateStart.setMonth(month - 1);
                     filterDateStart.setDate(1);
@@ -145,7 +155,6 @@ exports.getAll = function (req, res) {
                         expositions.push(exposition);
                     } else if (location) {
                         if (exposition.location) {
-
                             var type = location.types[0];
                             if (type === 'locality') {
                                 if (exposition.location.place_id === location.place_id) {
@@ -160,6 +169,15 @@ exports.getAll = function (req, res) {
                                 }
                             }
                         }
+                    } else if (filterThemes) {
+                        if (exposition.themes) {
+                            for(var i in filterThemes){
+                                if(hasTheme(filterThemes[i], exposition.themes)){
+                                    expositions.push(exposition);
+                                    break;
+                                }
+                            }
+                        }
                     }
                 } else {
                     expositions.push(exposition);
@@ -171,6 +189,18 @@ exports.getAll = function (req, res) {
         res.json(expositions);
     });
 };
+
+function hasTheme(theme, themes) {
+    for (var i in themes) {
+        var t = themes[i];
+        var themeId = new ObjectId(JSON.parse(theme)._id);
+        var tId = new ObjectId(t._id);
+        if (themeId.equals(tId)){
+            return true;
+        }
+    }
+    return false;
+}
 
 exports.get = function (req, res) {
     var id = req.params.id;

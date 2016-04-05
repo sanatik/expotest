@@ -75,7 +75,7 @@ select::-ms-expand {
         position: absolute;
         top: 19px;
         right: 14px;
-        background: url('../img/assets/black_arrows.png');
+        background: url('../images/assets/black_arrows.png');
         width: 7px;
         height: 16px;
     }
@@ -222,7 +222,7 @@ select::-ms-expand {
         right: 10px;
         top: 12px;
         display: block;
-        background: url(../img/assets/white_arrows.png);
+        background: url(../images/assets/white_arrows.png);
         width: 7px;
         height: 16px;
         content: "";
@@ -355,11 +355,11 @@ header {
             right: 0;
             width: 80px;
             height: 80px;
-            background: $lightBlue url('../img/assets/open_menu_arrows.png') center no-repeat;
+            background: $lightBlue url('../images/assets/open_menu_arrows.png') center no-repeat;
             cursor: pointer;
 
             &.active {
-                background: $lightBlue url('../img/assets/open_menu_plus.png') center no-repeat;
+                background: $lightBlue url('../images/assets/open_menu_plus.png') center no-repeat;
             }
         }
 
@@ -484,7 +484,7 @@ header {
                 content: "";
                 left: 50%;
                 top: 50%;
-                background: url('../img/assets/icon_trash.png');
+                background: url('../images/assets/icon_trash.png');
                 width: 14px;
                 height: 16px;
                 transform: translate(-50%,-50%);
@@ -496,7 +496,7 @@ header {
         }
 
         .trash:before {
-        	background: url('../img/assets/icon_trash.png');
+        	background: url('../images/assets/icon_trash.png');
         	width: 14px;
         	height: 16px;
         	position: absolute;
@@ -524,7 +524,7 @@ header {
 	.add_new {
 		height: 170px;
 	    border: 2px solid $silver;
-	    background: url('../img/assets/icon_calendar.png') center 27px no-repeat;
+	    background: url('../images/assets/icon_calendar.png') center 27px no-repeat;
         display: block;
 
         &:hover button { background: $lightBlueHover; }
@@ -575,7 +575,7 @@ header {
                 position: absolute;
                 content: "";
                 display: block;
-                background: $green url('../img/assets/icon_rocket.png') 9px center no-repeat;
+                background: $green url('../images/assets/icon_rocket.png') 9px center no-repeat;
                 width: 36px;
                 height: 36px;
                 right: 0;
@@ -697,7 +697,7 @@ header {
 			.people {
 				left: 15px;
 				padding-left: 19px;
-				background: url('../img/assets/icon_people.png') no-repeat left center;
+				background: url('../images/assets/icon_people.png') no-repeat left center;
 			}
 
 			.man {
@@ -708,13 +708,13 @@ header {
 				-ms-transform: translate(-50%,-50%);
 				-moz-transform: translate(-50%,-50%);
 				padding-left: 15px;
-				background: url('../img/assets/icon_man.png') no-repeat left center;
+				background: url('../images/assets/icon_man.png') no-repeat left center;
 			}
 
 			.price {
 				right: 15px;
 				padding-left: 20px;
-				background: url('../img/assets/icon_price.png') no-repeat left center;
+				background: url('../images/assets/icon_price.png') no-repeat left center;
 			}
 		}
 
@@ -744,7 +744,7 @@ footer {
 
 			&.vk {
 				float: left;
-				background: url('../img/assets/icon_vk.png') no-repeat;
+				background: url('../images/assets/icon_vk.png') no-repeat;
 				width: 24px;
 				height: 14px;
 				margin-right: 30px;
@@ -752,7 +752,7 @@ footer {
 
 			&.mail {
 				float: left;
-				background: url('../img/assets/icon_mail.png') no-repeat;
+				background: url('../images/assets/icon_mail.png') no-repeat;
 				width: 20px;
 				height: 14px;
 			}
@@ -879,7 +879,7 @@ footer {
     }
 
     .download {
-        background: url('../img/assets/icon_download.png') no-repeat;
+        background: url('../images/assets/icon_download.png') no-repeat;
         width: 64px;
         height: 46px;
         position: absolute;
@@ -1095,7 +1095,7 @@ footer {
 }
 
 /* new-test */
-#new-test {
+.custom-modal {
     position: fixed;
     z-index: 103;
     width: 100%;
@@ -1173,7 +1173,7 @@ footer {
     .add_new {
         height: 170px;
         border: 2px solid $silver;
-        background: url('../img/assets/icon_big_rocket.png') center 27px no-repeat;
+        background: url('../images/assets/icon_big_rocket.png') center 27px no-repeat;
         display: block;
 
         &:hover button { background: $lightBlueHover; }
@@ -1248,7 +1248,7 @@ footer {
                 position: absolute;
                 content: "";
                 display: block;
-                background: $green url('../img/assets/icon_rocket.png') 9px center no-repeat;
+                background: $green url('../images/assets/icon_rocket.png') 9px center no-repeat;
                 width: 36px;
                 height: 36px;
                 right: 0;
@@ -1377,7 +1377,7 @@ footer {
             .people {
                 left: 13px;
                 padding-left: 19px;
-                background: url('../img/assets/icon_people.png') no-repeat left center;
+                background: url('../images/assets/icon_people.png') no-repeat left center;
             }
 
             .man {
@@ -1388,15 +1388,168 @@ footer {
                 -ms-transform: translate(-50%,-50%);
                 -moz-transform: translate(-50%,-50%);
                 padding-left: 15px;
-                background: url('../img/assets/icon_man.png') no-repeat left center;
+                background: url('../images/assets/icon_man.png') no-repeat left center;
             }
 
             .price {
                 right: 13px;
                 padding-left: 20px;
-                background: url('../img/assets/icon_price.png') no-repeat left center;
+                background: url('../images/assets/icon_price.png') no-repeat left center;
             }
         }
 
     }
+}
+
+/* Kick */
+
+.NS_projects__hero_funding a, .NS_projects__hero_funding button {
+    -webkit-transition: all 80ms linear;
+    -moz-transition: all 80ms linear;
+    -ms-transition: all 80ms linear;
+    -o-transition: all 80ms linear;
+    transition: all 80ms linear;
+}
+
+.NS_projects__hero_funding a:hover {
+    color: $lightBlueHover !important;
+}
+
+
+.NS_projects__hero_funding .website a {
+    color: #515257;
+}
+
+.project-image img {
+    width: 90%;
+}
+
+#button-back-this-proj {
+    background: $green url("../images/assets/icon_rocket.png") right 8px center no-repeat;
+    width: 152px;
+    padding-left: 0;
+    padding-right: 26px;
+
+    &:hover {
+        background-color: $lightGreen;
+        color: #fff !important;
+    }
+}
+
+.project-share .project-share__btn:hover {
+    border-color: $lightBlue;
+    color: #000 !important;
+}
+
+.NS_projects__creator .approved .app-icon {
+    float: left;
+    margin-right: 20px;
+
+    img {
+        border-radius: 50%;
+        display: block;
+        width: 50px;
+        height: 50px;
+    }
+}
+
+#stats .fa {
+    color: $green;
+}
+
+.NS_watches__watch a:hover, .NS_projects__header a:hover, .NS_projects__category_location a:hover {
+    color: $lightBlueHover;
+}
+
+.NS_projects__deadline_copy {
+    h4 {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        font-weight: 400;
+        font-size: 14px;
+        color: $darkBlue;
+    }
+    p {
+        text-transform: uppercase;
+        font-size: 12px;
+    }
+}
+
+.stat-item .h1.num {
+    color: #000;
+    font-weight: 400 !important;
+    font-size: 32px;
+    line-height: 40px;
+}
+
+.NS_projects__stats #stats {
+    opacity: 1;
+}
+
+.NS_watches__watch a {
+    text-transform: uppercase;
+    font-size: 12px;
+    line-height: 56px;
+}
+
+.h3.mb3 {
+    text-transform: uppercase;
+    font-size: 14px;
+    color: #4f5054;
+
+    a {
+        color: #515257;
+        font-weight: 700;
+        &:hover {
+            color: #081245;
+        }
+    }
+}
+
+.project-share__label {
+    text-transform: uppercase;
+}
+
+.project-share .project-share__btn {
+    text-align: center;
+    text-transform: uppercase;
+    width: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.mb0 {
+    text-transform: uppercase;
+}
+
+.NS_projects__project_nav .tabbed-nav__link.is-active {
+    border-bottom: 2px solid #2BDE73 !important;
+}
+
+#tab-content {
+    .inner {
+        max-width: 1040px;
+        padding: 40px 20px;
+        width: 100%;
+    }
+}
+
+.NS_projects__creator .approved {
+    font-size: 16px;
+    line-height: 18px;
+    p {
+        margin: 0;
+    }
+    .truth {
+        color: $darkBlue;
+        font-weight: bold;
+        margin-top: 10px;
+        font-size: 14px;
+    }
+}
+
+.NS_projects__creator .website {
+    margin-top: 12px;
+    font-size: 14px;
 }

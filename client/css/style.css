@@ -8,7 +8,7 @@ and open the template in the editor.
     Author     : serikuly_s
 */
 
-#new-test .button_bg button.button_blue_text{
+.custom-modal, #themes .button_bg button.button_blue_text{
     background: #0091d5;
     margin-right: 5px;
 }
@@ -33,4 +33,84 @@ and open the template in the editor.
 }
 .leter-list li.active{
     background-color: #ccc;
+}
+.project-share .project-share__btn{
+    width: auto !important;
+}
+.NS_projects__project_nav .project-nav__links{
+    width: 100% !important;
+}
+#button-back-this-proj{
+    background: #06ca55 url("../img/assets/icon_rocket.png") right 8px center no-repeat;
+}
+@media screen and (min-width: 570px)
+.py4 {
+    padding-top: 100px !important;
+}
+.NS_projects__hero_funding {
+    margin-top: 80px;
+}
+#events .grid_item .photo .rocket{
+    background: #06ca55 url("../img/assets/icon_rocket.png") 9px center no-repeat;
+}
+.drop_small_200 select, .drop_small_200 input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    padding-left: 17px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    -o-appearance: none;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    color: #fff;
+    font: 400 14px/1em Roboto,Arial,sans-serif;
+    padding-left: 17px;
+    color: white;   
+}
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #ffffff;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #ffffff;
+    opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #ffffff;
+    opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color:    #909;
+}
+#events .grid_item .numbers .people{
+    background: url("../img/assets/icon_people.png") no-repeat left center;
+}
+#events .grid_item .numbers .man{
+    background: url("../img/assets/icon_man.png") no-repeat left center;
+}
+#events .grid_item .numbers .price{
+    background: url("../img/assets/icon_price.png") no-repeat left center;
+}
+footer .socials a.vk{
+    background: url("../img/assets/icon_vk.png") no-repeat;
+}
+footer .socials a.mail{
+    background: url("../img/assets/icon_mail.png") no-repeat;
+}
+#events .add_new{
+    background: url("../img/assets/icon_calendar.png") center 27px no-repeat;
+}
+.custom-modal .add_new{
+    background:url("../img/assets/icon_big_rocket.png") center 27px no-repeat;
+}
+.drop_small_200:before{
+    background:url(../img/assets/white_arrows.png)
+}
+.drop_big_320:before{
+    background:url(../img/assets/black_arrows.png)
 }

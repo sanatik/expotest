@@ -88,6 +88,22 @@ expositionApp.controller('ExpositionsController',
                 $scope.findExposition = function (url) {
                     ExpositionService.findOne(url).then(function (data) {
                         $scope.exposition = data;
+                        if ($scope.exposition.startDate) {
+                            if ($scope.exposition.endDate) {
+                                var filter = 'd MMM';
+                                var startDate = new Date($scope.exposition.startDate);
+                                var endDate = new Date($scope.exposition.endDate);
+                                if (startDate.getMonth() === endDate.getMonth()) {
+                                    filter = 'd';
+                                }
+                                $scope.exposition.startDateString = $filter('date')($scope.exposition.startDate, filter);
+                                $scope.exposition.endDateString = $filter('date')($scope.exposition.endDate, 'd MMMM yyyy г.');
+                                var oneDay = 24 * 60 * 60 * 1000;
+                                var todayDate = new Date();
+                                $scope.exposition.daysDiff = Math.round(Math.abs((startDate.getTime() - todayDate.getTime()) / (oneDay)));
+
+                            }
+                        }
                         if ($state.current.name === 'expositionstatistic') {
                             $scope.getStatistic($scope.exposition._id, $scope.exposition.offers[0]._id);
                             $scope.chosenOfferId = $scope.exposition.offers[0]._id;
@@ -104,6 +120,11 @@ expositionApp.controller('ExpositionsController',
                             }
                             $scope.offer = o;
                         }
+                        $('.grid').masonry({
+                            itemSelector: '.grid_item',
+                            columnWidth: 250,
+                            gutter: 30
+                        });
                     }, function () {
                         $("#message").html("Error loading expositions").show();
                     });
@@ -122,6 +143,11 @@ expositionApp.controller('ExpositionsController',
                     }
                     if ($scope.filter.my) {
                         params.my = $scope.filter.my;
+                    }
+                    if ($scope.filter.themes) {
+                        params.themes = [];
+
+                        params.themes = params.themes.concat($scope.filter.themes);
                     }
                     loadExpositions(params);
                 };
@@ -160,6 +186,7 @@ expositionApp.controller('ExpositionsController',
                 $scope.filter = {};
                 $scope.filter.month = 0;
                 $scope.filter.format = 0;
+                $scope.filter.themes = [];
 
                 if ($state.current.name === 'expositionmy') {
                     $scope.filter.my = true;
@@ -175,8 +202,9 @@ expositionApp.controller('ExpositionsController',
                         $scope.findExposition($state.params.id);
                     }
                 }
+                $scope.loadTags(1);
                 if ($state.current.name === 'expositioncreate') {
-                    $scope.loadTags(1);
+
                     $scope.exposition = {};
                     $scope.exposition.presentation = {};
                     $scope.exposition.photo = {};
@@ -207,6 +235,7 @@ expositionApp.controller('ExpositionsController',
                     $scope.filter = {};
                     $scope.filter.month = 0;
                     $scope.filter.format = 0;
+                    $scope.filter.themes = [];
                     $scope.loadExpos();
                 };
 
@@ -297,6 +326,22 @@ expositionApp.controller('ExpositionsController',
                     }
                 };
 
+                $scope.showUserRespond = function () {
+                    if ($scope.showUserForm === true) {
+                        $('#new-test').css({opacity: 0, visibility: 'visible'}).animate({opacity: 1}, 100).addClass('active');
+                        $('.shadow_overlay').fadeIn(100);
+                        return true;
+                    } else {
+                        $('#mobile-nav .hidden-menu').slideUp(150);
+                        $('#mobile-nav .show_elements_button').removeClass('active');
+                        $('.shadow_overlay').fadeOut(150);
+                        $('#themes').css('opacity', '1').animate({opacity: 0}, 150, function () {
+                            $('#themes').css('visibility', 'hidden').removeClass('active');
+                        });
+                        return false;
+                    }
+                };
+
                 $scope.checkRespond = function (expositionId, offerId) {
                     var result = false;
                     ExpositionService.checkRespond(expositionId, offerId, function (res) {
@@ -348,7 +393,6 @@ expositionApp.controller('ExpositionsController',
                     }, function () {
                         alert("Error on loading offers");
                     });
-                    //$location.path(url);
                 };
 
                 $scope.locationPath = function (url) {
@@ -371,7 +415,7 @@ expositionApp.controller('ExpositionsController',
                     $scope.activeChoseOfferButton = true;
                 };
                 $scope.showThemes = function () {
-                    $('#new-test').css({opacity: 0, visibility: 'visible'}).animate({opacity: 1}, 100).addClass('active');
+                    $('#themes').css({opacity: 0, visibility: 'visible'}).animate({opacity: 1}, 100).addClass('active');
                     $('.shadow_overlay').fadeIn(100);
                 };
                 $scope.choseThemes = function (theme) {
@@ -380,7 +424,6 @@ expositionApp.controller('ExpositionsController',
                         $scope.exposition.themes.splice(i, 1);
                     } else {
                         $scope.exposition.themes.push(theme);
-                        console.log(theme);
                         if (theme.tags) {
                             if ($scope.tags) {
                                 $scope.tags = arrayUnique($scope.tags.concat(theme.tags));
@@ -407,13 +450,48 @@ expositionApp.controller('ExpositionsController',
                     return false;
                 };
 
+                $scope.chooseThemesFilter = function (theme) {
+                    var i = $scope.checkChosenThemeFilter(theme);
+                    if (i) {
+                        $scope.filter.themes.splice(i, 1);
+                    } else {
+                        $scope.filter.themes.push(theme);
+                    }
+                    if ($scope.filter.themes.length > 0) {
+                        $scope.activeChoseThemeButton = true;
+                    } else {
+                        $scope.activeChoseThemeButton = false;
+                    }
+
+                };
+
+                $scope.checkChosenThemeFilter = function (theme) {
+                    for (var i in $scope.filter.themes) {
+                        var t = $scope.filter.themes[i];
+                        if (theme._id === t._id) {
+                            return i;
+                        }
+                    }
+                    return false;
+                };
+
                 $scope.closeTheme = function () {
                     $('#mobile-nav .hidden-menu').slideUp(150);
                     $('#mobile-nav .show_elements_button').removeClass('active');
                     $('.shadow_overlay').fadeOut(150);
-                    $('#new-test').css('opacity', '1').animate({opacity: 0}, 150, function () {
-                        $('#new-test').css('visibility', 'hidden').removeClass('active');
+                    $('#themes').css('opacity', '1').animate({opacity: 0}, 150, function () {
+                        $('#themes').css('visibility', 'hidden').removeClass('active');
                     });
+                };
+
+                $scope.closeThemeFilter = function () {
+                    $('#mobile-nav .hidden-menu').slideUp(150);
+                    $('#mobile-nav .show_elements_button').removeClass('active');
+                    $('.shadow_overlay').fadeOut(150);
+                    $('#themes').css('opacity', '1').animate({opacity: 0}, 150, function () {
+                        $('#themes').css('visibility', 'hidden').removeClass('active');
+                    });
+                    $scope.loadExpos();
                 };
 
                 $scope.findTag = function ($query) {
@@ -433,8 +511,8 @@ expositionApp.controller('ExpositionsController',
                     var ctx = canvas.getContext("2d");
                     ctx.drawImage(img, 0, 0);
 
-                    var MAX_WIDTH = 250;
-                    var MAX_HEIGHT = 300;
+                    var MAX_WIDTH = 600;
+                    var MAX_HEIGHT = 600;
                     var width = img.width;
                     var height = img.height;
 
