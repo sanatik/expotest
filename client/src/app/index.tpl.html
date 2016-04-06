@@ -42,6 +42,14 @@
                         </select>
                     </div>
 
+                    <div class="drop_small_200">
+                        <select name="filter-year" ng-change="onChangeFilterIndex()" ng-model="filter.year">
+                            <option value="0">Выбрать год</option>
+                            <option value="2015">2015 г.</option>
+                            <option value="2016">2016 г.</option>
+                        </select>
+                    </div>
+
                     <button class="submit-button not-submitted" ng-click="loadExpos()">OK</button>
                     <button class="reset-button" ng-click="resetFilter()">Сброс</button>
                 </div>
@@ -51,7 +59,7 @@
         <div class="tags">
             <div class="clearfix">
 
-                <div class="tag_boxed" ng-repeat="theme in filter.themes">{{theme.name}}</div>
+                <div class="tag_boxed active" ng-repeat="theme in filter.themes" ng-click="chooseThemesFilter(theme)">{{theme.name}}</div>
 
                 <button class="button_blue_text" ng-click="showThemes()">Добавить направление</button>
                 <!--                <button class="button_blue_icon trash"></button>-->

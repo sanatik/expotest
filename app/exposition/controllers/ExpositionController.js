@@ -103,6 +103,7 @@ exports.getAll = function (req, res) {
     var user = req.decoded;
     var location = req.query.location;
     var month = req.query.month;
+    var year = req.query.year;
     var format = req.query.format;
     var my = req.query.my;
     var themes = req.query.themes;
@@ -140,13 +141,17 @@ exports.getAll = function (req, res) {
                     var content = exposition.presentation.contentBase64.toString('base64');
                     exposition.presentation.contentString = content;
                 }
-                if (month || location || themes) {
+                if (month || location || themes || year) {
                     var filterDateStart = new Date();
                     filterDateStart.setMonth(month - 1);
                     filterDateStart.setDate(1);
                     var filterDateEnd = new Date();
                     if (month > 11) {
                         month = 0;
+                    }
+                    if(year > 0){
+                        filterDateStart.year = year;
+                        filterDateEnd.year = year;
                     }
                     filterDateEnd.setMonth(month);
                     filterDateEnd.setDate(0);
@@ -218,12 +223,29 @@ exports.get = function (req, res) {
                 var content = exposition.presentation.contentBase64.toString('base64');
                 exposition.presentation.contentString = content;
             }
+            if(exposition.format){
+                exposition.formatString = getFormatString(exposition.format);
+            }
             res.json(exposition);
         });
     } catch (e) {
         res.send(404);
     }
 };
+
+function getFormatString(id){
+    switch(id){
+        case 1:
+            return "Выставка";
+        case 2:
+            return "Премия";
+        case 3:
+            return "Конференция";
+        case 4:
+            return "Форум";
+    }
+    return "-";
+}
 
 exports.update = function (req, res) {
     var id = req.params.id;

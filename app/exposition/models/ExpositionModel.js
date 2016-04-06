@@ -10,6 +10,7 @@ var ExpositionSchema = mongoose.Schema({
         default: Date.now()
     },
     format: Number,
+    formatString: String,
     displayName: String,
     location: Object,
     website: String,

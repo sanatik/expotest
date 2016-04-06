@@ -123,7 +123,6 @@ angular.module('app').controller('HeaderCtrl', ['$scope', '$location', '$rootSco
                                     $rootScope.$apply(function () {
                                         $rootScope.currentUser = data;
                                     });
-
                                 });
                                 $location.path('/exposition/');
                                 window.location.reload();

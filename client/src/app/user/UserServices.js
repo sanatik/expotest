@@ -6,13 +6,8 @@ var module = angular.module('user.services', ['ngResource']);
 module.factory('UserService', ['$http', function ($http) {
         return {
             findOne: function (id) {
-                $("#loader").show();
                 return $http.get('/user/' + id).then(function (response) {
-                    $("#loader").hide();
                     return response.data;
-                }, function () {
-                    $("#message").html("Произошла ошибка").show();
-                    $("#loader").hide();
                 });
             },
             edit: function (id, user) {

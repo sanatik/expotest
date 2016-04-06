@@ -51,8 +51,8 @@ expositionApp.config(['$stateProvider', '$urlRouterProvider',
 ]);
 
 expositionApp.controller('ExpositionsController',
-        ['$scope', '$state', '$location', 'ExpositionService', '$window', '$filter', '$rootScope', 'AuthServices', 'OfferService', 'CartService', '$q',
-            function ($scope, $state, $location, ExpositionService, $window, $filter, $rootScope, AuthServices, OfferService, CartService, $q) {
+        ['$scope', '$state', '$location', 'ExpositionService', '$window', '$filter', '$rootScope', 'AuthServices', 'OfferService', 'CartService', '$q', 'UserService',
+            function ($scope, $state, $location, ExpositionService, $window, $filter, $rootScope, AuthServices, OfferService, CartService, $q, UserService) {
                 var loadExpositions = function (params) {
                     ExpositionService.findAll(params).then(
                             function (data) {
@@ -135,6 +135,9 @@ expositionApp.controller('ExpositionsController',
                     if ($scope.filter.month) {
                         params.month = $scope.filter.month;
                     }
+                    if ($scope.filter.year) {
+                        params.year = $scope.filter.year;
+                    }
                     if ($scope.filter.location) {
                         params.location = $scope.filter.location;
                     }
@@ -146,7 +149,6 @@ expositionApp.controller('ExpositionsController',
                     }
                     if ($scope.filter.themes) {
                         params.themes = [];
-
                         params.themes = params.themes.concat($scope.filter.themes);
                     }
                     loadExpositions(params);
@@ -185,6 +187,7 @@ expositionApp.controller('ExpositionsController',
                 };
                 $scope.filter = {};
                 $scope.filter.month = 0;
+                $scope.filter.year = 0;
                 $scope.filter.format = 0;
                 $scope.filter.themes = [];
 
@@ -234,6 +237,7 @@ expositionApp.controller('ExpositionsController',
                 $scope.resetFilter = function () {
                     $scope.filter = {};
                     $scope.filter.month = 0;
+                    $scope.filter.year = 0;
                     $scope.filter.format = 0;
                     $scope.filter.themes = [];
                     $scope.loadExpos();
@@ -302,35 +306,62 @@ expositionApp.controller('ExpositionsController',
                 };
                 $scope.newUser = {};
                 $scope.respond = function (id, oId, answer) {
-                    if ($scope.newUser.displayName) {
-                        ExpositionService.respond(id, oId, {answer: answer, newUser: $scope.newUser}).then(function (data) {
-                            if (data.success === true) {
-                                $scope.showUserForm = false;
-                                $scope.answer = {};
-                                alert("Спасибо за фидбек. Ваш голос принят.");
+                    if (AuthServices.isLoggedIn()) {
+                        //check what is filled
+                        $rootScope.checkCurrentUser(function (data) {
+                            if (data.message === 'ok') {
+                                checkIfInfoIsFull(id, oId, answer);
+                            } else {
+                                $scope.newUser = {};
+                                $scope.showUserForm = true;
                             }
                         });
                     } else {
-                        if (AuthServices.isLoggedIn()) {
+                        if ($scope.showUserForm === true && $scope.newUser.email && $scope.newUser.password) {
+                            AuthServices.login({username: $scope.newUser.email, password: $scope.newUser.password}).success(function (data) {
+                                console.log(data === 'OK');
+                                if (data.message === 'OK') {
+                                    checkIfInfoIsFull(id, oId, answer);
+                                } else {
+                                    ExpositionService.respond(id, oId, {answer: answer, newUser: $scope.newUser}).then(function (data) {
+                                        if (data.success === true) {
+                                            $scope.showUserRespond(false);
+                                            $scope.answer = {};
+                                            alert("Спасибо за фидбек. Ваш голос принят.");
+                                        }
+                                    });
+                                }
+                            });
+                        } else {
+                            $scope.newUser = {};
+                            $scope.showUserRespond(true);
+                        }
+                    }
+                };
+
+                function checkIfInfoIsFull(id, oId, answer) {
+                    UserService.findOne($rootScope.currentUser.userId).then(function (user) {
+                        //if full info, answer
+                        if (user.position && user.company && user.city) {
                             ExpositionService.respond(id, oId, {answer: $scope.answer}).then(function (data) {
                                 if (data.success === true) {
-                                    $scope.showUserForm = false;
+                                    $scope.showUserRespond(false);
                                     $scope.answer = {};
                                     alert("Спасибо за фидбек. Ваш голос принят.");
                                 }
                             });
                         } else {
-                            $scope.showUserForm = true;
-                            $scope.answer = answer;
+                            //if not full show form without password
+                            $scope.newUser = user;
+                            $scope.showUserRespond(true);
                         }
-                    }
-                };
+                    });
+                }
 
-                $scope.showUserRespond = function () {
-                    if ($scope.showUserForm === true) {
+                $scope.showUserRespond = function (showUserForm) {
+                    if (showUserForm === true) {
                         $('#new-test').css({opacity: 0, visibility: 'visible'}).animate({opacity: 1}, 100).addClass('active');
                         $('.shadow_overlay').fadeIn(100);
-                        return true;
                     } else {
                         $('#mobile-nav .hidden-menu').slideUp(150);
                         $('#mobile-nav .show_elements_button').removeClass('active');
@@ -338,8 +369,8 @@ expositionApp.controller('ExpositionsController',
                         $('#themes').css('opacity', '1').animate({opacity: 0}, 150, function () {
                             $('#themes').css('visibility', 'hidden').removeClass('active');
                         });
-                        return false;
                     }
+                    $scope.showUserForm = showUserForm;
                 };
 
                 $scope.checkRespond = function (expositionId, offerId) {
@@ -417,6 +448,7 @@ expositionApp.controller('ExpositionsController',
                 $scope.showThemes = function () {
                     $('#themes').css({opacity: 0, visibility: 'visible'}).animate({opacity: 1}, 100).addClass('active');
                     $('.shadow_overlay').fadeIn(100);
+                    $scope.choseThemeFilterWindowOpen = true;
                 };
                 $scope.choseThemes = function (theme) {
                     var i = $scope.checkChosenTheme(theme);
@@ -437,7 +469,6 @@ expositionApp.controller('ExpositionsController',
                     } else {
                         $scope.activeChoseThemeButton = false;
                     }
-
                 };
 
                 $scope.checkChosenTheme = function (theme) {
@@ -462,7 +493,11 @@ expositionApp.controller('ExpositionsController',
                     } else {
                         $scope.activeChoseThemeButton = false;
                     }
-
+                    if($scope.choseThemeFilterWindowOpen){
+                        
+                    }else{
+                        $scope.loadExpos();
+                    }
                 };
 
                 $scope.checkChosenThemeFilter = function (theme) {
@@ -491,6 +526,7 @@ expositionApp.controller('ExpositionsController',
                     $('#themes').css('opacity', '1').animate({opacity: 0}, 150, function () {
                         $('#themes').css('visibility', 'hidden').removeClass('active');
                     });
+                    $scope.choseThemeFilterWindowOpen = false;
                     $scope.loadExpos();
                 };
 
