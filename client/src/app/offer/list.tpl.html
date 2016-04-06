@@ -44,7 +44,7 @@
             <!-- Single item -->
             <div masonry-brick class="masonry-brick grid_item" ng-repeat="offer in offers">
                 <a ng-click="findOffer(offer._id)" href="" class="photo">
-                    <img data-ng-src="data:{{offer.photo.ext}};base64,{{offer.photo.contentString}}">
+                    <img style="max-width: 250px;" data-ng-src="data:{{offer.photo.ext}};base64,{{offer.photo.contentString}}">
                 </a>
 
                 <div class="info">
