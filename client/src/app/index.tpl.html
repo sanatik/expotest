@@ -63,7 +63,7 @@
 
                 <button class="button_blue_text" ng-click="showThemes()">Добавить направление</button>
                 <!--                <button class="button_blue_icon trash"></button>-->
-                <button ng-click="locationPath('/exposition/create/')" class="button_blue_text" style="float: right;">Добавить свою выставку</button>
+                <button permission only="'organizer'" ng-click="locationPath('/exposition/create/')" class="button_blue_text" style="float: right;">Добавить свою выставку</button>
             </div>
         </div>
     </div>

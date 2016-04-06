@@ -1,30 +1,67 @@
-<h3>Корзина</h3>
+<h3></h3>
 
-<table>
-    <tr>
-        <td>Название предложения</td>
-        <td>Название выставки</td>
-        <td>Сумма к оплате</td>
-        <td>Статус</td>
-        <td>Действия</td>
-    </tr>
-    <tr ng-repeat="cartItem in cart">
-        <td>
-            {{cartItem.offer.name}}
-        </td>
-        <td>
-            {{cartItem.exposition.displayName}}
-        </td>
-        <td>
-            {{cartItem.exposition.price}}
-        </td>
-        <td>
-            {{cartItem.state}}
-        </td>
-        <td>
-            <a href="" ng-click="pay(cartItem._id)" ng-show="cartItem.state === 1">Оплатить</a>
-            <a href="" ng-click="cancelItem(cartItem._id)" ng-show="cartItem.state !== 1">Отменить</a>
-            <a href="" ng-click="deleteCartItem(cartItem._id)">Удалить</a>
-        </td>
-    </tr>
-</table>
+<section id="eventinfo">
+    <div class="clearfix">
+
+        <div class="right-col">
+
+            <div class="title">Корзина</div>
+
+            <div class="list-title">Список предложений в корзине</div>
+
+        </div>
+
+        <div class="download"></div>
+
+    </div>
+</section>
+
+<section id="userlist">
+    <table>
+        <tr>
+            <th>Название предложения</th>
+            <th>Название выставки</th>
+            <th>Сумма к оплате</th>
+            <th>Статус</th>
+            <th>Действия</th>
+        </tr>
+        <tr ng-show="cart.length < 1">
+            <td colspan="7">
+                Записей не найдено
+            </td>
+        </tr>
+        <tr ng-repeat="cartItem in cart">
+            <td>
+                {{cartItem.offer.name}}
+            </td>
+            <td>
+                {{cartItem.exposition.displayName}}
+            </td>
+            <td>
+                {{cartItem.exposition.price}}
+            </td>
+            <td>
+                {{cartItem.state}}
+            </td>
+            <td>
+                <a href="" ng-click="pay(cartItem._id)" ng-show="cartItem.state === 1">Оплатить</a>
+                <a href="" ng-click="cancelItem(cartItem._id)" ng-show="cartItem.state !== 1">Отменить</a>
+                <a href="" ng-click="deleteCartItem(cartItem._id)">Удалить</a>
+            </td>
+        </tr>
+    </table>
+</section>
+
+<section id="pagination" ng-show="cart && cart.length > 10">
+
+    <div id="pages" class="clearfix">
+        <a href="#" class="page active">1</a>
+        <a href="#" class="page">2</a>
+        <a href="#" class="page">3</a>
+        <a href="#" class="page">4</a>
+        <a href="#" class="page">5</a>
+        <span class="dots">...</span>
+        <a href="#" class="page">23</a>
+    </div>
+
+</section>

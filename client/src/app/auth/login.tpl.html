@@ -1,18 +1,22 @@
-<h3>Login form</h3>
-<form name="loginForm" ng-submit="login()">
-    <table>
-        <tr>
-            <td>Логин</td>
-            <td><input type="text" ng-model="loginFormData.username"></td>
-        </tr>
-        <tr>
-            <td>Пароль</td>
-            <td><input type="password" ng-model="loginFormData.password"></td>
-        </tr>
-        <tr>
-            <td colspan="2" style="text-align: center;">
-                <button type="submit">Войти</button>
-            </td>
-        </tr>
-    </table>
-</form>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<div id="login">
+    <form name="loginForm" ng-submit="login()">
+
+        <fieldset class="clearfix">
+            <p>
+                <i class="fa fa-user"></i>
+                <input type="text" ng-model="loginFormData.username" placeholder="Введите логин/номер телефона/email">
+            </p>
+            <p>
+                <i class="fa fa-lock"></i>
+                <input type="password" ng-model="loginFormData.password" placeholder="Введите пароль">
+            </p>
+            <p>
+                <input type="submit" value="ВОЙТИ">
+            </p>
+        </fieldset>
+    </form>
+    <p>Нет аккаунта? &nbsp;&nbsp;<a href="/#/auth/signup/">Регистрация</a><i class="fa fa-arrow-right" style="color: #0091d5"></i></p>
+</div>
+

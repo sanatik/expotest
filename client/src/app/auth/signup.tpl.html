@@ -1,65 +1,46 @@
-<h3>Регистрация</h3>
-<form ng-submit="signup()">
-    <table>
-        <tr>
-            <td>Имя</td>
-            <td><input type="text" ng-model="user.displayName"></td>
-        </tr>
-        <tr>
-            <td>Логин</td>
-            <td><input type="text" ng-model="user.username"></td>
-        </tr>
-        <tr>
-            <td>Email</td>
-            <td><input type="text" ng-model="user.email"></td>
-        </tr>
-        <tr>
-            <td>Телефон</td>
-            <td><input type="text" ng-model="user.phone"></td>
-        </tr>
-        <tr>
-            <td>Пароль</td>
-            <td><input type="text" ng-model="user.password"></td>
-        </tr>
-        <tr>
-            <td>Роль</td>
-            <td>
-                <select ng-model="user.role">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<div id="login" style="margin: 100px auto;">
+    <form ng-submit="login()">
+        <fieldset class="clearfix">
+            <p>
+                <i class="fa fa-user"></i>
+                <input type="text" ng-model="user.displayName" placeholder="ФИО">
+            </p>
+            <p>
+                <i class="fa fa-key"></i>
+                <input type="text" ng-model="user.username" placeholder="Логин">
+            </p>
+            <p>
+                <i class="fa fa-at"></i>
+                <input type="text" ng-model="user.email" placeholder="Email">
+            </p>
+            <p>
+                <i class="fa fa-phone"></i>
+                <input type="text" ng-model="user.phone" placeholder="Телефон">
+            </p>
+            <p>
+                <i class="fa fa-user-secret"></i>
+                <select ng-model="user.role" style="height: 50px;">
                     <option ng-value="1">Организатор</option>
                     <option ng-value="2">Экспонент</option>
                 </select>
-            </td>
-        </tr>
-        <tr>
-            <td>Аватар</td>
-            <td>
-                <button ngf-select="upload($file)">Выбрать</button>
-                <span id="photoSpan"></span>
+            </p>
+            <p style="width: 100%;">
+                <i class="fa fa-picture-o"></i>
+                <button ngf-select="upload($file)" style="padding: 0 16px; height: 50px; margin-bottom: 1em">Загрузить аватар</button>
                 <input type="text" ng-model="user.avatar" ng-show="false">
-                <img id="avatar-img"/>
-            </td>
-        </tr>
-        <tr>
-            <td>Описание</td>
-            <td><textarea ng-model="user.description"></textarea></td>
-        </tr>
-        <tr>
-            <td colspan="2"><a ng-click="additionalField()">Добавить дополнительное поле</a> </td>
-        </tr>
-        <tr ng-repeat="add in user.additional">
-            <td>
-                Название <br />
-                Значение
-            </td>
-            <td>
-                <input type="text" ng-model="add.name"><br />
-                <input type="text" ng-model="add.data">
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <button>Зарегистрироваться</button>
-            </td>
-        </tr>
-    </table>
-</form>
+                <img style="margin-left: 50px;" id="avatar-img"/>
+            </p>
+            <p>
+                <i class="fa fa-lock"></i>
+                <input type="password" ng-model="user.password" placeholder="Пароль">
+            </p>
+            <p>
+                <input type="submit" value="РЕГИСТРАЦИЯ">
+            </p>
+        </fieldset>
+    </form>
+    <p>Есть аккаунт? &nbsp;&nbsp;<a href="/#/auth/">Войти</a><i class="fa fa-arrow-right" style="color: #0091d5"></i></p>
+</div>
+
+
