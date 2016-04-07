@@ -10,28 +10,16 @@
             <div class="filters clearfix">
 
                 <div class="drop_big_320">
-                    <select name="filter-offer" ng-change="getStatistic(exposition._id, false)" ng-model="chosenOfferId">
-                        <option ng-repeat="offer in exposition.offers" ng-show="((hasRole(1) && isOwner(exposition.creator)) || hasRole(2) && isOwner(offer.creator))" value="{{offer._id}}">{{offer.name}}</option>
+                    <select name="filter-offer" ng-model="chosenOfferId" ng-change="onChangeFilterIndex()">
+                        <option ng-repeat="offer in exposition.offers" ng-show="hasAccessToStatistics(exposition, offer)" value="{{offer._id}}">{{offer.name}}</option>
                     </select>
                 </div>
 
-                <div class="drop_big_320">
-                    <select name="filter-country">
-                        <option value="Выберите страну">Выберите страну</option>
-                        <option value="Страна 1">Страна 1</option>
-                        <option value="Страна 2">Страна 2</option>
-                    </select>
+                <div class="drop_big_320 filter-country">
+                    <input onfocus="this.placeholder = ''" onblur="this.placeholder = 'Выбрать регион'" ng-change="onChangeFilterIndex()" ng-model="filter.location" type="text" placeholder="Выбрать регион"  g-places-autocomplete options="autocompleteOptions"/>
                 </div>
 
-                <div class="drop_big_320">
-                    <select name="filter-region">
-                        <option value="Выберите регион">Выберите регион</option>
-                        <option value="Регион 1">Регион 1</option>
-                        <option value="Регион 2">Регион 2</option>
-                    </select>
-                </div>
-
-                <button class="submit-button not-submitted">OK</button>
+                <button class="submit-button not-submitted" ng-click="getStatistic(exposition._id, false)">OK</button>
                 <button class="reset-button">Сброс</button>
             </div>
 

@@ -18,6 +18,7 @@ var ExpositionSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
+    creatorInfo: Object,
     price: Number,
     photo: {
         ext: String,
@@ -64,7 +65,7 @@ var ExpositionSchema = mongoose.Schema({
     audienceCheckTarget: Number,
     audienceCheckResult: Boolean,
     themes: [
-        
-    ]
+    ],
+    aboutAuditory: String
 });
 module.exports = mongoose.model('Exposition', ExpositionSchema);

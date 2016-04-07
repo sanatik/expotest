@@ -34,7 +34,7 @@ expositionApp.config(['$stateProvider', '$urlRouterProvider',
                 })
                 .state('expositionedit', {
                     url: "/exposition/:id/edit/",
-                    templateUrl: 'app/exposition/edit.tpl.html',
+                    templateUrl: 'app/exposition/create.tpl.html',
                     controller: 'ExpositionsController'
                 })
                 .state('expositiooffersview', {
@@ -101,12 +101,22 @@ expositionApp.controller('ExpositionsController',
                                 var oneDay = 24 * 60 * 60 * 1000;
                                 var todayDate = new Date();
                                 $scope.exposition.daysDiff = Math.round(Math.abs((startDate.getTime() - todayDate.getTime()) / (oneDay)));
-
+                                if ($state.current.name === 'expositionedit') {
+                                    var filter = 'dd-MM-yyyy';
+                                    $scope.exposition.startDate = $filter('date')($scope.exposition.startDate, filter);
+                                    $scope.exposition.endDate = $filter('date')($scope.exposition.endDate, filter);
+                                }
                             }
                         }
                         if ($state.current.name === 'expositionstatistic') {
                             $scope.getStatistic($scope.exposition._id, $scope.exposition.offers[0]._id);
-                            $scope.chosenOfferId = $scope.exposition.offers[0]._id;
+                            for (var i in $scope.exposition.offers) {
+                                if ($scope.hasAccessToStatistics($scope.exposition, $scope.exposition.offers[i])) {
+                                    $scope.chosenOfferId = $scope.exposition.offers[i]._id;
+                                    break;
+                                }
+                            }
+
                         }
                         if ($state.params.oId) {
                             var offers = $scope.exposition.offers;
@@ -129,6 +139,7 @@ expositionApp.controller('ExpositionsController',
                         $("#message").html("Error loading expositions").show();
                     });
                 };
+                $scope.formats = [{id: 1, name: 'Выставка'}, {id: 2, name: 'Премия'}, {id: 3, name: 'Конференция'}, {id: 4, name: 'Форум'}];
 
                 $scope.loadExpos = function () {
                     var params = {};
@@ -207,7 +218,7 @@ expositionApp.controller('ExpositionsController',
                 }
                 $scope.loadTags(1);
                 if ($state.current.name === 'expositioncreate') {
-
+                    $scope.createExpositionAction = true;
                     $scope.exposition = {};
                     $scope.exposition.presentation = {};
                     $scope.exposition.photo = {};
@@ -215,20 +226,15 @@ expositionApp.controller('ExpositionsController',
                 }
 
                 $scope.createExposition = function () {
-
+                    console.log(this.exposition.photo.content);
                     if ($scope.expositionCreateForm !== 'undefined') {
                         if (this.exposition) {
-                            $("#loader").show();
                             ExpositionService.save(this.exposition).then(function (result) {
                                 if (result.errors) {
-                                    $("#loader").hide();
-                                    $("#message").html(result.errors).show();
                                     return;
                                 }
                                 $location.path("/exposition/");
                             }, function () {
-                                $("#loader").hide();
-                                $("#message").html("Error on creating expostion").show();
                             });
                         }
                     }
@@ -385,7 +391,11 @@ expositionApp.controller('ExpositionsController',
                     if (!offerId) {
                         offerId = $scope.chosenOfferId;
                     }
-                    ExpositionService.statistic(expositionId, offerId).then(function (data) {
+                    var data = {};
+                    if ($scope.filter && $scope.filter.location) {
+                        data.location = $scope.filter.location;
+                    }
+                    ExpositionService.statistic(expositionId, offerId, data).then(function (data) {
                         if (data.success === true) {
                             $scope.statistic = data.result;
                             $scope.positive = data.positive;
@@ -472,10 +482,12 @@ expositionApp.controller('ExpositionsController',
                 };
 
                 $scope.checkChosenTheme = function (theme) {
-                    for (var i in $scope.exposition.themes) {
-                        var t = $scope.exposition.themes[i];
-                        if (theme._id === t._id) {
-                            return i;
+                    if ($scope.exposition && $scope.exposition.themes) {
+                        for (var i in $scope.exposition.themes) {
+                            var t = $scope.exposition.themes[i];
+                            if (theme._id === t._id) {
+                                return i;
+                            }
                         }
                     }
                     return false;
@@ -493,9 +505,9 @@ expositionApp.controller('ExpositionsController',
                     } else {
                         $scope.activeChoseThemeButton = false;
                     }
-                    if($scope.choseThemeFilterWindowOpen){
-                        
-                    }else{
+                    if ($scope.choseThemeFilterWindowOpen) {
+
+                    } else {
                         $scope.loadExpos();
                     }
                 };
@@ -540,6 +552,11 @@ expositionApp.controller('ExpositionsController',
                     return deferred.promise;
                 };
 
+                $scope.hasAccessToStatistics = function (exposition, offer) {
+                    return ($rootScope.hasRole(1) && $rootScope.isOwner(exposition.creator))
+                            || ($rootScope.hasRole(2) && $rootScope.isOwner(offer.creator));
+                };
+
                 function resizeImg(file) {
                     var canvas = document.createElement('canvas');
                     var img = new Image();
@@ -582,6 +599,6 @@ expositionApp.controller('ExpositionsController',
 
                     return a;
                 }
-
             }
+
         ]);

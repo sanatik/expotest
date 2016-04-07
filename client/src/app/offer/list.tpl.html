@@ -1,19 +1,3 @@
-<a permission only="'exponent'" href="/#/offer/create/">Создать новое предложение</a>
-<h1>
-    Создано {{offers.length}} предложений
-</h1>
-<table class="table table-striped" ng-show="offers.length">
-    <tr>
-        <td>Название предложения</td>
-    </tr>
-    <tr ng-repeat="offer in offers">
-        <td>
-            <a href="/#/offer/{{offer._id}}/" ng-click="findOffer(offer._id)">
-                {{offer.name}} </a>
-        </td>
-    </tr>
-</table>
-
 <!-- Filters -->
 <section id="filters">
     <div class="inner">
@@ -28,7 +12,7 @@
 
                 <button class="button_blue_text">Добавить направление</button>
 <!--                <button class="button_blue_icon trash"></button>-->
-
+                <button permission only="'exponent'" ng-click="locationPath('/offer/create/')" class="button_blue_text" style="float: right;">Создать предложение</button>
             </div>
         </div>
     </div>
@@ -36,10 +20,6 @@
 <section id="events" class="clearfix">
     <div class="inner">
         <div class="grid clearfix" masonry>
-            <!-- Single item -->
-            <a permission only="'exponent'" href="/#/exposition/create/" class="grid_item add_new" masonry-brick>
-                <button class="button_blue_text">Добавить предложение</button>
-            </a>
 
             <!-- Single item -->
             <div masonry-brick class="masonry-brick grid_item" ng-repeat="offer in offers">

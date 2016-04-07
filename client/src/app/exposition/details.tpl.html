@@ -169,10 +169,10 @@
                         <div class="NS_projects__creator">
                             <div class="col col-12">
                                 <div class="approved clearfix">
-                                    <div class="app-icon"><img src="http://placehold.it/60x60" alt=""></div>
+                                    <div class="app-icon"><img src="" alt=""></div>
                                     <div class="info">
-                                        <p>Подтверждение аудитории:</p>
-                                        <p class="truth">проверен</p>
+                                        <p>Организатор выставки:</p>
+                                        <p class="truth">{{exposition.creatorInfo.displayName}}</p>
                                     </div>
                                 </div>
                                 <p class="website">Сайт мероприятия: <a href="{{exposition.website}}">{{exposition.website}}</a></p>
@@ -190,10 +190,10 @@
         <div class="container-flex js-project-nav-scroll">
             <div class="row">
                 <div class="project-nav__links">
-                    <a class="is-active js-load-project-content js-load-project-description project-nav__link--campaign tabbed-nav__link" data-tab="1" href="#">
+                    <a class="js-load-project-content js-load-project-description project-nav__link--campaign tabbed-nav__link" data-tab="1" href="#">
                         Презентация
                     </a>
-                    <a class="tabbed-nav__link project-nav__link--updates js-load-project-content js-load-project-updates" data-tab="2" href="#">
+                    <a class="is-active tabbed-nav__link project-nav__link--updates js-load-project-content js-load-project-updates" data-tab="2" href="#">
                         Об аудитории
                     </a>
                     <a class="tabbed-nav__link project-nav__link--updates js-load-project-content js-load-project-updates" ng-show="hasRole(2)" href="/#/cart/add/{{exposition._id}}/">Тестировать</a>
@@ -211,20 +211,7 @@
 </div>
 
 <section id="tab-content">
-    <div class="inner">
-        <div id="tab-1">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos incidunt ex consequuntur, autem id accusantium dolorum est expedita, distinctio provident. Sunt maxime molestiae itaque. Consectetur maiores quidem reprehenderit mollitia ratione blanditiis consequatur eligendi fuga, corporis deserunt animi praesentium recusandae ea autem illo, error, necessitatibus dolores architecto assumenda, ullam porro. Vero.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus aut voluptate nulla dignissimos? Temporibus tenetur distinctio dolore architecto, deleniti, aperiam.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet vel, facere dolore commodi error ea nihil maxime quibusdam, impedit nam at non labore consequuntur eius omnis repellendus velit voluptate molestias!</p>
-        </div>
-
-        <div id="tab-2">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos incidunt ex consequuntur, autem id accusantium dolorum est expedita, distinctio provident. Sunt maxime molestiae itaque. Consectetur maiores quidem reprehenderit mollitia ratione blanditiis consequatur eligendi fuga, corporis deserunt animi praesentium recusandae ea autem illo, error, necessitatibus dolores architecto assumenda, ullam porro. Vero.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus aut voluptate nulla dignissimos? Temporibus tenetur distinctio dolore architecto, deleniti, aperiam.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet vel, facere dolore commodi error ea nihil maxime quibusdam, impedit nam at non labore consequuntur eius omnis repellendus velit voluptate molestias!</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos incidunt ex consequuntur, autem id accusantium dolorum est expedita, distinctio provident. Sunt maxime molestiae itaque. Consectetur maiores quidem reprehenderit mollitia ratione blanditiis consequatur eligendi fuga, corporis deserunt animi praesentium recusandae ea autem illo, error, necessitatibus dolores architecto assumenda, ullam porro. Vero.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus aut voluptate nulla dignissimos? Temporibus tenetur distinctio dolore architecto, deleniti, aperiam.</p>
-        </div>
+    <div class="inner" ng-bind-html="exposition.aboutAuditory">   
     </div>
 </section>
 

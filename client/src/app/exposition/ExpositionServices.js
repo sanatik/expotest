@@ -35,8 +35,8 @@ module.factory('ExpositionService', ['$http', '$window', function ($http, $windo
                     return data.data;
                 });
             },
-            statistic: function (expositionId, offerId) {
-                return $http.post('/exposition/statistic/' + expositionId + '/' + offerId).then(function (data) {
+            statistic: function (expositionId, offerId, data) {
+                return $http.post('/exposition/statistic/' + expositionId + '/' + offerId, data).then(function (data) {
                     return data.data;
                 });
             },

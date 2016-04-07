@@ -209,3 +209,95 @@ footer .socials a.mail{
 #login form input:-ms-input-placeholder { /* Internet Explorer 10-11 */
     color:    #ccc;
 }
+
+.drop_big_320 input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    border-radius: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    -o-appearance: none;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    border: 2px solid #eaeff2;
+    color: #000000;
+    font: 400 14px/1em Roboto,Arial,sans-serif;
+    padding-left: 17px;
+}
+.drop_big_320.filter-country:before{
+    background: none;
+}
+
+.drop_big_320 input::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #ccc;
+}
+.drop_big_320 input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #ccc;
+    opacity:  1;
+}
+.drop_big_320 input::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #ccc;
+    opacity:  1;
+}
+.drop_big_320 input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color:    #ccc;
+}
+.create-form input::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #ccc;
+}
+.create-form input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #ccc;
+    opacity:  1;
+}
+.create-form input::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #ccc;
+    opacity:  1;
+}
+.create-form input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color:    #ccc;
+}
+.create-form textarea::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #ccc;
+}
+.create-form textarea:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #ccc;
+    opacity:  1;
+}
+.create-form textarea::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #ccc;
+    opacity:  1;
+}
+.create-form textarea:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color:    #ccc;
+}
+/* Editor styling */
+
+.ta-toolbar {
+	background-color: #F0F0F0;
+	padding: 10px 10px 5px;
+	margin-left: 0px; /* Override bootstrap */
+	border: 1px solid #EEE;
+}
+
+.ta-toolbar .btn-group {
+	margin-bottom: 5px;
+}
+
+.ta-editor, .white-box {
+	padding: 10px;
+	background-color: #FFF;
+	border: 1px solid #EEE;
+}
+
+textarea.ta-bind {
+	width: 100%;
+}
+.ta-hidden-input{
+    display: none;
+}

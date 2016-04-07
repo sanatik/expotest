@@ -3,6 +3,7 @@
  */
 var mongoose = require('mongoose');
 var Exposition = require('../models/ExpositionModel');
+var moment = require('moment');
 var UserModel = mongoose.model('User');
 var bCrypt = require('bcrypt-nodejs');
 var passport = require('passport');
@@ -22,8 +23,8 @@ exports.create = function (req, res) {
         exposition.photo.contentBase64 = new Buffer(req.body.photo.content, 'base64');
         exposition.photo.ext = req.body.photo.type;
     }
-    exposition.startDate = new Date(req.body.startDate);
-    exposition.endDate = new Date(req.body.endDate);
+    exposition.startDate = moment(req.body.startDate, "DD-MM-YYYY").toDate();
+    exposition.endDate = moment(req.body.endDate, "DD-MM-YYYY").toDate();
     if (req.body.presentation.presentation) {
         var base64Data = req.body.presentation.content;
         exposition.presentation = {};
@@ -38,6 +39,7 @@ exports.create = function (req, res) {
     exposition.testFlightRequest = true;
     exposition.moderatorCheckingResult = 0;
     exposition.themes = req.body.themes;
+    exposition.aboutAuditory = req.body.aboutAuditory;
     var themeIds = [];
     for (var i in exposition.themes) {
         themeIds.push(exposition.themes[i]._id);
@@ -118,10 +120,10 @@ exports.getAll = function (req, res) {
         options.creator = user.userId;
     }
     var filterThemes = null;
-    if(themes){
-        if(themes instanceof Array){
+    if (themes) {
+        if (themes instanceof Array) {
             filterThemes = themes;
-        }else{
+        } else {
             filterThemes = [];
             filterThemes.push(themes);
         }
@@ -149,7 +151,7 @@ exports.getAll = function (req, res) {
                     if (month > 11) {
                         month = 0;
                     }
-                    if(year > 0){
+                    if (year > 0) {
                         filterDateStart.year = year;
                         filterDateEnd.year = year;
                     }
@@ -176,8 +178,8 @@ exports.getAll = function (req, res) {
                         }
                     } else if (filterThemes) {
                         if (exposition.themes) {
-                            for(var i in filterThemes){
-                                if(hasTheme(filterThemes[i], exposition.themes)){
+                            for (var i in filterThemes) {
+                                if (hasTheme(filterThemes[i], exposition.themes)) {
                                     expositions.push(exposition);
                                     break;
                                 }
@@ -200,7 +202,7 @@ function hasTheme(theme, themes) {
         var t = themes[i];
         var themeId = new ObjectId(JSON.parse(theme)._id);
         var tId = new ObjectId(t._id);
-        if (themeId.equals(tId)){
+        if (themeId.equals(tId)) {
             return true;
         }
     }
@@ -223,18 +225,26 @@ exports.get = function (req, res) {
                 var content = exposition.presentation.contentBase64.toString('base64');
                 exposition.presentation.contentString = content;
             }
-            if(exposition.format){
+            if (exposition.format) {
                 exposition.formatString = getFormatString(exposition.format);
             }
-            res.json(exposition);
+            if(exposition.creator){
+                mongoose.model('User').findById(exposition.creator, function(err, user){
+                    if(err){
+                        res.send(err);
+                    }
+                    exposition.creatorInfo = user;
+                    res.json(exposition);
+                });
+            }
         });
     } catch (e) {
         res.send(404);
     }
 };
 
-function getFormatString(id){
-    switch(id){
+function getFormatString(id) {
+    switch (id) {
         case 1:
             return "Выставка";
         case 2:
@@ -255,42 +265,87 @@ exports.update = function (req, res) {
             if (err) {
                 res.send(err);
             }
-
-            var exposition = new Exposition();
             if (req.body.displayName) {
                 exposition.displayName = req.body.displayName;
             }
-            if (req.body.price)
+            if (req.body.price) {
                 exposition.price = req.body.price;
-            if (req.body.location)
+            }
+            if (req.body.format) {
+            exposition.format = req.body.format;
+                
+            }
+            if (req.body.location) {
                 exposition.location = req.body.location;
-            if (req.body.website)
+            }
+            if (req.body.website) {
                 exposition.website = req.body.website;
+            }
             if (req.body.photo.content) {
                 exposition.photo = {};
                 exposition.photo.contentBase64 = new Buffer(req.body.photo.content, 'base64');
                 exposition.photo.ext = req.body.photo.type;
             }
-            if (req.body.startDate)
-                exposition.startDate = new Date(req.body.startDate);
-            if (req.body.endDate)
-                exposition.endDate = new Date(req.body.endDate);
-            if (req.body.presentation.presentation) {
+            if (req.body.startDate) {
+                exposition.startDate = moment(req.body.startDate, "DD-MM-YYYY").toDate();
+            }
+            if (req.body.endDate) {
+                exposition.endDate = moment(req.body.endDate, "DD-MM-YYYY").toDate();
+            }
+            
+            if (req.body.presentation) {
                 var base64Data = req.body.presentation.content;
                 exposition.presentation = {};
                 exposition.presentation.contentBase64 = new Buffer(base64Data, 'base64');
                 exposition.presentation.ext = req.body.presentation.type;
             }
-            if (req.body.description)
+            if (req.body.expectedAudience) {
                 exposition.description = req.body.description;
-            if (req.body.additional)
-                exposition.additional = req.body.additional;
-
-            exposition.save(function (err) {
-                if (err)
-                    res.send(err);
-                res.json({message: "Ok"});
-            });
+            }
+            if (req.body.description) {
+                exposition.expectedAudience = req.body.expectedAudience;
+            }
+            if (req.body.participantsNumber) {
+                exposition.participantsNumber = req.body.participantsNumber;
+            }
+            if (req.body.minFeedBack) {
+                exposition.minFeedBack = req.body.minFeedBack;
+            }
+            if (req.body.themes) {
+                exposition.themes = req.body.themes;
+            }
+            if (req.body.aboutAuditory) {
+                exposition.aboutAuditory = req.body.aboutAuditory;
+            }
+            var themeIds = [];
+            for (var i in exposition.themes) {
+                themeIds.push(exposition.themes[i]._id);
+            }
+            var tags = req.body.tags;
+            var insertTags = [];
+            for (var i in tags) {
+                insertTags.push(tags[i].text);
+                for (var j in exposition.themes) {
+                    if (!exposition.themes[j].tags) {
+                        exposition.themes[j].tags = [];
+                    }
+                    exposition.themes[j].tags.push(tags[i].text);
+                }
+            }
+            mongoose.model('Tag')
+                    .update({_id: {$in: themeIds}}, {$addToSet: {tags: {$each: insertTags}}},
+                    {upsert: true, multi: true}, function (err) {
+                        if (err) {
+                            res.json(err);
+                        } else {
+                            exposition.save(function (err, result) {
+                                if (err) {
+                                    res.send(err);
+                                }
+                                res.json(result);
+                            });
+                        }
+                    });
 
         });
     } catch (e) {
@@ -384,6 +439,7 @@ exports.statistic = function (req, res) {
     var currentUser = req.decoded;
     var id = req.params.id;
     var oId = req.params.oId;
+    var location = req.body.location;
     if (currentUser && id && oId) {
         oId = new ObjectId(oId);
         Exposition.findById(id, function (err, exposition) {
@@ -411,8 +467,28 @@ exports.statistic = function (req, res) {
                                 if (r.feedback === true) {
                                     positive++;
                                 }
-                                result.push(r);
-                                break;
+                                if (location) {
+                                    if (audience[i].city) {
+                                        var type = location.types[0];
+                                        if (type === 'locality') {
+                                            if (audience[i].city.place_id === location.place_id) {
+                                                result.push(r);
+                                                break;
+                                            }
+                                        } else if (type === 'country') {
+                                            var acs = audience[i].city.address_components;
+                                            if (acs[acs.length - 1].types[0] === 'country') {
+                                                if (acs[acs.length - 1].long_name === location.address_components[0].long_name) {
+                                                    result.push(r);
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    result.push(r);
+                                    break;
+                                }
                             }
                         }
                     }

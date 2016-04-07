@@ -150,5 +150,9 @@ offerApp.controller('OfferController', ['$scope', '$resource', '$state', '$locat
             return dataurl;
         }
 
+        $scope.locationPath = function (url) {
+            $location.path(url);
+        };
+
     }
 ]);
