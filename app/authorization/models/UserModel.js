@@ -10,13 +10,22 @@ var UserSchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
-    displayName: String,
+    displayName: {
+        type: String,
+        required: true
+    },
     login: String,
     email: String,
     phone: String,
-    password: String,
+    password: {
+        type: String,
+        required: true
+    },
     salt: String,
-    role: Number,
+    role: {
+        type: String,
+        required: true
+    },
     position: String,
     company: String,
     city: Object,
@@ -28,11 +37,6 @@ var UserSchema = new mongoose.Schema({
         ext: String,
         content: Buffer
     },
-    description: String,
-    additional: [{
-            name: String,
-            data: String
-        }],
     cart: [{
             orderNumber: mongoose.Schema.ObjectId,
             exposition: Object,

@@ -147,7 +147,7 @@ footer .socials a.mail{
     outline:none;
 }
 
-#login form input[type="text"], input[type="password"] {
+#login form input[type="text"], input[type="password"], input[type="email"] {
     border-radius: 0px 3px 3px 0px;
     -moz-border-radius: 0px 3px 3px 0px;
     -webkit-border-radius: 0px 3px 3px 0px;
@@ -300,4 +300,7 @@ textarea.ta-bind {
 }
 .ta-hidden-input{
     display: none;
+}
+input.ng-touched.ng-invalid, select.ng-touched.ng-invalid{
+    background-color: #FA787E;
 }

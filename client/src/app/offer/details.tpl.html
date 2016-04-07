@@ -1,27 +1,72 @@
-<h3>  Описание предложения {{offer.name}} </h3>
+<link rel="stylesheet" href="css/kick.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<style>
+    .shadow_overlay{
+        z-index: 999;
+    }
+    .custom-modal.active{
+        z-index: 1000;
+        width: 30%;
+    }
+</style>
+<section class="NS_projects__hero_funding">
+    <!-- / Hide this on mobile since we want the video to be at the top -->
+    <div class="mobile-hide py4 px2">
+        <div class="NS_projects__header center">
+            <h2 class="normal mb1"><a class="green-dark" href="#">{{offer.name}}</a></h2>
+        </div>
 
-<table>
-    <tr>
-        <td>Название</td>
-        <td>{{offer.name}}</td>
-    </tr>
-    <tr>
-        <td>Фото</td>
-        <td><img data-ng-src="data:{{offer.photo.ext}};base64,{{offer.photo.contentString}}"></td>
-    </tr>
-    <tr>
-        <td>Описание</td>
-        <td>{{offer.description}}</td>
-    </tr>
-</table>
+    </div>
+    <div class="container-flex px2">
+        <div class="row">
+            <div class="table">
+                <div class="table-cell col-8 px-gutter">
+                    <div class="project-image" id="video-section">
+                        <img data-ng-src="data:{{offer.photo.ext}};base64,{{offer.photo.contentString}}">
+                    </div>
 
-<div>
-    <a href="/#/offer/">Back</a>
-</div>
-<div>
-    <a ng-show="isOwner(offer.creator)" class="btn btn-inverse" href="/#/offer/{{offer._id}}/edit/"
-       ng-click="findOffer(offer._id)">
-        Изменить
-    </a>
-    <a ng-show="isOwner(offer.creator)" ng-click="deleteOffer(offer._id)" href="">Удалить</a>
+                </div>
+                <div class="table-cell col-4 px-gutter">
+
+                    <!-- / Only renders for non live projects -->
+                    <div class="Project1539660295"></div>
+                    <!-- / Back manage and star buttons -->
+                    <div class="NS_projects__back_and_star">
+                        <div class="Project1539660295">
+                            <div class="align-middle inline-block pl1 mobile-hide"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-8 py4">
+                <div class="mobile-hide">
+                    <div class="h5 mb3">
+
+                    </div>
+                    <p class="h3 mb3">
+                        {{offer.description}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="NS_projects__content">
+    <div class="NS_projects__project_nav js-project-nav" data-0="position:absolute;" data-top-top="position:fixed; top:0;">
+        <div class="container-flex js-project-nav-scroll">
+            <div class="row">
+                <div class="project-nav__links">
+                    <a class="js-load-project-content js-load-project-description project-nav__link--campaign tabbed-nav__link" ng-show="isOwner(offer.creator)" class="btn btn-inverse" href="/#/offer/{{offer._id}}/edit/"
+                       ng-click="findOffer(offer._id)">
+                        Изменить
+                    </a>
+                    <a class="js-load-project-content js-load-project-description project-nav__link--campaign tabbed-nav__link" ng-show="isOwner(offer.creator)" ng-click="deleteOffer(offer._id)" href="">Удалить</a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -31,18 +31,17 @@ module.exports = function (passport) {
                         var newUser = new UserModel();
 
                         // set the user's local credentials
-                        newUser.displayName = req.param('displayName');
+                        newUser.displayName = req.body.displayName;
                         newUser.login = username;
                         newUser.password = createHash(password);
-                        newUser.email = req.param('email');
-                        newUser.phone = req.param('phone');
-                        newUser.role = req.param('role');
-                        newUser.description = req.param('description');
-                        if (req.param('avatar')) {
-                            var avatar = new Buffer(req.param('avatar')).toString('base64');
-                            newUser.avatar = new Buffer(avatar, 'base64');
+                        newUser.email = req.body.email;
+                        newUser.phone = req.body.phone;
+                        newUser.role = req.body.role;
+                        if (req.body.avatar.content) {
+                            newUser.avatar = {};
+                            newUser.avatar.content = new Buffer(req.body.avatar.content, 'base64');
+                            newUser.avatar.ext = req.body.avatar.type;
                         }
-                        newUser.additional = req.param('additional');
                         // save the user
                         newUser.save(function (err) {
                             if (err) {

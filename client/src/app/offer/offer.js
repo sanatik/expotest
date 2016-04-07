@@ -24,7 +24,7 @@ offerApp.config(['$stateProvider', '$urlRouterProvider',
                 })
                 .state('offeredit', {
                     url: "/offer/:id/edit/",
-                    templateUrl: 'app/offer/edit.tpl.html',
+                    templateUrl: 'app/offer/create.tpl.html',
                     controller: 'OfferController'
                 });
     }
@@ -59,6 +59,10 @@ offerApp.controller('OfferController', ['$scope', '$resource', '$state', '$locat
                 alert("Error loading offer");
             });
         };
+        
+        if ($state.current.name === 'offercreate') {
+            $scope.createOfferAction = true;
+        }
 
         $scope.createOffer = function () {
             if ($scope.offerCreateForm != 'undefined') {

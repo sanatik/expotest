@@ -22,29 +22,35 @@ authApp.controller('AuthController', ['$scope', '$resource', '$state', '$locatio
     function ($scope, $resource, $state, $location, AuthServices, $rootScope) {
         $scope.loginFormData = {};
         $scope.user = {};
+        $scope.user.avatar = {};
         $scope.user.additional = [];
 
         $scope.signup = function () {
             $("#loader").show();
             AuthServices.signup(this.user,
-                function (data) {
-                    if (data.message === 'OK') {
-                        $location.path('/auth/');
-                    } else {
-                        $("#message").html(data.message).show();
-                    }
-                    $("#loader").hide();
-                },
-                function () {
-                    $("#loader").hide();
-                });
+                    function (data) {
+                        if (data.message === 'OK') {
+                            $location.path('/auth/');
+                        } else {
+                            $("#message").html(data.message).show();
+                        }
+                        $("#loader").hide();
+                    },
+                    function () {
+                        $("#loader").hide();
+                    });
         };
-        $scope.upload = function (image) {
+        $scope.uploadPhoto = function (image) {
             var reader = new FileReader();
+            var type = 'image/png';
             reader.addEventListener("load", function () {
                 var readyImg = resizeImg(reader.result);
-                document.getElementById('avatar-img').setAttribute('src', readyImg);
-                $scope.user.avatar = readyImg;
+                document.getElementById("photo-preview").setAttribute('src', readyImg);
+                readyImg = readyImg.replace(type, "");
+                readyImg = readyImg.replace("data:", "");
+                readyImg = readyImg.replace(";base64,", "");
+                $scope.user.avatar.content = readyImg;
+                $scope.user.avatar.type = type;
             }, false);
 
             if (image) {
@@ -62,8 +68,8 @@ authApp.controller('AuthController', ['$scope', '$resource', '$state', '$locatio
             var ctx = canvas.getContext("2d");
             ctx.drawImage(img, 0, 0);
 
-            var MAX_WIDTH = 200;
-            var MAX_HEIGHT = 300;
+            var MAX_WIDTH = 100;
+            var MAX_HEIGHT = 100;
             var width = img.width;
             var height = img.height;
 
@@ -87,4 +93,4 @@ authApp.controller('AuthController', ['$scope', '$resource', '$state', '$locatio
             return dataurl;
         }
     }])
-;
+        ;

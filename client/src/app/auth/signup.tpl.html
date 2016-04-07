@@ -1,39 +1,40 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <div id="login" style="margin: 100px auto;">
-    <form ng-submit="login()">
+    <form ng-submit="signup()">
         <fieldset class="clearfix">
             <p>
                 <i class="fa fa-user"></i>
-                <input type="text" ng-model="user.displayName" placeholder="ФИО">
+                <input type="text" ng-model="user.displayName" placeholder="ФИО" required>
             </p>
             <p>
                 <i class="fa fa-key"></i>
-                <input type="text" ng-model="user.username" placeholder="Логин">
+                <input type="text" ng-model="user.username" placeholder="Логин" required>
             </p>
             <p>
                 <i class="fa fa-at"></i>
-                <input type="text" ng-model="user.email" placeholder="Email">
+                <input type="email" ng-model="user.email" placeholder="Email" required>
             </p>
             <p>
                 <i class="fa fa-phone"></i>
-                <input type="text" ng-model="user.phone" placeholder="Телефон">
+                <input type="text" ng-model="user.phone" placeholder="Телефон" required phone>
             </p>
             <p>
                 <i class="fa fa-user-secret"></i>
-                <select ng-model="user.role" style="height: 50px;">
+                <select ng-model="user.role" style="height: 50px;" required>
                     <option ng-value="1">Организатор</option>
                     <option ng-value="2">Экспонент</option>
                 </select>
             </p>
             <p style="width: 100%;">
                 <i class="fa fa-picture-o"></i>
-                <button ngf-select="upload($file)" style="padding: 0 16px; height: 50px; margin-bottom: 1em">Загрузить аватар</button>
-                <input type="text" ng-model="user.avatar" ng-show="false">
-                <img style="margin-left: 50px;" id="avatar-img"/>
+                <button ngf-select="uploadPhoto($file)" style="padding: 0 16px; height: 50px; margin-bottom: 1em">Выбрать</button>
+                <input type="text" ng-model="user.avatar.content" ng-show="false">
+                <input type="text" ng-model="user.avatar.type" ng-show="false">
+                <img style="margin-left: 50px;" id="photo-preview">
             </p>
             <p>
                 <i class="fa fa-lock"></i>
-                <input type="password" ng-model="user.password" placeholder="Пароль">
+                <input type="password" ng-model="user.password" placeholder="Пароль" required>
             </p>
             <p>
                 <input type="submit" value="РЕГИСТРАЦИЯ">

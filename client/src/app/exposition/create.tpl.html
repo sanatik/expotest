@@ -140,7 +140,6 @@
                         <input type="text" ng-model="exposition.photo.type" ng-show="false">
                         <img id="photo-preview" data-ng-src="data:{{exposition.photo.ext}};base64,{{exposition.photo.contentString}}"/>
                     </div>
-
                 </div>
                 <div class="table-cell col-4 px-gutter">
                     <div class="NS_projects__stats">
@@ -257,7 +256,7 @@
 <section id="tab-content">
     <div text-angular ng-model="exposition.aboutAuditory" style="width: 1080px; margin: 0 auto;"></div>
 </section>
-<div class="NS_projects__content clearfix" style="width: 1060px; margin: 0 auto;">
+<div class="NS_projects__content clearfix" style="width: 1080px; margin: 0 auto;">
     <button ng-show="createExpositionAction" type="submit" ng-click="createExposition()" class="button_blue_text" style="float: right;">Сохранить</button>
     <button ng-hide="createExpositionAction" type="submit" ng-click="updateExposition(exposition._id)" class="button_blue_text" style="float: right;">Сохранить</button>
 </div>

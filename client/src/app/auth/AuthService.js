@@ -75,3 +75,26 @@ authServices.factory('AuthServices', ['$http', 'AuthToken', '$rootScope', functi
             }
         };
     }]);
+
+
+var PHONE_REGEX = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+authServices.directive('phone', function() {
+  return {
+    require: 'ngModel',
+    link: function(scope, elm, attrs, ctrl) {
+      ctrl.$validators.integer = function(modelValue, viewValue) {
+        if (ctrl.$isEmpty(modelValue)) {
+          // consider empty models to be valid
+          return true;
+        }
+
+        if (PHONE_REGEX.test(viewValue)) {
+          return true;
+        }
+
+        // it is invalid
+        return false;
+      };
+    }
+  };
+});
