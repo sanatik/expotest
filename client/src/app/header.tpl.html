@@ -14,7 +14,7 @@
         <div class="clearfix">
             <a ng-show="currentUser && hasRole(5)" href="/#/users/all/">Пользователи</a>
             <a ng-show="currentUser && currentUser.name" href="/#/exposition/">Мероприятия</a>
-            <a ng-show="currentUser && hasRole(2)" href="/#/offer/">Мои предложения</a>
+            <a ng-show="currentUser && hasRole(2)" href="/#/offer/">Мои предложения {{showO}}</a>
             <a ng-show="currentUser && hasRole(2)" href="/#/cart/">Мои заказы <span class="light-blue-color">({{currentUser.cartAmount || 0}})</span></a>
             <a ng-show="currentUser && hasRole(1)" href="/#/exposition/my/">Мои выставки</a>
             <a ng-show="currentUser && hasRole(1)" href="/#/cart/approve/">Мои заказы <span class="light-blue-color">({{currentUser.cartAmount || 0}})</span></a>
@@ -24,7 +24,7 @@
         </div>
     </nav>
 
-    <div id="mobile-nav">
+<!--    <div id="mobile-nav">
         <div class="show_elements_button"></div>
         <div class="hidden-menu">
             <a ng-show="currentUser && hasRole(5)" href="/#/users/all/">Пользователи</a>
@@ -35,5 +35,5 @@
             <a ng-hide="currentUser && currentUser.name" href="/#/auth/signup/">Зарегистрироваться</a>
             <a ng-show="currentUser && currentUser.name" ng-click="logout()" href="">Выйти</a>
         </div>
-    </div>
+    </div>-->
 </header>

@@ -94,9 +94,9 @@ angular.module('app').controller('AppCtrl', ['$scope', '$location', '$rootScope'
                 $rootScope.checkCurrentUser(function (data) {
                     if (data) {
                         if (data.message === 'ok') {
-                            hasRole = $rootScope.currentUser.role === role;
+                            hasRole = $rootScope.currentUser.role == role;
+                            }
                         }
-                    }
                 });
             }
             return hasRole;

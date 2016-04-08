@@ -61,12 +61,12 @@ module.exports = function (passport) {
         var user = req.decoded;
         if (user) {
             var roleName = req.query.roleName;
-            console.log(roleName);
             var roles = config.roles;
             var hasRole = false;
             for (var i in roles) {
                 var role = roles[i];
-                if (role.id === user.role) {
+                if (role.id == user.role) {
+                    console.log(role.name + ' ' + roleName);
                     if (role.name === roleName) {
                         hasRole = true;
                         break;
