@@ -60,7 +60,8 @@ module.exports = function (passport) {
     router.get('/hasRole', function (req, res) {
         var user = req.decoded;
         if (user) {
-            var roleName = req.param('roleName');
+            var roleName = req.query.roleName;
+            console.log(roleName);
             var roles = config.roles;
             var hasRole = false;
             for (var i in roles) {
