@@ -213,7 +213,7 @@ exports.get = function (req, res) {
     var id = req.params.id;
     try {
         id = new ObjectId(id);
-        Exposition.findById(id, function (err, exposition) {
+        Exposition.findOne({_id: id}).populate('creator').exec(function (err, exposition) {
             if (err) {
                 res.send(err);
             }
@@ -228,15 +228,7 @@ exports.get = function (req, res) {
             if (exposition.format) {
                 exposition.formatString = getFormatString(exposition.format);
             }
-            if(exposition.creator){
-                mongoose.model('User').findById(exposition.creator, function(err, user){
-                    if(err){
-                        res.send(err);
-                    }
-                    exposition.creatorInfo = user;
-                    res.json(exposition);
-                });
-            }
+            res.json(exposition);
         });
     } catch (e) {
         res.send(404);

@@ -1,7 +1,4 @@
-<link rel="stylesheet" href="css/kick.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-
-<section class="NS_projects__hero_funding">
+<section class="NS_projects__hero_funding" ng-show="exposition">
     <!-- / Hide this on mobile since we want the video to be at the top -->
     <div class="mobile-hide py4 px2">
         <div class="NS_projects__header center">
@@ -150,7 +147,7 @@
                                     <div class="app-icon"><img src="" alt=""></div>
                                     <div class="info">
                                         <p>Организатор выставки:</p>
-                                        <p class="truth">{{exposition.creatorInfo.displayName}}</p>
+                                        <p class="truth">{{exposition.creator.displayName}}</p>
                                     </div>
                                 </div>
                                 <p class="website">Сайт мероприятия: <a href="{{exposition.website}}">{{exposition.website}}</a></p>
@@ -163,7 +160,7 @@
     </div>
 </section>
 
-<div class="NS_projects__content">
+<div class="NS_projects__content" ng-show="exposition">
     <div class="NS_projects__project_nav js-project-nav" data-0="position:absolute;" data-top-top="position:fixed; top:0;">
         <div class="container-flex js-project-nav-scroll">
             <div class="row">
@@ -176,19 +173,19 @@
                     </a>
                     <a class="tabbed-nav__link project-nav__link--updates js-load-project-content js-load-project-updates" ng-show="hasRole(2)" href="/#/cart/add/{{exposition._id}}/">Тестировать</a>
                     <a class="tabbed-nav__link project-nav__link--updates js-load-project-content js-load-project-updates" href="/#/exposition/{{exposition._id}}/offers/">Список предложений</a>
-                    <a class="tabbed-nav__link project-nav__link--updates js-load-project-content js-load-project-updates" ng-show="isOwner(exposition.creator)" class="btn btn-inverse" href="/#/exposition/{{exposition._id}}/edit/"
+                    <a class="tabbed-nav__link project-nav__link--updates js-load-project-content js-load-project-updates" ng-show="isOwner(exposition.creator._id)" class="btn btn-inverse" href="/#/exposition/{{exposition._id}}/edit/"
                        ng-click="findExposition(exposition._id)">
                         Изменить
                     </a>
-                    <a class="tabbed-nav__link project-nav__link--updates js-load-project-content js-load-project-updates" ng-show="isOwner(exposition.creator)" ng-click="generateLetter()" href="">Сгенерировать письмо</a>
-                    <a class="tabbed-nav__link project-nav__link--updates js-load-project-content js-load-project-updates" ng-show="isOwner(exposition.creator)" ng-click="deleteExposition(exposition._id)" href="">Удалить</a>
+                    <a class="tabbed-nav__link project-nav__link--updates js-load-project-content js-load-project-updates" ng-show="isOwner(exposition.creator._id)" ng-click="generateLetter()" href="">Сгенерировать письмо</a>
+                    <a class="tabbed-nav__link project-nav__link--updates js-load-project-content js-load-project-updates" ng-show="isOwner(exposition.creator._id)" ng-click="deleteExposition(exposition._id)" href="">Удалить</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<section id="tab-content">
+<section id="tab-content" ng-show="exposition">
     <div class="inner" ng-bind-html="exposition.aboutAuditory">   
     </div>
 </section>
@@ -238,3 +235,5 @@
     </div>
 
 </section>
+<link rel="stylesheet" href="css/kick.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
