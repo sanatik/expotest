@@ -15,7 +15,15 @@ offerApp.config(['$stateProvider', '$urlRouterProvider',
                 .state('offercreate', {
                     url: "/offer/create/",
                     templateUrl: 'app/offer/create.tpl.html',
-                    controller: 'OfferController'
+                    controller: 'OfferController',
+                    data: {
+                        permissions: {
+                            only: ['exponent'],
+                            redirectTo: function () {
+                                return 'exposition';
+                            }
+                        }
+                    }
                 })
                 .state('offerview', {
                     url: "/offer/:id/",
@@ -25,7 +33,15 @@ offerApp.config(['$stateProvider', '$urlRouterProvider',
                 .state('offeredit', {
                     url: "/offer/:id/edit/",
                     templateUrl: 'app/offer/create.tpl.html',
-                    controller: 'OfferController'
+                    controller: 'OfferController',
+                    data: {
+                        permissions: {
+                            only: ['exponent'],
+                            redirectTo: function () {
+                                return 'exposition';
+                            }
+                        }
+                    }
                 });
     }
 ]);
@@ -40,6 +56,11 @@ offerApp.controller('OfferController', ['$scope', '$resource', '$state', '$locat
                 if ($state.params.id) {
                     $scope.findOffer($state.params.id);
                 }
+                $('.grid').masonry({
+                    itemSelector: '.grid_item',
+                    columnWidth: 250,
+                    gutter: 30
+                });
             }, function () {
                 alert("Error on loading offers");
             });
@@ -59,7 +80,7 @@ offerApp.controller('OfferController', ['$scope', '$resource', '$state', '$locat
                 alert("Error loading offer");
             });
         };
-        
+
         if ($state.current.name === 'offercreate') {
             $scope.createOfferAction = true;
         }

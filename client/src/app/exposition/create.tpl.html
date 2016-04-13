@@ -114,7 +114,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <link rel='stylesheet' href='vendor/text-angular/dist/textAngular.css'>
 
-<section class="NS_projects__hero_funding create-form">
+<section class="NS_projects__hero_funding create-form" ng-show="exposition">
     <!-- / Hide this on mobile since we want the video to be at the top -->
     <div class="mobile-hide py4 px2">
         <div class="NS_projects__header center">
@@ -139,6 +139,7 @@
                         <input type="text" ng-model="exposition.photo.content" ng-show="false">
                         <input type="text" ng-model="exposition.photo.type" ng-show="false">
                         <img id="photo-preview" data-ng-src="data:{{exposition.photo.ext}};base64,{{exposition.photo.contentString}}"/>
+                        <img ng-hide="exposition.photo.contentString || exposition.photo.content" src="http://3dtoday.ru/upload/_blank_600.jpg" />
                     </div>
                 </div>
                 <div class="table-cell col-4 px-gutter">

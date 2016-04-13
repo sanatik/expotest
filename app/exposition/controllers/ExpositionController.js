@@ -109,6 +109,12 @@ exports.getAll = function (req, res) {
     var format = req.query.format;
     var my = req.query.my;
     var themes = req.query.themes;
+    var offset = req.query.offset;
+    if(offset){
+        offset = parseInt(offset);
+    }else{
+        offset = 0;
+    }
     var options = {};
     if (format && format !== '0') {
         options = {'format': format};
@@ -128,7 +134,7 @@ exports.getAll = function (req, res) {
             filterThemes.push(themes);
         }
     }
-    Exposition.find(options, function (err, results) {
+    Exposition.find(options).skip(offset).limit(5).exec(function (err, results) {
         if (err) {
             res.send(err);
         } else {

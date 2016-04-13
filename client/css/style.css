@@ -279,28 +279,46 @@ footer .socials a.mail{
 /* Editor styling */
 
 .ta-toolbar {
-	background-color: #F0F0F0;
-	padding: 10px 10px 5px;
-	margin-left: 0px; /* Override bootstrap */
-	border: 1px solid #EEE;
+    background-color: #F0F0F0;
+    padding: 10px 10px 5px;
+    margin-left: 0px; /* Override bootstrap */
+    border: 1px solid #EEE;
 }
 
 .ta-toolbar .btn-group {
-	margin-bottom: 5px;
+    margin-bottom: 5px;
 }
 
 .ta-editor, .white-box {
-	padding: 10px;
-	background-color: #FFF;
-	border: 1px solid #EEE;
+    padding: 10px;
+    background-color: #FFF;
+    border: 1px solid #EEE;
 }
 
 textarea.ta-bind {
-	width: 100%;
+    width: 100%;
 }
 .ta-hidden-input{
     display: none;
 }
 input.ng-touched.ng-invalid, select.ng-touched.ng-invalid{
     background-color: #FA787E;
+}
+header #main-nav{
+    padding: 33px 15px;
+}
+#new-test .button_bg .gray_button{
+    background: #ccc;
+    cursor: default;
+}
+#new-test .button_bg .button_blue_text{
+    margin-right: 10px;
+    background: #0091d5;
+}
+#new-test .button_bg .button_blue_text:hover{
+    margin-right: 10px;
+    background: #33a7dd;
+}
+#filters .tags .tag_boxed{
+    margin-bottom: 10px;
 }

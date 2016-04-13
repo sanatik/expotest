@@ -20,7 +20,15 @@ expositionApp.config(['$stateProvider', '$urlRouterProvider',
                 .state('expositioncreate', {
                     url: "/exposition/create/",
                     templateUrl: 'app/exposition/create.tpl.html',
-                    controller: 'ExpositionsController'
+                    controller: 'ExpositionsController',
+                    data: {
+                        permissions: {
+                            only: ['organizer'],
+                            redirectTo: function () {
+                                return 'exposition';
+                            }
+                        }
+                    }
                 })
                 .state('expositionview', {
                     url: "/exposition/:id/",
@@ -53,7 +61,7 @@ expositionApp.config(['$stateProvider', '$urlRouterProvider',
 expositionApp.controller('ExpositionsController',
         ['$scope', '$state', '$location', 'ExpositionService', '$window', '$filter', '$rootScope', 'AuthServices', 'OfferService', 'CartService', '$q', 'UserService',
             function ($scope, $state, $location, ExpositionService, $window, $filter, $rootScope, AuthServices, OfferService, CartService, $q, UserService) {
-                var loadExpositions = function (params) {
+                var loadExpositions = function (params, loadMore) {
                     ExpositionService.findAll(params).then(
                             function (data) {
                                 for (var i in data.data) {
@@ -72,7 +80,15 @@ expositionApp.controller('ExpositionsController',
 
                                     }
                                 }
-                                $scope.expositions = data.data;
+                                if (data.data.length < 5) {
+                                    $scope.loadMoreFilterShow = false;
+                                }
+                                if (loadMore) {
+                                    $scope.expositions = $scope.expositions.concat(data.data);
+
+                                } else {
+                                    $scope.expositions = data.data;
+                                }
                                 $('.grid').masonry({
                                     itemSelector: '.grid_item',
                                     columnWidth: 250,
@@ -140,8 +156,8 @@ expositionApp.controller('ExpositionsController',
                     });
                 };
                 $scope.formats = [{id: 1, name: 'Выставка'}, {id: 2, name: 'Премия'}, {id: 3, name: 'Конференция'}, {id: 4, name: 'Форум'}];
-
-                $scope.loadExpos = function () {
+                $scope.loadMoreFilterShow = true;
+                $scope.loadExpos = function (loadMore) {
                     var params = {};
                     if ($scope.filter.month) {
                         params.month = $scope.filter.month;
@@ -162,7 +178,15 @@ expositionApp.controller('ExpositionsController',
                         params.themes = [];
                         params.themes = params.themes.concat($scope.filter.themes);
                     }
-                    loadExpositions(params);
+                    if ($scope.filter.offset) {
+                        params.offset = $scope.filter.offset;
+                    }
+                    loadExpositions(params, loadMore);
+                };
+
+                $scope.loadMore = function () {
+                    $scope.filter.offset = $scope.filter.offset + 5;
+                    $scope.loadExpos(true);
                 };
 
                 $scope.letters = [];
@@ -190,7 +214,7 @@ expositionApp.controller('ExpositionsController',
                 if (!$scope.expositions &&
                         ($state.current.name === 'exposition'
                                 )) {
-                    loadExpositions({});
+                    loadExpositions({}, false);
                 }
                 $scope.offer = {};
                 $scope.autocompleteOptions = {
@@ -200,6 +224,7 @@ expositionApp.controller('ExpositionsController',
                 $scope.filter.month = 0;
                 $scope.filter.year = 0;
                 $scope.filter.format = 0;
+                $scope.filter.offset = 0;
                 $scope.filter.themes = [];
 
                 if ($state.current.name === 'expositionmy') {

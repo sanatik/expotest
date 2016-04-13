@@ -70,11 +70,16 @@
 </section>
 <section id="events" class="clearfix">
     <div class="inner">
+        <div ng-hide="expositions.length > 0">
+            <p style="font-style: italic;">
+                Записей не найдено
+            </p>
+        </div>
         <div class="grid clearfix" masonry>
             <!-- Single item -->
-            <a permission only="'organizer'" href="/#/exposition/create/" class="grid_item add_new" masonry-brick>
+<!--            <a permission only="'organizer'" href="/#/exposition/create/" class="grid_item add_new" masonry-brick>
                 <button class="button_blue_text">Добавить выставку</button>
-            </a>
+            </a>-->
 
             <!-- Single item -->
             <div masonry-brick class="masonry-brick grid_item" ng-repeat="exposition in expositions">
@@ -91,7 +96,7 @@
                     <div class="city">{{exposition.location.address_components[0].long_name}}, {{exposition.location.address_components[exposition.location.address_components.length - 1].long_name}}</div>
 
                     <div class="tags">
-                        <a href="#" class="single-tag" ng-repeat="theme in exposition.themes">{{theme.name}} </a> 
+                        <a class="single-tag" ng-repeat="theme in exposition.themes">{{theme.name}} </a> 
                     </div>
                 </div>
 
@@ -106,7 +111,7 @@
         </div>
     </div><!--/inner-->
 
-    <button class="button_gray_border_text load_more">Загрузить еще</button>
+    <button class="button_gray_border_text load_more" ng-click="loadMore()" ng-show="loadMoreFilterShow">Загрузить еще</button>
 
 </section>
 

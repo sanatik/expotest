@@ -43,7 +43,7 @@
     <!-- / Hide this on mobile since we want the video to be at the top -->
     <div class="mobile-hide py4 px2">
         <div class="NS_projects__header center">
-            <h2 class="normal mb1"><input type="text" ng-model="offer.name" placeholder="Название предложения" style="width: 30%;"/></h2>
+            <h2 class="normal mb1"><input type="text" ng-model="offer.name" placeholder="Название предложения" style="width: 30%; line-height: inherit;"/></h2>
         </div>
 
     </div>
@@ -56,6 +56,7 @@
                         <input type="text" ng-model="offer.photo.content" ng-show="false">
                         <input type="text" ng-model="offer.photo.type" ng-show="false">
                         <img id="photo-preview" data-ng-src="data:{{offer.photo.ext}};base64,{{offer.photo.contentString}}">
+                        <img ng-hide="offer.photo.contentString || offer.photo.content" src="http://3dtoday.ru/upload/_blank_600.jpg" />
                     </div>
 
                 </div>
