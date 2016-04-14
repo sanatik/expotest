@@ -2,6 +2,7 @@ var express = require('express');
 var uuid = require('node-uuid'),
     multiparty = require('multiparty'),
     fs = require('fs');
+    path = require("path");
 
 var router = express.Router();
 
@@ -20,7 +21,7 @@ router.post('/uploadImage', function (req, res) {
         var extension = (extIndex < 0) ? '.png' : tmpPath.substr(extIndex);
         // uuid is for generating unique filenames.
         var fileName = uuid.v4() + extension;
-        var destPath = './client/img/' + fileName;
+        var destPath = path.join(__dirname, '../client/img/' + fileName);
 
         // Server side file type checker.
         if (contentType !== 'image/png' && contentType !== 'image/jpeg') {
