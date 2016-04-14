@@ -31,7 +31,7 @@ router.post('/uploadImage', function (req, res) {
         fs.rename(tmpPath, destPath, function (err) {
             if (err) {
                 console.log(err);
-                return res.status(401).send('Image is not saved:');
+                return res.status(401).send('Image is not saved:' + err);
             }
             return res.json(destPath);
         });
