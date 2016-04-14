@@ -35,6 +35,7 @@ router.post('/uploadImage', function (req, res) {
                 console.log(err);
                 return res.status(401).send('Image is not saved:' + err);
             }
+            destPath = destPath.replace('/root/expotest/expotest/client/', '');
             return res.json(destPath);
         });
     });
