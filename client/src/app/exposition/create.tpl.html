@@ -1,105 +1,3 @@
-<!--<h4>Создание выставки</h4>
-<form name="expositionCreateForm" class="expositionCreateForm">
-    <table>
-        <tr>
-            <td>Формат</td>
-            <td>
-                <select ng-model="exposition.format">
-                    <option ng-value="1">Выставка</option>
-                    <option ng-value="2">Премия</option>
-                    <option ng-value="3">Конференция</option>
-                    <option ng-value="4">Форум</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td>Название выставки</td>
-            <td><input type="text" name="expositionName" ng-model="exposition.displayName" id="expositionName"/></td>
-        </tr>
-        <tr>
-            <td>Город</td>
-            <td><input type="text" name="expositionLocation" ng-model="exposition.location" id="expositionLocation" g-places-autocomplete options="autocompleteOptions"/></td>
-        </tr>
-        <tr>
-            <td>Веб-сайт</td>
-            <td><input type="text" name="expositionWebsite" ng-model="exposition.website" id="expositionWebsite"/></td>
-        </tr>
-        <tr>
-            <td>Стоимость тестирования</td>
-            <td><input type="text" name="expositionPrice" ng-model="exposition.price" id="expositionPrice"/></td>
-        </tr>
-        <tr>
-            <td>Фотография</td>
-            <td>
-                <button ngf-select="uploadPhoto($file)">Выбрать</button>
-                <input type="text" ng-model="exposition.photo.content" ng-show="false">
-                <input type="text" ng-model="exposition.photo.type" ng-show="false">
-                <img id="photo-preview"/>
-            </td>
-        </tr>
-        <tr>
-            <td>Дата начала</td>
-            <td><input type="text" class="date" ng-model="exposition.startDate"></td>
-        </tr>
-        <tr>
-            <td>Дата окончания</td>
-            <td><input type="text" class="date" ng-model="exposition.endDate"></td>
-        </tr>
-        <tr>
-            <td>Презентация</td>
-            <td>
-                <button ngf-select="uploadPresentation($file)">Выбрать</button>
-                <input type="text" ng-model="exposition.presentation.content" ng-show="false">
-                <input type="text" ng-model="exposition.presentation.type" ng-show="false">
-                <span id="presentation-name"></span>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                Описание<br/>
-                <textarea name="expositionDescription" ng-model="exposition.description" id="expositionDesc" style="width: 100%; height: 50px;"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td>Количество участников</td>
-            <td><input type="text" ng-model="exposition.participantsNumber"></td>
-        </tr>
-        <tr>
-            <td>Ожидаемая аудитория</td>
-            <td><input type="text" ng-model="exposition.expectedAudience"></td>
-        </tr>
-        <tr>
-            <td>Минмальный отклик</td>
-            <td><input type="text" ng-model="exposition.minFeedBack"></td>
-        </tr>
-        <tr>
-            <td>Тематики</td>
-            <td>
-                <button ng-click="showThemes()">Добавить</button>
-                <ul>
-                    <li ng-repeat="theme in exposition.themes">
-                        {{theme.name}}
-                    </li>
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td>Теги</td>
-            <td>
-        <tags-input ng-model="exposition.tags" addOnComma="false" addOnSpace="true">
-            <auto-complete source="findTag($query)"></auto-complete>
-        </tags-input>
-        </td>
-        </tr>
-
-        <tr>
-            <td colspan="2" style="text-align: right;">
-                <button type="submit" ng-click="createExposition()">Добавить</button>
-                <a href="/#/exposition/create/" ng-click="reset()">Отменить</a>
-            </td>
-        </tr>
-    </table>
-</form>-->
 <style>
     .shadow_overlay{
         z-index: 999;
@@ -113,155 +11,163 @@
 <link rel="stylesheet" href="css/kick.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <link rel='stylesheet' href='vendor/text-angular/dist/textAngular.css'>
+<form ng-submit="createExposition()" ng-show="showCreateForm">
+    <section class="NS_projects__hero_funding create-form">
 
-<section class="NS_projects__hero_funding create-form" ng-show="exposition">
-    <!-- / Hide this on mobile since we want the video to be at the top -->
-    <div class="mobile-hide py4 px2">
-        <div class="NS_projects__header center">
-            <h2 class="normal mb1"><input type="text" name="expositionName" ng-model="exposition.displayName" id="expositionName" placeholder="Введите название выставки" style="width: 30%;"/></h2>
-            <p class="green-dark h5 mb0 mobile-show">
-                <input type="text" class="date" ng-model="exposition.startDate" placeholder="Введите дату начала"> - 
-                <input type="text" class="date" ng-model="exposition.endDate" placeholder="Введите дату окончания">
-            </p>
-            <p class="green-dark h5 mb0 mobile-hide">
-                <input type="text" class="date" ng-model="exposition.startDate" placeholder="Введите дату начала"> - 
-                <input type="text" class="date" ng-model="exposition.endDate" placeholder="Введите дату окончания">
-            </p>
+        <!-- / Hide this on mobile since we want the video to be at the top -->
+        <div class="mobile-hide py4 px2">
+            <div class="NS_projects__header center">
+                <h2 class="normal mb1">
+                    <input style="font-size: 32px;width: 30%;" 
+                           type="text" name="expositionName" ng-model="exposition.displayName" id="expositionName" placeholder="Введите название выставки" required/>
+                </h2>
+                <p class="green-dark h5 mb0 mobile-show">
+                    <input type="text" class="date" ng-model="exposition.startDate" placeholder="Введите дату начала"> - 
+                    <input type="text" class="date" ng-model="exposition.endDate" placeholder="Введите дату окончания">
+                </p>
+                <p class="green-dark h5 mb0 mobile-hide">
+                    <input type="text" class="date" ng-model="exposition.startDate" placeholder="Введите дату начала" required> - 
+                    <input type="text" class="date" ng-model="exposition.endDate" placeholder="Введите дату окончания" required>
+                </p>
+            </div>
+
         </div>
-
-    </div>
-    <div class="container-flex px2">
-        <div class="row">
-            <div class="table">
-                <div class="table-cell col-8 px-gutter">
-                    <div class="project-image" id="video-section">
-                        <button ngf-select="uploadPhoto($file)">Выбрать</button>
-                        <input type="text" ng-model="exposition.photo.content" ng-show="false">
-                        <input type="text" ng-model="exposition.photo.type" ng-show="false">
-                        <img id="photo-preview" data-ng-src="data:{{exposition.photo.ext}};base64,{{exposition.photo.contentString}}"/>
-                        <img ng-hide="exposition.photo.contentString || exposition.photo.content" src="http://3dtoday.ru/upload/_blank_600.jpg" />
+        <div class="container-flex px2">
+            <div class="row">
+                <div class="table">
+                    <div class="table-cell col-8 px-gutter">
+                        <div class="project-image" id="video-section">
+                            <button ngf-select="upload($file)">Выбрать</button>
+                            <span id="photoSpan"></span>
+                            <input type="text" ng-model="exposition.photo.filename" ng-show="false">
+                            <img id="photo-preview" src="/img/{{exposition.photo.filename}}" ng-show="exposition.photo.filename"/>
+                            <img ng-hide="exposition.photo.filename" src="http://3dtoday.ru/upload/_blank_600.jpg" />
+                        </div>
                     </div>
-                </div>
-                <div class="table-cell col-4 px-gutter">
-                    <div class="NS_projects__stats">
-                        <div class="digits_6" id="stats">
-                            <div class="row">
-                                <div class="col col-12 mb1 stat-item">
-                                    <div class="num h1 bold" id="backers_count">
-                                        <i class="fa fa-users"></i> > <input type="text" ng-model="exposition.expectedAudience" placeholder="Количество посетителей">
+                    <div class="table-cell col-4 px-gutter">
+                        <div class="NS_projects__stats">
+                            <div class="digits_6" id="stats">
+                                <div class="row">
+                                    <div class="col col-12 mb1 stat-item">
+                                        <div class="num h1 bold" id="backers_count">
+                                            <i class="fa fa-users"></i> > <input type="text" ng-model="exposition.expectedAudience" placeholder="Количество посетителей" required>
+                                        </div>
+                                        <span class="text">посетителей</span>
                                     </div>
-                                    <span class="text">посетителей</span>
-                                </div>
-                                <div class="col col-12 mb1 stat-item">
-                                    <div class="num h1 bold nowrap" id="pledged">
-                                        <i class="fa fa-user"></i> <input type="text" ng-model="exposition.participantsNumber" placeholder="Количество участников"> 
+                                    <div class="col col-12 mb1 stat-item">
+                                        <div class="num h1 bold nowrap" id="pledged">
+                                            <i class="fa fa-user"></i> <input type="text" ng-model="exposition.participantsNumber" placeholder="Количество участников" required> 
+                                        </div>
+                                        <span class="text">
+                                            участников
+                                        </span>
                                     </div>
-                                    <span class="text">
-                                        участников
-                                    </span>
-                                </div>
 
-                                <span id="project_duration_data"></span>
-                                <div class="col col-12 stat-item">
-                                    <div class="Project1539660295">
-                                        <div class="ksr_page_timer poll stat">
-                                            <div class="num h1 bold">&nbsp;</div>
-                                            <span class="text">&nbsp;</span>
+                                    <span id="project_duration_data"></span>
+                                    <div class="col col-12 stat-item">
+                                        <div class="Project1539660295">
+                                            <div class="ksr_page_timer poll stat">
+                                                <div class="num h1 bold">&nbsp;</div>
+                                                <span class="text">&nbsp;</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="mobile-show mobile-center pt2 border-top">
-                        <div class="NS_projects__category_location">
-                            <i class="fa fa-location-arrow"></i> <input type="text" name="expositionLocation" ng-model="exposition.location" id="expositionLocation" g-places-autocomplete options="autocompleteOptions" placeholder="Выберите регион"/>
-                            <i class="fa fa-tag"></i> 
-                            <select ng-model="exposition.format" ng-options="format.id as format.name for format in formats"></select>
+                        <div class="mobile-show mobile-center pt2 border-top">
+                            <div class="NS_projects__category_location">
+                                <i class="fa fa-location-arrow"></i> <input type="text" name="expositionLocation" ng-model="exposition.location" id="expositionLocation" g-places-autocomplete options="autocompleteOptions" placeholder="Выберите регион"/>
+                                <i class="fa fa-tag"></i> 
+                                <select ng-model="exposition.format" ng-options="format.id as format.name for format in formats"></select>
+                            </div>
+
+                            <div class="btn btn--border-gray btn--small mb2" href="#" id="project_share_mobile">Share this project</div>
+                        </div>
+                        <!-- / This project will only be funded if... -->
+                        <div class="NS_projects__deadline_copy">
+                            <div class="Project1539660295">
+                                <h4><input type="text" name="expositionPrice" ng-model="exposition.price" id="expositionPrice" placeholder="Стоимость тестирования" required/> руб</h4>
+                                <p class="h6 grey-dark mb0"><input type="text" ng-model="exposition.minFeedBack" placeholder="Минимальный отклик" required> </p>
+                                <p class="h6 grey-dark mb0">Дополнительная информация</p>
+                                <p class="h6 grey-dark mb0" ng-repeat="additional in exposition.additionals track by $index">- <input type="text" ng-model="additional" placeholder="Дополнительное поле" ng-change="applyToAdditional($index, additional)"> <a ng-click="removeAdditional($index)" style="color: #33a7dd; cursor: pointer"> удалить </a></p>
+                                <a class="h6 grey-dark mb0" style="color: #33a7dd; cursor: pointer" ng-click="addAdditional()">Добавить</a>
+                            </div>
                         </div>
 
-                        <div class="btn btn--border-gray btn--small mb2" href="#" id="project_share_mobile">Share this project</div>
+                        <!-- / Social avatars -->
                     </div>
-                    <!-- / This project will only be funded if... -->
-                    <div class="NS_projects__deadline_copy">
-                        <div class="Project1539660295">
-                            <h4><input type="text" name="expositionPrice" ng-model="exposition.price" id="expositionPrice" placeholder="Стоимость тестирования"/> руб</h4>
-                            <p class="h6 grey-dark mb0"> <input type="text" ng-model="exposition.minFeedBack" placeholder="Минимальный отклик"> </p>
-                        </div>
-                    </div>
-
-                    <!-- / Social avatars -->
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col col-8 py4">
-                <div class="mobile-hide">
-                    <div class="h5 mb3">
-                        <div class="NS_projects__category_location">
-                            <i class="fa fa-location-arrow"></i><input style="width: 30%;" type="text" name="expositionLocation" ng-model="exposition.location" id="expositionLocation" g-places-autocomplete options="autocompleteOptions" placeholder="Выберите регион"/>
-                            <i class="fa fa-tag" style="margin-left: 20px;"></i>
-                            <select style="width: 30%;" ng-model="exposition.format" ng-options="format.id as format.name for format in formats"></select>
-                        </div>
+            <div class="row">
+                <div class="col col-8 py4">
+                    <div class="mobile-hide">
+                        <div class="h5 mb3">
+                            <div class="NS_projects__category_location">
+                                <i class="fa fa-location-arrow"></i><input style="width: 30%;" type="text" name="expositionLocation" ng-model="exposition.location" id="expositionLocation" g-places-autocomplete options="autocompleteOptions" placeholder="Выберите регион" required/>
+                                <i class="fa fa-tag" style="margin-left: 20px;"></i>
+                                <select style="width: 30%;" ng-model="exposition.format" ng-options="format.id as format.name for format in formats" required></select>
+                            </div>
 
+                        </div>
+                        <p class="h3 mb3">
+                            <textarea name="expositionDescription" ng-model="exposition.description" id="expositionDesc" style="width: 100%; height: 50px;" placeholder="Краткое описание выставки" required></textarea>
+                        </p>
+                        <div class="mb3">
+                            <div class="project-share mobile-hide NS_projects__project_share">
+                                <div class="project-share__label"><a ng-click="showThemes()">Добавить тематики</a></div>
+                                <div class="inline-block" ng-repeat="theme in exposition.themes">
+                                    <div class="inline-block">
+                                        <a class="project-share__btn" href="#" rel="nofollow">{{theme.name}}</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                    <p class="h3 mb3">
-                        <textarea name="expositionDescription" ng-model="exposition.description" id="expositionDesc" style="width: 100%; height: 50px;" placeholder="Краткое описание выставки"></textarea>
-                    </p>
-                    <div class="mb3">
-                        <div class="project-share mobile-hide NS_projects__project_share">
-                            <div class="project-share__label"><button ng-click="showThemes()">Добавить тематики</button></div>
-                            <div class="inline-block" ng-repeat="theme in exposition.themes">
-                                <div class="inline-block">
-                                    <a class="project-share__btn" href="#" rel="nofollow">{{theme.name}}</a>
+                </div>
+                <div class="col col-4">
+                    <div class="border-top py4">
+                        <div class="row clip">
+                            <div class="NS_projects__creator">
+                                <div class="col col-12">
+                                    <p class="website"> <input type="text" name="expositionWebsite" ng-model="exposition.website" id="expositionWebsite" placeholder="Сайт мероприятия"/> </p>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
-            <div class="col col-4">
-                <div class="border-top py4">
-                    <div class="row clip">
-                        <div class="NS_projects__creator">
-                            <div class="col col-12">
-                                <p class="website"> <input type="text" name="expositionWebsite" ng-model="exposition.website" id="expositionWebsite" placeholder="Сайт мероприятия"/> </p>
-                            </div>
-                        </div>
+        </div>
+
+    </section>
+
+    <div class="NS_projects__content">
+        <div class="NS_projects__project_nav js-project-nav" data-0="position:absolute;" data-top-top="position:fixed; top:0;">
+            <div class="container-flex js-project-nav-scroll">
+                <div class="row">
+                    <div class="project-nav__links">
+                        <a class="js-load-project-content js-load-project-description project-nav__link--campaign tabbed-nav__link" data-tab="1" href="#">
+                            Презентация
+                        </a>
+                        <a class="is-active tabbed-nav__link project-nav__link--updates js-load-project-content js-load-project-updates" data-tab="2" href="#">
+                            Об аудитории
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</section>
 
-<div class="NS_projects__content">
-    <div class="NS_projects__project_nav js-project-nav" data-0="position:absolute;" data-top-top="position:fixed; top:0;">
-        <div class="container-flex js-project-nav-scroll">
-            <div class="row">
-                <div class="project-nav__links">
-                    <a class="js-load-project-content js-load-project-description project-nav__link--campaign tabbed-nav__link" data-tab="1" href="#">
-                        Презентация
-                    </a>
-                    <a class="is-active tabbed-nav__link project-nav__link--updates js-load-project-content js-load-project-updates" data-tab="2" href="#">
-                        Об аудитории
-                    </a>
-                </div>
-            </div>
-        </div>
+    <section id="tab-content">
+        <div text-angular ng-model="exposition.aboutAuditory" style="width: 1080px; margin: 0 auto;"></div>
+    </section>
+    <div class="NS_projects__content clearfix" style="width: 1080px; margin: 0 auto;">
+        <button ng-show="createExpositionAction" type="submit" class="button_blue_text" style="float: right;">Сохранить</button>
+        <button ng-hide="createExpositionAction" type="submit" ng-click="updateExposition(exposition._id)" class="button_blue_text" style="float: right;">Сохранить</button>
     </div>
-</div>
-
-<section id="tab-content">
-    <div text-angular ng-model="exposition.aboutAuditory" style="width: 1080px; margin: 0 auto;"></div>
-</section>
-<div class="NS_projects__content clearfix" style="width: 1080px; margin: 0 auto;">
-    <button ng-show="createExpositionAction" type="submit" ng-click="createExposition()" class="button_blue_text" style="float: right;">Сохранить</button>
-    <button ng-hide="createExpositionAction" type="submit" ng-click="updateExposition(exposition._id)" class="button_blue_text" style="float: right;">Сохранить</button>
-</div>
-
+</form>
 <section id="themes" class="clearfix custom-modal">
 
     <h1>Выбрать тематику</h1>

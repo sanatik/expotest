@@ -12,10 +12,9 @@ exports.create = function (req, res) {
     offer.name = req.body.name;
     offer.creator = currentUser.userId;
     offer.exposition = req.body.expositionId;
-    if (req.body.photo.content) {
+    if (req.body.photo.filename) {
         offer.photo = {};
-        offer.photo.content = new Buffer(req.body.photo.content, 'base64');
-        offer.photo.ext = req.body.photo.type;
+        offer.photo.filename = req.body.photo.filename;
     }
     offer.description = req.body.description;
 
@@ -33,16 +32,7 @@ exports.getAll = function (req, res) {
         if (err) {
             res.send(err);
         }
-        var offers = [];
-        for (var i in results) {
-            var offer = results[i];
-            if (offer.photo.content) {
-                var photo = offer.photo.content.toString('base64');
-                offer.photo.contentString = photo;
-            }
-            offers.push(offer);
-        }
-        res.json(offers);
+        res.json(results);
     });
 };
 
@@ -76,10 +66,9 @@ exports.update = function (req, res) {
             if (req.body.name) {
                 offer.name = req.body.name;
             }
-            if (req.body.photo.content) {
+            if (req.body.photo.filename) {
                 offer.photo = {};
-                offer.photo.content = new Buffer(req.body.photo.content, 'base64');
-                offer.photo.ext = req.body.photo.type;
+                offer.photo.filename = req.body.photo.filename;
             }
             if (req.body.description) {
                 offer.description = req.body.description;
@@ -94,22 +83,21 @@ exports.update = function (req, res) {
             });
 
         });
-    } catch (e) {
-        res.send(404);
+            } catch (e) {
+    res.send(404);
     }
-};
-
+}; 
 exports.delete = function (req, res) {
     var id = req.params.id;
     try {
-        id = new ObjectId(id);
+    id = new ObjectId(id);
         Offer.remove({_id: id}, function (err, result) {
             if (err) {
-                res.send(err);
-            }
+            res.send(err);
+                }
             res.json(result);
-        });
+            });
     } catch (e) {
-        res.send(404);
+    res.send(404);
     }
 };

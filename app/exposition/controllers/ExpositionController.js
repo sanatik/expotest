@@ -18,10 +18,9 @@ exports.create = function (req, res) {
     exposition.format = req.body.format;
     exposition.location = req.body.location;
     exposition.website = req.body.website;
-    if (req.body.photo.content) {
+    if (req.body.photo.filename) {
         exposition.photo = {};
-        exposition.photo.contentBase64 = new Buffer(req.body.photo.content, 'base64');
-        exposition.photo.ext = req.body.photo.type;
+        exposition.photo.filename = req.body.photo.filename;
     }
     exposition.startDate = moment(req.body.startDate, "DD-MM-YYYY").toDate();
     exposition.endDate = moment(req.body.endDate, "DD-MM-YYYY").toDate();
@@ -40,6 +39,7 @@ exports.create = function (req, res) {
     exposition.moderatorCheckingResult = 0;
     exposition.themes = req.body.themes;
     exposition.aboutAuditory = req.body.aboutAuditory;
+    exposition.additionals = req.body.additionals;
     var themeIds = [];
     for (var i in exposition.themes) {
         themeIds.push(exposition.themes[i]._id);
@@ -110,9 +110,9 @@ exports.getAll = function (req, res) {
     var my = req.query.my;
     var themes = req.query.themes;
     var offset = req.query.offset;
-    if(offset){
+    if (offset) {
         offset = parseInt(offset);
-    }else{
+    } else {
         offset = 0;
     }
     var options = {};
@@ -122,7 +122,9 @@ exports.getAll = function (req, res) {
     if (location) {
         location = JSON.parse(location);
     }
-    if (user && my && my === '1') {
+    console.log(my);
+    console.log(user);
+    if (user && my && my == 'true') {
         options.creator = user.userId;
     }
     var filterThemes = null;
@@ -223,14 +225,6 @@ exports.get = function (req, res) {
             if (err) {
                 res.send(err);
             }
-            if (exposition.photo.contentBase64) {
-                var photo = exposition.photo.contentBase64.toString('base64');
-                exposition.photo.contentString = photo;
-            }
-            if (exposition.presentation.contentBase64) {
-                var content = exposition.presentation.contentBase64.toString('base64');
-                exposition.presentation.contentString = content;
-            }
             if (exposition.format) {
                 exposition.formatString = getFormatString(exposition.format);
             }
@@ -270,8 +264,8 @@ exports.update = function (req, res) {
                 exposition.price = req.body.price;
             }
             if (req.body.format) {
-            exposition.format = req.body.format;
-                
+                exposition.format = req.body.format;
+
             }
             if (req.body.location) {
                 exposition.location = req.body.location;
@@ -279,10 +273,9 @@ exports.update = function (req, res) {
             if (req.body.website) {
                 exposition.website = req.body.website;
             }
-            if (req.body.photo.content) {
+            if (req.body.photo.filename) {
                 exposition.photo = {};
-                exposition.photo.contentBase64 = new Buffer(req.body.photo.content, 'base64');
-                exposition.photo.ext = req.body.photo.type;
+                exposition.photo.filename = req.body.photo.filename;
             }
             if (req.body.startDate) {
                 exposition.startDate = moment(req.body.startDate, "DD-MM-YYYY").toDate();
@@ -290,7 +283,7 @@ exports.update = function (req, res) {
             if (req.body.endDate) {
                 exposition.endDate = moment(req.body.endDate, "DD-MM-YYYY").toDate();
             }
-            
+
             if (req.body.presentation) {
                 var base64Data = req.body.presentation.content;
                 exposition.presentation = {};
@@ -314,6 +307,9 @@ exports.update = function (req, res) {
             }
             if (req.body.aboutAuditory) {
                 exposition.aboutAuditory = req.body.aboutAuditory;
+            }
+            if (req.body.additionals) {
+                exposition.additionals = req.body.additionals;
             }
             var themeIds = [];
             for (var i in exposition.themes) {

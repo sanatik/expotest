@@ -20,6 +20,7 @@ authApp.config(['$stateProvider', '$urlRouterProvider',
 
 authApp.controller('AuthController', ['$scope', '$resource', '$state', '$location', 'AuthServices', '$rootScope',
     function ($scope, $resource, $state, $location, AuthServices, $rootScope) {
+        $('.shadow_overlay').fadeOut(100);
         $scope.loginFormData = {};
         $scope.user = {};
         $scope.user.avatar = {};

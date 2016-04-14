@@ -17,7 +17,7 @@ router.post('/uploadImage', function (req, res) {
         var contentType = file.headers['content-type'];
         var tmpPath = file.path;
         var extIndex = tmpPath.lastIndexOf('.');
-        var extension = (extIndex < 0) ? '' : tmpPath.substr(extIndex);
+        var extension = (extIndex < 0) ? '.png' : tmpPath.substr(extIndex);
         // uuid is for generating unique filenames.
         var fileName = uuid.v4() + extension;
         var destPath = './client/img/' + fileName;

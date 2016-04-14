@@ -7,7 +7,9 @@ and open the template in the editor.
     Created on : 31.03.2016, 11:01:51
     Author     : serikuly_s
 */
-
+header{
+    padding: 0 30px !important;
+}
 .custom-modal, #themes .button_bg button.button_blue_text{
     background: #0091d5;
     margin-right: 5px;

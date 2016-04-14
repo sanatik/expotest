@@ -59,8 +59,8 @@ expositionApp.config(['$stateProvider', '$urlRouterProvider',
 ]);
 
 expositionApp.controller('ExpositionsController',
-        ['$scope', '$state', '$location', 'ExpositionService', '$window', '$filter', '$rootScope', 'AuthServices', 'OfferService', 'CartService', '$q', 'UserService',
-            function ($scope, $state, $location, ExpositionService, $window, $filter, $rootScope, AuthServices, OfferService, CartService, $q, UserService) {
+        ['$scope', '$state', '$location', 'ExpositionService', '$window', '$filter', '$rootScope', 'AuthServices', 'OfferService', 'CartService', '$q', 'UserService', 'Upload', '$document',
+            function ($scope, $state, $location, ExpositionService, $window, $filter, $rootScope, AuthServices, OfferService, CartService, $q, UserService, Upload, $document) {
                 var loadExpositions = function (params, loadMore) {
                     ExpositionService.findAll(params).then(
                             function (data) {
@@ -96,8 +96,6 @@ expositionApp.controller('ExpositionsController',
                                 });
                             },
                             function () {
-                                $("#loader").hide();
-                                $("#message").html("Error loading expositions").show();
                             });
                 };
 
@@ -152,7 +150,6 @@ expositionApp.controller('ExpositionsController',
                             gutter: 30
                         });
                     }, function () {
-                        $("#message").html("Error loading expositions").show();
                     });
                 };
                 $scope.formats = [{id: 1, name: 'Выставка'}, {id: 2, name: 'Премия'}, {id: 3, name: 'Конференция'}, {id: 4, name: 'Форум'}];
@@ -226,6 +223,7 @@ expositionApp.controller('ExpositionsController',
                 $scope.filter.format = 0;
                 $scope.filter.offset = 0;
                 $scope.filter.themes = [];
+                $scope.chosenThemes = [];
 
                 if ($state.current.name === 'expositionmy') {
                     $scope.filter.my = true;
@@ -241,6 +239,18 @@ expositionApp.controller('ExpositionsController',
                         $scope.findExposition($state.params.id);
                     }
                 }
+
+                $scope.applyToAdditional = function (i, additional) {
+                    $scope.exposition.additionals[i] = additional;
+                }
+
+                $scope.addAdditional = function () {
+                    $scope.exposition.additionals.push('');
+                }
+
+                $scope.removeAdditional = function (index) {
+                    $scope.exposition.additionals.splice(index, 1);
+                }
                 $scope.loadTags(1);
                 if ($state.current.name === 'expositioncreate') {
                     $scope.createExpositionAction = true;
@@ -248,11 +258,11 @@ expositionApp.controller('ExpositionsController',
                     $scope.exposition.presentation = {};
                     $scope.exposition.photo = {};
                     $scope.exposition.themes = [];
+                    $scope.exposition.additionals = [];
                 }
 
                 $scope.createExposition = function () {
-                    console.log(this.exposition.photo.content);
-                    if ($scope.expositionCreateForm !== 'undefined') {
+                    if ($scope.expositionCreateForm !== 'undefined' && validateCreateUpdateForm()) {
                         if (this.exposition) {
                             ExpositionService.save(this.exposition).then(function (result) {
                                 if (result.errors) {
@@ -264,6 +274,15 @@ expositionApp.controller('ExpositionsController',
                         }
                     }
                 };
+
+                function validateCreateUpdateForm() {
+                    if ($scope.exposition) {
+                        if ($scope.exposition.photo.filename) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
 
                 $scope.resetFilter = function () {
                     $scope.filter = {};
@@ -297,21 +316,32 @@ expositionApp.controller('ExpositionsController',
                     $location.path("/exposition/create/");
                 };
 
-                $scope.uploadPhoto = function (image) {
+                $scope.upload = function (file) {
                     var reader = new FileReader();
-                    var type = 'image/png';
                     reader.addEventListener("load", function () {
                         var readyImg = resizeImg(reader.result);
                         document.getElementById("photo-preview").setAttribute('src', readyImg);
-                        readyImg = readyImg.replace(type, "");
-                        readyImg = readyImg.replace("data:", "");
-                        readyImg = readyImg.replace(";base64,", "");
-                        $scope.exposition.photo.content = readyImg;
-                        $scope.exposition.photo.type = type;
+                        Upload.upload({
+                            url: '/uploadImage',
+                            data: {file: dataURLtoBlob(readyImg), 'username': $scope.username}
+                        }).then(function (resp) {
+                            var fileName = resp.data.split('/')[3];
+                            if (!$scope.exposition.photo) {
+                                $scope.exposition.photo = {};
+                            }
+                            $scope.exposition.photo.filename = fileName;
+                            $("#photoSpan").text(resp.config.data.file.name);
+                            console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+                        }, function (resp) {
+                            console.log('Error status: ' + resp.status);
+                        }, function (evt) {
+                            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                            console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+                        });
                     }, false);
 
-                    if (image) {
-                        reader.readAsDataURL(image);
+                    if (file) {
+                        reader.readAsDataURL(file);
                     }
                 };
 
@@ -457,7 +487,6 @@ expositionApp.controller('ExpositionsController',
                         $scope.offers = data.data;
                         $scope.expositionId = expositionId;
                     }, function () {
-                        alert("Error on loading offers");
                     });
                 };
 
@@ -525,6 +554,17 @@ expositionApp.controller('ExpositionsController',
                     } else {
                         $scope.filter.themes.push(theme);
                     }
+                    var j = $scope.checkChosenThemes(theme);
+                    if (j) {
+                        console.log($scope.chosenThemes[j].inactive);
+                        if ($scope.chosenThemes[j].inactive && $scope.chosenThemes[j].inactive === true) {
+                            $scope.chosenThemes[j].inactive = false;
+                        } else {
+                            $scope.chosenThemes[j].inactive = true;
+                        }
+                    } else {
+                        $scope.chosenThemes.push(theme);
+                    }
                     if ($scope.filter.themes.length > 0) {
                         $scope.activeChoseThemeButton = true;
                     } else {
@@ -535,6 +575,16 @@ expositionApp.controller('ExpositionsController',
                     } else {
                         $scope.loadExpos();
                     }
+                };
+
+                $scope.checkChosenThemes = function (theme) {
+                    for (var i in $scope.chosenThemes) {
+                        var t = $scope.chosenThemes[i];
+                        if (theme._id === t._id) {
+                            return i;
+                        }
+                    }
+                    return false;
                 };
 
                 $scope.checkChosenThemeFilter = function (theme) {
@@ -581,6 +631,9 @@ expositionApp.controller('ExpositionsController',
                     return ($rootScope.hasRole(1) && $rootScope.isOwner(exposition.creator))
                             || ($rootScope.hasRole(2) && $rootScope.isOwner(offer.creator));
                 };
+                $document.ready(function () {
+                    $scope.showCreateForm = true;
+                });
 
                 function resizeImg(file) {
                     var canvas = document.createElement('canvas');
@@ -613,6 +666,16 @@ expositionApp.controller('ExpositionsController',
                     var dataurl = canvas.toDataURL("image/png");
                     return dataurl;
                 }
+
+                function dataURLtoBlob(dataurl) {
+                    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+                            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+                    while (n--) {
+                        u8arr[n] = bstr.charCodeAt(n);
+                    }
+                    return new Blob([u8arr], {type: mime});
+                }
+
                 function arrayUnique(array) {
                     var a = array.concat();
                     for (var i = 0; i < a.length; ++i) {

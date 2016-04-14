@@ -16,8 +16,7 @@ var OfferSchema = mongoose.Schema({
     },
     photo: {
         ext: String,
-        content: Buffer,
-        contentString: String
+        filename: String
     },
     description: String,
     additional: {

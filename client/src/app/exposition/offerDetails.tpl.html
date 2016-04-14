@@ -9,7 +9,7 @@
         width: 30%;
     }
 </style>
-<section class="NS_projects__hero_funding">
+<section class="NS_projects__hero_funding" ng-show='exposition'>
     <!-- / Hide this on mobile since we want the video to be at the top -->
     <div class="mobile-hide py4 px2">
         <div class="NS_projects__header center">
@@ -22,7 +22,7 @@
             <div class="table">
                 <div class="table-cell col-8 px-gutter">
                     <div class="project-image" id="video-section">
-                        <img data-ng-src="data:{{offer.photo.ext}};base64,{{offer.photo.content}}">
+                        <img src='/img/{{offer.photo.filename}}'>
                     </div>
 
                 </div>

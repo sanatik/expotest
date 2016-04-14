@@ -47,12 +47,12 @@ offerApp.config(['$stateProvider', '$urlRouterProvider',
 ]);
 
 
-offerApp.controller('OfferController', ['$scope', '$resource', '$state', '$location', 'OfferService',
-    function ($scope, $resource, $state, $location, OfferService) {
+offerApp.controller('OfferController', ['$scope', '$resource', '$state', '$location', 'OfferService', 'Upload',
+    function ($scope, $resource, $state, $location, OfferService, Upload) {
         $('.shadow_overlay').fadeOut(100);
         var loadOffers = function () {
             OfferService.findAll().then(function (data) {
-                $scope.offers = data.data;
+                    $scope.offers = data.data;
                 if ($state.params.id) {
                     $scope.findOffer($state.params.id);
                 }
@@ -125,21 +125,32 @@ offerApp.controller('OfferController', ['$scope', '$resource', '$state', '$locat
             $location.path("/offer/create/")
         };
 
-        $scope.uploadPhoto = function (image) {
+        $scope.upload = function (file) {
             var reader = new FileReader();
-            var type = 'image/png';
             reader.addEventListener("load", function () {
                 var readyImg = resizeImg(reader.result);
                 document.getElementById("photo-preview").setAttribute('src', readyImg);
-                readyImg = readyImg.replace(type, "");
-                readyImg = readyImg.replace("data:", "");
-                readyImg = readyImg.replace(";base64,", "");
-                $scope.offer.photo.content = readyImg;
-                $scope.offer.photo.type = type;
+                Upload.upload({
+                    url: '/uploadImage',
+                    data: {file: dataURLtoBlob(readyImg), 'username': $scope.username}
+                }).then(function (resp) {
+                    var fileName = resp.data.split('/')[3];
+                    if (!$scope.offer.photo) {
+                        $scope.offer.photo = {};
+                    }
+                    $scope.offer.photo.filename = fileName;
+                    $("#photoSpan").text(resp.config.data.file.name);
+                    console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+                }, function (resp) {
+                    console.log('Error status: ' + resp.status);
+                }, function (evt) {
+                    var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                    console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+                });
             }, false);
 
-            if (image) {
-                reader.readAsDataURL(image);
+            if (file) {
+                reader.readAsDataURL(file);
             }
         };
 
@@ -174,7 +185,7 @@ offerApp.controller('OfferController', ['$scope', '$resource', '$state', '$locat
             var dataurl = canvas.toDataURL("image/png");
             return dataurl;
         }
-
+        
         $scope.locationPath = function (url) {
             $location.path(url);
         };

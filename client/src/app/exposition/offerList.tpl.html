@@ -1,18 +1,9 @@
 <!-- Filters -->
 <section id="filters">
     <div class="inner">
-
         <div class="tags">
             <div class="clearfix">
-
-                <div class="tag_boxed">Бизнес</div>
-                <div class="tag_boxed active">Конференция</div>
-                <div class="tag_boxed">Семинар</div>
-                <div class="tag_boxed">Обзор</div>
-
-                <button class="button_blue_text">Добавить направление</button>
-                <!--                <button class="button_blue_icon trash"></button>-->
-                <button ng-click="locationPath('/offer/create/')" class="button_blue_text" style="float: right;">Добавить свое предложение</button>
+                <button permission only="'exponent'" ng-click="locationPath('/offer/create/')" class="button_blue_text" style='background: #06ca55;'>Добавить свое предложение</button>
             </div>
         </div>
     </div>
@@ -20,15 +11,11 @@
 <section id="events" class="clearfix">
     <div class="inner">
         <div class="grid clearfix" masonry>
-            <!-- Single item -->
-            <a permission only="'exponent'" href="/#/offer/create/" class="grid_item add_new" masonry-brick>
-                <button class="button_blue_text">Добавить предложение</button>
-            </a>
 
             <!-- Single item -->
             <div masonry-brick class="masonry-brick grid_item" ng-repeat="offer in exposition.offers">
                 <a href="/#/exposition/{{exposition._id}}/offers/{{offer._id}}/" class="photo">
-                    <img style="max-width: 250px;" data-ng-src="data:{{offer.photo.ext}};base64,{{offer.photo.content}}">
+                    <img style="max-width: 250px;" src='/img/{{offer.photo.filename}}'>
                 </a>
 
                 <div class="info">
@@ -48,5 +35,26 @@
     </div><!--/inner-->
 
     <button class="button_gray_border_text load_more">Загрузить еще</button>
+
+</section>
+<section id="themes" class="clearfix custom-modal">
+
+    <h1>Выбрать тематику</h1>
+
+    <div class="inner">
+
+        <div class="grid clearfix">
+            <ul class="leter-list" ng-repeat="letter in letters">
+                <div class="leter"><font size="5">{{letter}}</font></div>
+                <li ng-repeat="theme in themes" ng-if="letter === theme.name.charAt(0)" style="max-width: 275px;" ng-class="checkChosenThemeFilter(theme) ? 'active' : ''">
+                    <a href="" ng-click="chooseThemesFilter(theme)">{{theme.name}}</a>
+                </li>
+            </ul>
+        </div><!--/grid-->
+    </div><!--/inner-->
+
+    <div class="button_bg">
+        <button ng-class="activeChoseThemeButton ? '' : 'gray_button'" ng-click="closeThemeFilter()">Выбрать тематики</button>
+    </div>
 
 </section>

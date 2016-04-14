@@ -4,14 +4,6 @@
 
         <div class="tags">
             <div class="clearfix">
-
-                <div class="tag_boxed">Бизнес</div>
-                <div class="tag_boxed active">Конференция</div>
-                <div class="tag_boxed">Семинар</div>
-                <div class="tag_boxed">Обзор</div>
-
-                <button class="button_blue_text">Добавить направление</button>
-<!--                <button class="button_blue_icon trash"></button>-->
                 <button permission only="'exponent'" ng-click="locationPath('/offer/create/')" class="button_blue_text" style="float: right;">Создать предложение</button>
             </div>
         </div>
@@ -24,7 +16,7 @@
             <!-- Single item -->
             <div masonry-brick class="masonry-brick grid_item" ng-repeat="offer in offers">
                 <a href="/#/offer/{{offer._id}}" class="photo">
-                    <img style="max-width: 250px;" data-ng-src="data:{{offer.photo.ext}};base64,{{offer.photo.contentString}}">
+                    <img style="max-width: 250px;" src='/img/{{offer.photo.filename}}'>
                 </a>
 
                 <div class="info">
@@ -37,7 +29,7 @@
                 </div>
 
                 <div class="numbers clearfix">
-                    
+
                 </div>
             </div>
         </div>

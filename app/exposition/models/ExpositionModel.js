@@ -22,8 +22,7 @@ var ExpositionSchema = mongoose.Schema({
     price: Number,
     photo: {
         ext: String,
-        contentBase64: Buffer,
-        contentString: String
+        filename: String
     },
     startDate: Date,
     endDate: Date,
@@ -33,10 +32,7 @@ var ExpositionSchema = mongoose.Schema({
         contentString: String
     },
     description: String,
-    additional: {
-        name: String,
-        data: String
-    },
+    additionals: [],
     offers: [],
     audience: [{
             userId: {

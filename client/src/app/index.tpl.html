@@ -59,11 +59,11 @@
         <div class="tags">
             <div class="clearfix">
 
-                <div class="tag_boxed active" ng-repeat="theme in filter.themes" ng-click="chooseThemesFilter(theme)">{{theme.name}}</div>
+                <div ng-class="theme.inactive ? 'tag_boxed' : 'tag_boxed active'" ng-repeat="theme in chosenThemes" ng-click="chooseThemesFilter(theme)">{{theme.name}}</div>
 
-                <button class="button_blue_text" ng-click="showThemes()">Добавить направление</button>
+                <button class="button_blue_text" ng-click="showThemes()" style='margin-bottom: 10px;'>Добавить направление</button>
                 <!--                <button class="button_blue_icon trash"></button>-->
-                <button permission only="'organizer'" ng-click="locationPath('/exposition/create/')" class="button_blue_text" style="float: right;">Добавить свою выставку</button>
+                <button permission only="'organizer'" ng-click="locationPath('/exposition/create/')" class="button_blue_text" style='background: #06ca55;'>Добавить свою выставку</button>
             </div>
         </div>
     </div>
@@ -84,7 +84,7 @@
             <!-- Single item -->
             <div masonry-brick class="masonry-brick grid_item" ng-repeat="exposition in expositions">
                 <div class="photo">
-                    <a href="/#/exposition/{{exposition._id}}/"><img style="max-width: 250px;" data-ng-src="data:{{exposition.photo.ext}};base64,{{exposition.photo.contentString}}" alt=""></a>
+                    <a href="/#/exposition/{{exposition._id}}/"><img style="max-width: 250px;" src="/img/{{exposition.photo.filename}}" ng-show="exposition.photo.filename" alt=""></a>
                     <a ng-click="redirect(exposition._id)" href="" class="rocket button_green_icon">Тестировать</a>
                 </div>
 
@@ -121,22 +121,20 @@
     <h1>Тестировать аудиторию</h1>
 
     <div class="inner">
-
+        <div ng-show='!hasRole(2)'>
+            Вам необходимо <a href='/#/auth/'>Войти</a> под ролью Экспонент
+        </div>
         <div class="grid clearfix" masonry>
-            <!-- Single item -->
-            <a href="#" class="grid_item add_new">
-                <button class="button_blue_text">Создать предложение</button>
-            </a>
 
             <!-- Single item -->
             <div masonry-brick class="grid_item" ng-repeat="offer in offers" ng-click="chooseOffer($index, offer._id);" ng-class="$index === chosenOffer ? 'active' : ''">
-                <a href="/#/offer/{{offer._id}}/" class="photo">
-                    <img style="max-width: 250px;" data-ng-src="data:{{offer.photo.ext}};base64,{{offer.photo.contentString}}">
+                <a href="" ng-click="chooseOffer($index, offer._id);" class="photo">
+                    <img style="max-width: 250px;" src='/img/{{offer.photo.filename}}'>
                 </a>
 
                 <div class="info">
 
-                    <a href="/#/offer/{{offer._id}}/" class="title">{{offer.name}}</a>
+                    <a href="" ng-click="chooseOffer($index, offer._id);" class="title">{{offer.name}}</a>
 
                     <div class="tags">
                         {{offer.description}}
@@ -157,7 +155,7 @@
 
     <div class="button_bg">
         <button ng-class="activeChoseOfferButton ? '' : 'gray_button'" ng-click="addCartItem()">Выбрать предложение</button>
-        <button ng-click="locationPath('/offer/create/')" class="button_blue_text">Создать предложение</button>
+        <button permission only="'exponent'" ng-click="locationPath('/offer/create/')" class="button_blue_text">Создать предложение</button>
     </div>
 
 </section>

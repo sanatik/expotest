@@ -27,7 +27,8 @@ exports.getAll = function (req, res) {
 
 exports.add = function (req, res) {
     var currentUser = req.decoded;
-    if (currentUser && currentUser.role !== 2) {
+    console.log(currentUser);
+    if (currentUser && currentUser.role != 2) {
         res.status(403).send({
             success: false,
             message: 'No access to this action'
@@ -39,56 +40,61 @@ exports.add = function (req, res) {
                 success: false,
                 message: 'Failed to access'
             });
-        }
-        if (user.lock === true) {
-            res.status(403).send({
-                success: false,
-                message: 'Cannot add cart item'
-            });
-        }
-        var expId = req.body.expositionId;
-        mongoose.model('Exposition').findById(expId, function (err, exposition) {
-            if (err) {
-                res.json({
+        } else {
+            if (user.lock === true) {
+                res.status(403).send({
                     success: false,
-                    message: 'Not found exposition'
+                    message: 'Cannot add cart item'
                 });
-            }
-            var offerId = req.body.offerId;
-            mongoose.model('Offer').findById(offerId, function (err, offer) {
-                if (err) {
-                    res.json({
-                        success: false,
-                        message: 'Not found Offer'
-                    });
-                }
-
-                var cartItem = {};
-                cartItem.offer = offer;
-                cartItem.exposition = exposition;
-                cartItem.state = 1; //Unpaid
-
-                var cart = user.cart;
-                if (!cart) {
-                    cart = [];
-                }
-                cart.push(cartItem);
-
-                user.cart = cart;
-
-                user.save(function (err, result) {
+            } else {
+                var expId = req.body.expositionId;
+                mongoose.model('Exposition').findById(expId, function (err, exposition) {
                     if (err) {
-                        res.status(500).send({
+                        res.json({
                             success: false,
-                            message: "Error while adding to card"
+                            message: 'Not found exposition'
+                        });
+                    } else {
+                        var offerId = req.body.offerId;
+                        mongoose.model('Offer').findById(offerId, function (err, offer) {
+                            if (err) {
+                                res.json({
+                                    success: false,
+                                    message: 'Not found Offer'
+                                });
+                            } else {
+                                var cartItem = {};
+                                cartItem.offer = offer;
+                                cartItem.exposition = exposition;
+                                cartItem.state = 1; //Unpaid
+
+                                var cart = user.cart;
+                                if (!cart) {
+                                    cart = [];
+                                }
+                                cart.push(cartItem);
+
+                                user.cart = cart;
+
+                                user.save(function (err, result) {
+                                    if (err) {
+                                        res.status(500).send({
+                                            success: false,
+                                            message: "Error while adding to card"
+                                        });
+                                    } else {
+                                        res.json({
+                                            success: true
+                                        });
+                                    }
+                                });
+                            }
                         });
                     }
-                    res.json({
-                        success: true
-                    });
+
                 });
-            });
-        });
+            }
+        }
     });
 };
 

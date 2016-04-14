@@ -5,8 +5,8 @@ var module = angular.module('offer.services', ['ngResource']);
 
 module.factory('OfferService', ['$http', function ($http) {
     return {
-        findAll: function () {
-            return $http.get('/offer');
+        findAll: function (params) {
+            return $http.get('/offer', {params: params});
         },
         findOne: function (id) {
             return $http.get('/offer/' + id);

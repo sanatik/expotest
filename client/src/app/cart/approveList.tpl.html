@@ -1,26 +1,62 @@
-<h1>Список предложений для подтверждения</h1>
-<table>
-    <tr>
-        <td>
-            Название выставки
-        </td>
-        <td>
-            Имя предложения
-        </td>
-        <td>
-            Действия
-        </td>
-    </tr>
-    <tr ng-repeat="al in approveList">
-        <td>
-            <a href="/#/exposition/{{al.item.exposition._id}}/">{{al.item.exposition.displayName}}</a>
-        </td>
-        <td>
-            <a href="/#/offer/{{al.item.offer._id}}/">{{al.item.offer.name}}</a>
-        </td>
-        <td>
-            <a href="" ng-click="approve(al.item._id)">Подтвердить</a>
-            <a href="" ng-click="cancelItem(al.item._id)">Отменить</a>
-        </td>
-    </tr>
-</table>
+
+<section id="eventinfo">
+    <div class="clearfix">
+
+        <div class="right-col">
+
+            <div class="title">Корзина</div>
+
+            <div class="list-title">Список предложений в корзине</div>
+
+        </div>
+
+        <div class="download"></div>
+
+    </div>
+</section>
+<section id="userlist">
+    <table>
+        <tr>
+            <th>
+                Название выставки
+            </th>
+            <th>
+                Имя предложения
+            </th>
+            <th>
+                Действия
+            </th>
+        </tr>
+        <tr ng-show="approveList.length < 1">
+            <td colspan="7">
+                Записей не найдено
+            </td>
+        </tr>
+        <tr ng-repeat="al in approveList">
+            <td>
+                <a href="/#/exposition/{{al.item.exposition._id}}/">{{al.item.exposition.displayName}}</a>
+            </td>
+            <td>
+                <a href="/#/offer/{{al.item.offer._id}}/">{{al.item.offer.name}}</a>
+            </td>
+            <td>
+                <a href="" ng-click="approve(al.item._id)">Подтвердить</a>
+                <a href="" ng-click="cancelItem(al.item._id)">Отменить</a>
+            </td>
+        </tr>
+    </table>
+</section>
+
+<section id="pagination" ng-show="approveList && approveList.length > 10">
+
+    <div id="pages" class="clearfix">
+        <a href="#" class="page active">1</a>
+        <a href="#" class="page">2</a>
+        <a href="#" class="page">3</a>
+        <a href="#" class="page">4</a>
+        <a href="#" class="page">5</a>
+        <span class="dots">...</span>
+        <a href="#" class="page">23</a>
+    </div>
+
+</section>
