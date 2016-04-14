@@ -52,7 +52,7 @@ offerApp.controller('OfferController', ['$scope', '$resource', '$state', '$locat
         $('.shadow_overlay').fadeOut(100);
         var loadOffers = function () {
             OfferService.findAll().then(function (data) {
-                    $scope.offers = data.data;
+                $scope.offers = data.data;
                 if ($state.params.id) {
                     $scope.findOffer($state.params.id);
                 }
@@ -185,7 +185,16 @@ offerApp.controller('OfferController', ['$scope', '$resource', '$state', '$locat
             var dataurl = canvas.toDataURL("image/png");
             return dataurl;
         }
-        
+
+        function dataURLtoBlob(dataurl) {
+            var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+                    bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new Blob([u8arr], {type: mime});
+        }
+
         $scope.locationPath = function (url) {
             $location.path(url);
         };
