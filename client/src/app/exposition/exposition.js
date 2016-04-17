@@ -27,7 +27,11 @@ expositionApp.config(['$stateProvider', '$urlRouterProvider',
                             redirectTo: function () {
                                 return 'exposition';
                             }
-                        }
+                        },
+                        css: ['css/kick.css', 
+                            'http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css', 
+                            'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css', 
+                            'vendor/text-angular/dist/textAngular.css']
                     }
                 })
                 .state('expositionview', {

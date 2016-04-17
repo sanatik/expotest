@@ -67,7 +67,7 @@ header{
     -ms-appearance: none;
     appearance: none;
     -o-appearance: none;
-    background: transparent;
+    background: transparent !important;
     border: 0;
     cursor: pointer;
     color: #fff;
@@ -323,4 +323,7 @@ header #main-nav{
 }
 #filters .tags .tag_boxed{
     margin-bottom: 10px;
+}
+.NS_projects__stats #stats{
+    opacity: 1.0 !important;
 }
