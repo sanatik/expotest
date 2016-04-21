@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="css/basscss.css"/>
 <link rel="stylesheet" href="css/kick.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
@@ -20,7 +21,7 @@
             <div class="table">
                 <div class="table-cell col-8 px-gutter">
                     <div class="project-image" id="video-section">
-                        <img src="/img/{{exposition.photo.filename}}" ng-show="exposition.photo.filename"/>
+                        <img src="/img/uploads/{{exposition.photo.filename}}" ng-show="exposition.photo.filename"/>
                     </div>
 
                 </div>
@@ -167,10 +168,10 @@
         <div class="container-flex js-project-nav-scroll">
             <div class="row">
                 <div class="project-nav__links">
-                    <a class="js-load-project-content js-load-project-description project-nav__link--campaign tabbed-nav__link" data-tab="1" href="#">
+                    <a ng-class="showPresentation ? 'is-active' : ''" class="js-load-project-content js-load-project-description project-nav__link--campaign tabbed-nav__link" ng-click="switchTabs(1)" href="">
                         Презентация
                     </a>
-                    <a class="is-active tabbed-nav__link project-nav__link--updates js-load-project-content js-load-project-updates" data-tab="2" href="#">
+                    <a ng-class="showAboutAuditory ? 'is-active' : ''" class="tabbed-nav__link project-nav__link--updates js-load-project-content js-load-project-updates" ng-click="switchTabs(2)" href="">
                         Об аудитории
                     </a>
                     <a class="tabbed-nav__link project-nav__link--updates js-load-project-content js-load-project-updates" ng-show="hasRole(2)" href="/#/cart/add/{{exposition._id}}/">Тестировать</a>
@@ -187,9 +188,19 @@
     </div>
 </div>
 
-<section id="tab-content" ng-show="exposition">
+<section id="tab-content" ng-show="showAboutAuditory">
     <div class="inner" ng-bind-html="exposition.aboutAuditory">   
     </div>
+</section>
+
+<section id="presentation" ng-show="showPresentation" style="max-width: 1080px; width: 100%; margin: 0 auto;">
+    <pdf-viewer
+        ng-show="exposition.presentation.filename"
+        delegate-handle="my-pdf-container"
+        url="img/relativity.pdf"
+        scale="1"
+        show-toolbar="true"
+        headers="{ 'x-you-know-whats-awesome': 'EVERYTHING' }"></pdf-viewer>
 </section>
 
 <section id="new-test" class="clearfix custom-modal">

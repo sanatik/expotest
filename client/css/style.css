@@ -327,3 +327,6 @@ header #main-nav{
 .NS_projects__stats #stats{
     opacity: 1.0 !important;
 }
+.NS_projects__project_nav{
+    z-index: 0!important;
+}

@@ -24,11 +24,9 @@ exports.create = function (req, res) {
     }
     exposition.startDate = moment(req.body.startDate, "DD-MM-YYYY").toDate();
     exposition.endDate = moment(req.body.endDate, "DD-MM-YYYY").toDate();
-    if (req.body.presentation.presentation) {
-        var base64Data = req.body.presentation.content;
+    if (req.body.presentation.filename) {
         exposition.presentation = {};
-        exposition.presentation.contentBase64 = new Buffer(base64Data, 'base64');
-        exposition.presentation.ext = req.body.presentation.type;
+        exposition.presentation.filename = req.body.presentation.filename;
     }
     exposition.description = req.body.description;
     exposition.additional = req.body.additional;
@@ -284,11 +282,9 @@ exports.update = function (req, res) {
                 exposition.endDate = moment(req.body.endDate, "DD-MM-YYYY").toDate();
             }
 
-            if (req.body.presentation) {
-                var base64Data = req.body.presentation.content;
+            if (req.body.presentation.filename) {
                 exposition.presentation = {};
-                exposition.presentation.contentBase64 = new Buffer(base64Data, 'base64');
-                exposition.presentation.ext = req.body.presentation.type;
+                exposition.presentation.filename = req.body.presentation.filename;
             }
             if (req.body.expectedAudience) {
                 exposition.description = req.body.description;

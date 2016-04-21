@@ -28,9 +28,9 @@ expositionApp.config(['$stateProvider', '$urlRouterProvider',
                                 return 'exposition';
                             }
                         },
-                        css: ['css/kick.css', 
-                            'http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css', 
-                            'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css', 
+                        css: ['css/kick.css',
+                            'http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css',
+                            'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css',
                             'vendor/text-angular/dist/textAngular.css']
                     }
                 })
@@ -63,8 +63,8 @@ expositionApp.config(['$stateProvider', '$urlRouterProvider',
 ]);
 
 expositionApp.controller('ExpositionsController',
-        ['$scope', '$state', '$location', 'ExpositionService', '$window', '$filter', '$rootScope', 'AuthServices', 'OfferService', 'CartService', '$q', 'UserService', 'Upload', '$document',
-            function ($scope, $state, $location, ExpositionService, $window, $filter, $rootScope, AuthServices, OfferService, CartService, $q, UserService, Upload, $document) {
+        ['$scope', '$state', '$location', 'ExpositionService', '$window', '$filter', '$rootScope', 'AuthServices', 'OfferService', 'CartService', '$q', 'UserService', 'Upload', '$document', 'pdfDelegate',
+            function ($scope, $state, $location, ExpositionService, $window, $filter, $rootScope, AuthServices, OfferService, CartService, $q, UserService, Upload, $document, pdfDelegate) {
                 var loadExpositions = function (params, loadMore) {
                     ExpositionService.findAll(params).then(
                             function (data) {
@@ -106,6 +106,9 @@ expositionApp.controller('ExpositionsController',
                 $scope.findExposition = function (url) {
                     ExpositionService.findOne(url).then(function (data) {
                         $scope.exposition = data;
+                        if ($scope.exposition && $scope.exposition.presentation && $scope.exposition.presentation.filename) {
+                            $scope.loadPDFFile('img/pdf/' + $scope.exposition.presentation.filename);
+                        }
                         if ($scope.exposition.startDate) {
                             if ($scope.exposition.endDate) {
                                 var filter = 'd MMM';
@@ -221,6 +224,7 @@ expositionApp.controller('ExpositionsController',
                 $scope.autocompleteOptions = {
                     types: ['(regions)']
                 };
+                $scope.showPresentation = true;
                 $scope.filter = {};
                 $scope.filter.month = 0;
                 $scope.filter.year = 0;
@@ -240,7 +244,7 @@ expositionApp.controller('ExpositionsController',
                                 || $state.current.name === 'expositiooffersviewoffer'
                                 || $state.current.name === 'expositionstatistic')) {
                     if ($state.params.id) {
-                        $scope.findExposition($state.params.id);
+                        $scope.findExposition($state.params.id);                        
                     }
                 }
 
@@ -329,7 +333,8 @@ expositionApp.controller('ExpositionsController',
                             url: '/uploadImage',
                             data: {file: dataURLtoBlob(readyImg), 'username': $scope.username}
                         }).then(function (resp) {
-                            var fileName = resp.data.split('/')[3];
+                            console.log(resp.data);
+                            var fileName = resp.data;
                             if (!$scope.exposition.photo) {
                                 $scope.exposition.photo = {};
                             }
@@ -350,20 +355,29 @@ expositionApp.controller('ExpositionsController',
                 };
 
                 $scope.uploadPresentation = function (file) {
-                    var reader = new FileReader();
-                    reader.addEventListener("load", function () {
-                        var presentationBase64 = reader.result;
-                        document.getElementById("presentation-name").textContent = "123";
-                        presentationBase64 = presentationBase64.replace(file.type, "");
-                        presentationBase64 = presentationBase64.replace("data:", "");
-                        presentationBase64 = presentationBase64.replace(";base64,", "");
-                        $scope.exposition.presentation.content = presentationBase64;
-                        $scope.exposition.presentation.type = file.type;
-                    }, false);
-
-                    if (file) {
-                        reader.readAsDataURL(file);
+                    if (file.type === 'application/pdf') {
+                        Upload.upload({
+                            url: '/uploadPDF',
+                            data: {file: file, 'username': $scope.username}
+                        }).then(function (resp) {
+                            console.log(resp.data);
+                            var fileName = resp.data;
+                            if (!$scope.exposition.presentation) {
+                                $scope.exposition.presentation = {};
+                            }
+                            $scope.exposition.presentation.filename = fileName;
+                            $scope.loadPDFFile('img/pdf/' + fileName);
+                            $scope.showErrorPres = false;
+                        }, function (resp) {
+                            console.log('Error status: ' + resp.status);
+                        }, function (evt) {
+                            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                            console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+                        });
+                    } else {
+                        $scope.showErrorPres = true;
                     }
+
                 };
 
                 $scope.back = function () {
@@ -638,6 +652,24 @@ expositionApp.controller('ExpositionsController',
                 $document.ready(function () {
                     $scope.showCreateForm = true;
                 });
+
+                $scope.loadPDFFile = function (url) {
+                    console.log(123123123123123);
+                    pdfDelegate
+                            .$getByHandle('my-pdf-container')
+                            .load(url);
+                    return true;
+                };
+
+                $scope.switchTabs = function (tabNo) {
+                    if (tabNo === 1) {
+                        $scope.showAboutAuditory = false;
+                        $scope.showPresentation = true;
+                    } else {
+                        $scope.showAboutAuditory = true;
+                        $scope.showPresentation = false;
+                    }
+                };
 
                 function resizeImg(file) {
                     var canvas = document.createElement('canvas');

@@ -28,8 +28,7 @@ var ExpositionSchema = mongoose.Schema({
     endDate: Date,
     presentation: {
         ext: String,
-        contentBase64: Buffer,
-        contentString: String
+        filename: String
     },
     description: String,
     additionals: [],

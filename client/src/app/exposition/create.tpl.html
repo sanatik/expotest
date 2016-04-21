@@ -1,13 +1,20 @@
+<link rel="stylesheet" href="css/basscss.css"/>
+<link rel="stylesheet" href="css/kick.css">
 <style>
     .shadow_overlay{
         z-index: 999;
     }
     .custom-modal.active{
         z-index: 1000;
-        width: 30%;
+    }
+    a{
+       text-decoration: none; 
+    }
+    a:hover{
+        text-decoration: none;
     }
 </style>
-<form ng-submit="createExposition()" ng-show="showCreateForm">
+<form ng-submit="createExposition()">
     <section class="NS_projects__hero_funding create-form">
 
         <!-- / Hide this on mobile since we want the video to be at the top -->
@@ -36,7 +43,7 @@
                             <button ngf-select="upload($file)">Выбрать</button>
                             <span id="photoSpan"></span>
                             <input type="text" ng-model="exposition.photo.filename" ng-show="false">
-                            <img id="photo-preview" src="/img/{{exposition.photo.filename}}" ng-show="exposition.photo.filename"/>
+                            <img id="photo-preview" src="/img/uploads/{{exposition.photo.filename}}" ng-show="exposition.photo.filename"/>
                             <img ng-hide="exposition.photo.filename" src="http://3dtoday.ru/upload/_blank_600.jpg" />
                         </div>
                     </div>
@@ -144,10 +151,10 @@
             <div class="container-flex js-project-nav-scroll">
                 <div class="row">
                     <div class="project-nav__links">
-                        <a class="js-load-project-content js-load-project-description project-nav__link--campaign tabbed-nav__link" data-tab="1" href="#">
+                        <a ng-class="showPresentation ? 'is-active' : ''" class="js-load-project-content js-load-project-description project-nav__link--campaign tabbed-nav__link" ng-click="switchTabs(1)" href="">
                             Презентация
                         </a>
-                        <a class="is-active tabbed-nav__link project-nav__link--updates js-load-project-content js-load-project-updates" data-tab="2" href="#">
+                        <a ng-class="showAboutAuditory ? 'is-active' : ''" class="tabbed-nav__link project-nav__link--updates js-load-project-content js-load-project-updates" ng-click="switchTabs(2)" href="">
                             Об аудитории
                         </a>
                     </div>
@@ -156,8 +163,19 @@
         </div>
     </div>
 
-    <section id="tab-content">
+    <section id="tab-content" ng-show="showAboutAuditory">
         <div text-angular ng-model="exposition.aboutAuditory" style="width: 1080px; margin: 0 auto;"></div>
+    </section>
+    <section id="presentation" ng-show="showPresentation" style="max-width: 1080px; width: 100%; margin: 0 auto;">
+        <button ngf-select="uploadPresentation($file)">Выбрать</button>
+        <span ng-show="showErrorPres" style="color: red">Только в формате PDF</span>
+        <pdf-viewer
+            ng-show="exposition.presentation.filename"
+            delegate-handle="my-pdf-container"
+            url="img/relativity.pdf"
+            scale="1"
+            show-toolbar="true"
+            headers="{ 'x-you-know-whats-awesome': 'EVERYTHING' }"></pdf-viewer>
     </section>
     <div class="NS_projects__content clearfix" style="width: 1080px; margin: 0 auto;">
         <button ng-show="createExpositionAction" type="submit" class="button_blue_text" style="float: right;">Сохранить</button>

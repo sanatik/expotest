@@ -55,7 +55,7 @@
                         <button ngf-select="upload($file)">Выбрать</button>
                             <span id="photoSpan"></span>
                             <input type="text" ng-model="offer.photo.filename" ng-show="false">
-                            <img id="photo-preview" src="/img/{{offer.photo.filename}}" ng-show="offer.photo.filename"/>
+                            <img id="photo-preview" src="/img/uploads/{{offer.photo.filename}}" ng-show="offer.photo.filename"/>
                             <img ng-hide="offer.photo.filename" src="http://3dtoday.ru/upload/_blank_600.jpg" />
                     </div>
 

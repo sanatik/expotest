@@ -84,7 +84,7 @@
             <!-- Single item -->
             <div masonry-brick class="masonry-brick grid_item" ng-repeat="exposition in expositions">
                 <div class="photo">
-                    <a href="/#/exposition/{{exposition._id}}/"><img style="max-width: 250px;" src="/img/{{exposition.photo.filename}}" ng-show="exposition.photo.filename" alt=""></a>
+                    <a href="/#/exposition/{{exposition._id}}/"><img style="max-width: 250px;" src="/img/uploads/{{exposition.photo.filename}}" ng-show="exposition.photo.filename" alt=""></a>
                     <a ng-click="redirect(exposition._id)" href="" class="rocket button_green_icon">Тестировать</a>
                 </div>
 
@@ -129,7 +129,7 @@
             <!-- Single item -->
             <div masonry-brick class="grid_item" ng-repeat="offer in offers" ng-click="chooseOffer($index, offer._id);" ng-class="$index === chosenOffer ? 'active' : ''">
                 <a href="" ng-click="chooseOffer($index, offer._id);" class="photo">
-                    <img style="max-width: 250px;" src='/img/{{offer.photo.filename}}'>
+                    <img style="max-width: 250px;" src='/img/uploads/{{offer.photo.filename}}'>
                 </a>
 
                 <div class="info">

@@ -16,7 +16,8 @@ angular.module('app', [
     'google.places',
     'ngTagsInput',
     'textAngular',
-    'uiRouterStyles'
+    'uiRouterStyles',
+    'pdf'
 ]).run(function (RoleStore, AuthServices, $q) {
     RoleStore.defineRole('organizer', [], function () {
         var deferred = $q.defer();
